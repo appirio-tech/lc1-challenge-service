@@ -1,0 +1,9 @@
+{
+  "title":"Challenge 1",
+  "status":"Registration",
+  "type":"Code",
+  "overview" :"A short overview",
+  "description" : "A very long description",
+  "registeredDescription" : "A very very long Registered Description",
+  "tags" : "{\"API\",\"JAVA\",\"HTML\"}"
+}

@@ -1,0 +1,9 @@
+{
+  "title":"Challenge 2",
+  "status":"Review",
+  "type":"Assembly",
+  "overview" :"A short overview 2",
+  "description" : "A very long description 2",
+  "registeredDescription" : "A very very long Registered Description 2",
+  "tags" : "{\"API\",\"JAVA\",\"HTML\", \"MONGO\", \"POSTGRESQL\", \"SERENITY\"}"
+}

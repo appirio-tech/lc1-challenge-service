@@ -1,0 +1,37 @@
+{
+  "name": "challenge-api",
+  "version": "0.0.1",
+  "private": true,
+  "description" :"Reference implementation of the challenges API as described in http://www.topcoder.com/challenge-details/30045304/?type=develop",
+  "author" : "spanhawk",
+  "dependencies": {
+    "express": "4.8.6",
+    "async": "0.9.0",
+    "body-parser": "1.6.6",
+    "lodash": "2.4.1",
+    "morgan": "1.2.2",
+    "sequelize": "^1.7.10",
+    "pg": "^3.4.1",
+    "multiparty" : "3.3.2",
+    "knox" : "0.9.1",
+    "batch" : "0.5.1",
+    "forever": "^0.11.1",
+    "grunt-cli": "^0.1.13",
+    "grunt-concurrent": "^0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-env": "^0.4.1",
+    "grunt-nodemon": "0.2.1",
+    "load-grunt-tasks": "^0.4.0",
+    "time-grunt": "^0.3.1"
+  },
+  "devDependencies": {
+    "mocha": "1.21.4",
+    "jshint": "2.5.5",
+    "grunt-mocha-test": "^0.10.2",
+    "supertest" : "0.13.0"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
