@@ -42,7 +42,7 @@ paths:
   /challenges/{challengeId}/scorecards:
     x-swagger-router-controller: challenges
     post:
-      description: generate a new scorecard
+      description: Creates a new scorecard
       operationId: createScorecard
       parameters:
         - name: challengeId
@@ -93,10 +93,12 @@ paths:
           schema:
             $ref: ErrorResponse
 
+
           
             
   /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems:
     x-swagger-router-controller: challenges
+    
     post: 
       description: generates a scorecard item for each requirement of a challenge
       operationId: createScorecardItem
@@ -119,7 +121,7 @@ paths:
             requirementId: 
               type: integer
       responses:
-        "200":
+        200:
           description: Success
           schema:
             $ref: PostResponse
@@ -127,6 +129,49 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+            
+  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems{scorecardItemsId}:
+    x-swagger-router-controller: challenges
+    
+    get:
+      description: "gets a scorecard item"
+      operationId: getScorecardItem
+      parameters:
+        - name: scorecardItemId
+          type: integer
+          description: "id of scorecardItem"
+          in: path
+          required: true
+      responses:
+        200:
+          description: "Sucess"
+          schema:
+            $ref: ScorecardItem
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      description: "delete a scorecard item"
+      operationId: deleteScorecardItem
+      parameters:
+        - name: scorecardItemId
+          type: integer
+          in: path
+          required: true
+      responses:
+        200:
+          description: "Sucess, Id of scorecard item"
+          schema:
+            success:
+              $ref: PostResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+          
+
+
 
 
 
@@ -219,21 +264,23 @@ definitions:
 
   ScorecardItem:
     required:
-      - ScorecardId
-      - requirmentId
+     - requirementId
+     - scorecardId
     properties:
      id:
       type: integer
-    requirmentId:
+      description: postgres primary key
+     requirmentId:
       type: integer
-    requirementText:
+     requirementText:
       type: string
-    score:
+     score:
       type: float
       description: "stores the reviewers assigned score for this req"
-    comment: 
+     comment: 
       type: string
       description: "text from reviewer to submitter"
+
       
   Results:
     required:
@@ -262,8 +309,6 @@ definitions:
 
   totalCount:
       type: integer
-
-
 
 
   PostResponse:
