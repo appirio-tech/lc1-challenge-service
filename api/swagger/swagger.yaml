@@ -1,7 +1,8 @@
 swagger: 2.0
 info:
-  version: "0.0.1"
+  version: "0.2.1"
   title: Serenity Challenge API
+  description: "API to host challenge, requirements, scorecard and results"
 # during dev, should point to your local machine
 host: localhost
 # basePath prefixes all resource paths 
@@ -38,7 +39,11 @@ paths:
           schema:
             $ref: ErrorResponse
 
-  
+#  /challenges/{challengeId/requirements
+#    x-swagger-router-controller: challenges
+#    post:
+#    get:
+    
   /challenges/{challengeId}/scorecards:
     x-swagger-router-controller: challenges
     post:
@@ -92,10 +97,50 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
-
-
-          
             
+  /challenges/{challengeId}/scorecards/{scorecardId}:
+    x-swagger-router-controller: challenges
+    
+    delete:
+      description: "delete a scorecard"
+      operationId: deleteScorecardI
+      parameters:
+        - name: scorecardId
+          type: integer
+          in: path
+          required: true
+      responses:
+        200:
+          description: "Sucess, Id of scorecard delete"
+          schema:
+            success:
+              $ref: PostResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      description: "update a scorecard"
+      parameters:
+        - name: scorecardId
+          in: path
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: Scorecard
+      responses:
+       200:
+        description: "Success, Id of scorecard updated"
+        schema:
+         success:
+          $ref: PostResponse
+       default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+      
   /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems:
     x-swagger-router-controller: challenges
     
@@ -144,15 +189,38 @@ paths:
           required: true
       responses:
         200:
-          description: "Sucess"
+          description: "Success"
           schema:
             $ref: ScorecardItem
         default:
           description: Error
           schema:
             $ref: ErrorResponse
+    put:
+      description: "update a scorecrd item"
+      operationId: updateScorecardItem
+      parameters:
+        - name: scorecardItemId
+          in: path
+          required: true
+          type: integer
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: ScorecardItem
+      responses:
+        200:
+          description: "Success, scorecard item update id"
+          schema:  
+            success:
+              $ref: PostResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
     delete:
-      description: "delete a scorecard item"
+      description: "delete a scorecard item deleted"
       operationId: deleteScorecardItem
       parameters:
         - name: scorecardItemId
@@ -214,6 +282,12 @@ definitions:
       updateAt:
         type: string
         format: date-time
+      createdBy:
+        type: string
+        description: The handle fo the user
+      updatedBy:
+        type: string
+        description: The handle fo the user  
 
   Scorecard:
    required:
@@ -237,16 +311,16 @@ definitions:
       description: "id of the submission"
     scoreSum:
       type: integer
-      description: "Sum of all the scorecard items scorecard"
+      description: "This is a derived value and may only be a placeholder -TBD-. Sum of all the scorecard items scorecard"
     scorePercent:
       type: float
-      description: "ScoreSum / ScoreMax from scorecard items"
+      description: "This is a derived value and may only be a placeholder -TBD-. ScoreSum / ScoreMax from scorecard items"
     scoreMax:
       type: float
-      description: "Sum of highest possible score from scorecard items"
+      description: "This is a derived value and may only be a placeholder -TBD-. Sum of highest possible score from scorecard items"
     scorecard_items:
       type: array
-      description: "array  of scorecard items "
+      description: "This is a derived value and may only be a placeholder -TBD-. array  of scorecard items "
     status:
       type: string
       description: "show if this scorecard is valid ENUM:valid,invalid,late"
@@ -260,8 +334,19 @@ definitions:
     prize: 
       type: float
       description: "cash payout"
+    createdAt:
+      type: string
+      format: date-time
+    updateAt:
+      type: string
+      format: date-time
+    createdBy:
+      type: string
+      description: The handle fo the user
+    updatedBy:
+      type: string
+      description: The handle fo the user
     
-
   ScorecardItem:
     required:
      - requirementId
@@ -280,8 +365,19 @@ definitions:
      comment: 
       type: string
       description: "text from reviewer to submitter"
+     createdAt:
+      type: string
+      format: date-time
+     updateAt:
+      type: string
+      format: date-time
+     createdBy:
+      type: string
+      description: The handle fo the user
+     updatedBy:
+      type: string
+      description: The handle fo the user  
 
-      
   Results:
     required:
       - ScorecardId
@@ -300,16 +396,11 @@ definitions:
       description: "cash payout"    
       
     
-      
-
-      
-
 
 # Default Responses 
 
   totalCount:
       type: integer
-
 
   PostResponse:
     required:
