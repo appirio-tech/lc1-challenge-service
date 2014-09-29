@@ -1,4 +1,4 @@
-## serenity-discussion-api is a Discussion API Service
+## serenity-discussion-api is a Challenge API Service
 
 The topcoder Discussion API was initially built using the [Apigee a127 scaffolding](https://github.com/apigee-127/a127-documentation/wiki).
 
