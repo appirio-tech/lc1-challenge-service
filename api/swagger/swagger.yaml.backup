@@ -1,0 +1,366 @@
+swagger: 2.0
+info:
+  version: "0.0.1"
+  title: Serenity Discussion API
+# during dev, should point to your local machine
+host: localhost
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+x-volos-resources: {}
+paths:
+  /discussions:
+    x-swagger-router-controller: discussions
+    post:
+      description: Create a new discusion
+      # used as the method name of the controller
+      operationId: create
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: DiscussionBody
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: PostResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /discussions/{discussionId}:
+    x-swagger-router-controller: discussions
+    get:
+      description: Get a discussion
+      operationId: findById
+      parameters:
+        - name: discussionId
+          in: path
+          description:  Id of discussion
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Return a Discussion Resource
+          schema:
+            success:
+              type: boolean
+            status:
+              type: integer
+              format: int32
+            content:
+              $ref: DiscussionResource
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /discussions/{discussionId}/messages:
+    x-swagger-route-controller: messages
+    post:
+      description: Create a Message
+      operationId: create
+      parameters:
+        - name: discussionId
+          in: path
+          description:  Id of discussion
+          required: true
+          type: integer
+          format: int64
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: MessageBody
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: PostResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    get:
+      description: Get all messages for a description
+      operationId: getAllbyDiscussion
+      parameters:
+        - name: discussionId
+          in: path
+          description:  Id of discussion
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Sucess
+          schema:
+            $ref: MessagesResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /discussions/{discussionId}/messages/{messageId}:
+    x-swagger-route-controller: messages
+    get:
+      description: Get a Message and it's children
+      operationId: findById
+      parameters:
+        - name: discussionId
+          in: path
+          description:  Id of discussion
+          required: true
+          type: integer
+          format: int64
+        - name: messageId
+          in: path
+          description:  Id of message
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: A successufly response
+          schema:
+            success:
+              type: boolean
+              description: True or False if the request was a success
+            status:
+              type: integer
+              description:  The HTTP status code
+            content:
+              $ref: MessageResource
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      description: Update a message
+      operationId: update
+      parameters:
+        - name: discussionId
+          in: path
+          description:  Id of discussion
+          required: true
+          type: integer
+          format: int64
+        - name: messageId
+          in: path
+          description:  Id of message
+          required: true
+          type: integer
+          format: int64
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: MessageBody
+      responses:
+        200:
+          description: Success
+          schema:
+            success:
+              type: boolean
+              description: True or False if the request was a success
+            status:
+              type: integer
+              description:  The HTTP status code
+            content:
+              $ref: MessageResource
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      description: Delete a messsage
+      operationId: delete
+      parameters:
+        - name: discussionId
+          in: path
+          description:  Id of discussion
+          required: true
+          type: integer
+          format: int64
+        - name: messageId
+          in: path
+          description:  Id of message
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Success
+          schema:
+            success:
+              type: boolean
+              description: True or False if the request was a success
+            status:
+              type: integer
+              description:  The HTTP status code
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /discussions/{discussionId}/messages/{messageId}/messages:
+    x-swagger-route-controller: messages
+    post:
+      description: Create a reply to a message.  The message ID path param will be used as the parent id for the message.
+      operationId: reply
+      parameters:
+        - name: discussionId
+          in: path
+          description:  Id of discussion
+          required: true
+          type: integer
+          format: int64
+        - name: messageId
+          in: path
+          description:  Id of message
+          required: true
+          type: integer
+          format: int64
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: MessageBody
+      responses:
+        200:
+          description: Sucessful reply
+          schema:
+            $ref: PostResponse
+# complex objects have schema definitions
+definitions:
+  MessagesResponse:
+    required:
+      - messages
+    properties:
+      messages:
+        type: array
+        items:
+          $ref: MessageResource
+          minItems: 0
+          uniqueItems: true
+  DiscussionResource:
+    required:
+      - discussionId
+      - remoteObjectKey
+      - remoteObjectId
+      - messages
+    properties:
+      discussionId:
+        type: integer
+        format: int64
+      remoteObjectName:
+        type: string
+      remoteObjectId:
+        type: integer
+        format: int64
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+        description: The handle fo the user
+      updatedBy:
+        type: string
+        description: The handle fo the user
+  MessageResource:
+    required:
+      - messageId
+      - discussionId
+      - content
+    properties:
+      messageId:
+        type: integer
+        format: int64
+      discussionId:
+        type: integer
+        format: int64
+      content:
+        type: string
+      parentMessageId:
+        description: The parent Message.  optional
+        type: integer
+        format: int64
+      messages:
+        description: The child messages
+        type: array
+        items:
+          minItems: 0
+          uniqueItems: true
+          $ref: MessageResource
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+        description: The handle fo the user
+      updatedBy:
+        type: string
+        description: The handle fo the user
+  PostResponse:
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+      result:
+        properties:
+          success:
+            type: boolean
+            description: Was the request a success
+          status:
+            type: integer
+            format: int32
+            description: The http status code
+  DiscussionBody:
+    required:
+      - remoteObjectType
+      - remoteObjectId
+    properties:
+      remoteObjectName:
+        description: The type of object which a discussion is attached. for example challenge or submission
+        type: string
+      remoteObjectId:
+        description: The id of the remote object
+        type: integer
+        format: int64
+  MessageBody:
+    required:
+      - content
+    properties:
+      content:
+        description:  The content of the message
+        type: string
+  ErrorResponse:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: The http status code
+      message:
+        type: string
+

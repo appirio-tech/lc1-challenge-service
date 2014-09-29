@@ -1,0 +1,3 @@
+app:
+  pgURL:
+    host: DATABASE_URL

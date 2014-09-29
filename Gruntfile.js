@@ -1,14 +1,16 @@
 'use strict';
 
-var paths = {
-  js: ['*.js', 'test/**/*.js','**/*.js', '!node_modules/**','!temp/**','!uploads']
-};
-
 module.exports = function(grunt) {
+  var databaseUrl;
 
   if (process.env.NODE_ENV !== 'production') {
     require('time-grunt')(grunt);
   }
+
+  var envConfig = require('config');
+  databaseUrl = envConfig.pgURL ||
+      'postgres://' + envConfig.pg.username + ':' + envConfig.pg.password + '@' + envConfig.pg.host + ':5432/' + envConfig.pg.database;
+
 
   // Project Configuration
   grunt.initConfig({
@@ -29,7 +31,7 @@ module.exports = function(grunt) {
     },
     nodemon: {
       dev: {
-        script: 'server.js',
+        script: 'app.js',
         options: {
           args: [],
           ignore: ['node_modules/**'],
@@ -54,9 +56,21 @@ module.exports = function(grunt) {
         src: ['test/**/*.js']
       }
     },
+    migrate: {
+      options: {
+        env: {
+          DATABASE_URL: databaseUrl   // the databaseUrl is resolved at the beginning based on the NODE_ENV, this value injects the config in the database.json
+        },
+        'dir': 'config/schema-migrations', // defines the dir for the migration scripts
+        verbose: true   // tell me more stuff
+      }
+    },
     env: {
       test: {
         NODE_ENV: 'test'
+      },
+      local: {
+        NODE_ENV: 'local'
       }
     }
   });
@@ -68,7 +82,7 @@ module.exports = function(grunt) {
   if (process.env.NODE_ENV === 'production') {
     grunt.registerTask('default', ['jshint', 'concurrent']);
   } else {
-    grunt.registerTask('default', ['jshint', 'concurrent']);
+    grunt.registerTask('default', ['env:local', 'jshint', 'concurrent']);
   }
 
   //Test task.
@@ -76,4 +90,9 @@ module.exports = function(grunt) {
 
   // For Heroku users only.
   grunt.registerTask('heroku:production', ['jshint']);
+
+  // db migrate
+  grunt.registerTask('dbmigrate', 'db up all the appliable scripts', function () {
+    grunt.task.run('migrate:up');
+  });
 };

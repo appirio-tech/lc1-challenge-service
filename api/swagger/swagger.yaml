@@ -1,0 +1,297 @@
+swagger: 2.0
+info:
+  version: "0.0.1"
+  title: Serenity Challenge API
+# during dev, should point to your local machine
+host: localhost
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+x-volos-resources: {}
+paths:
+  /challenges:
+    x-swagger-router-controller: challenges
+    get:
+      description: get all the challenges
+      # used as the method name of the controller
+      operationId: findAndCountAll
+      responses:
+        200:
+          description: Returns a list of all challenge resources
+          schema:
+              totalCount:
+                type: integer
+              data:
+                $ref: Challenge
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  
+  /challenges/{challengeId}/scorecards:
+    x-swagger-router-controller: challenges
+    post:
+      description: generate a new scorecard
+      operationId: createScorecard
+      parameters:
+        - name: challengeId
+          in: path
+          description: the id for the challenge to create a scorecard for
+          type: integer
+          format: base64
+          required: true
+        - name: reviewerId
+          in: body
+          description: id of the user running the opperation
+          required: true
+        - name: submissionId
+          in: body
+          description: id of submssion record
+          required: true
+          schema:
+            submissionId:
+              type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: PostResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    get:
+      description: "get all the scorecards for a particualr challenge"
+      operationId: getAllScorecards
+      parameters: 
+        - name: challengeId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Array of scorecard resources
+          schema:
+              totalCount:
+                type: integer
+              data:
+                $ref: Scorecard
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+          
+            
+  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems:
+    x-swagger-router-controller: challenges
+    post: 
+      description: generates a scorecard item for each requirement of a challenge
+      operationId: createScorecardItem
+      parameters:
+        - name: challengeId
+          in: path
+          type: integer
+          required: true
+          description: Id of the challenge
+        - name: scorecardId
+          in: path
+          type: integer
+          required: true
+          description: id of the scorecard that the item should belong to
+        - name: requirementId
+          in: body
+          description: id of a requirement attached to challenge
+          required: true
+          schema:
+            requirementId: 
+              type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: PostResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+
+
+# Custom Responses            
+# complex objects have schema definitions
+definitions:
+  Challenge:
+    properties:
+      id:
+        type: integer
+        description: postgres primary key
+      regStartDate:
+        type: string
+        format: date-time
+        description: the start Date of the challenge
+      subEndDate:
+        type: string
+        format: date-time
+        description: last time a member can submit.
+      title:
+        type: string
+        description: Title of the challenge.
+      overview:
+        type: string
+        description: 140 Char overview
+      description:
+        type: string
+        description: the body of the challenge
+      registedDescription:
+        type: string
+        description: NOT USED text that only can be seen by registed users
+      tags:
+        type: array
+      status:
+        type: string
+        description: ENUM - DRAFT, ACTIVE, REVIEW, COMPLETE
+      createdAt:
+        type: string
+        format: date-time
+      updateAt:
+        type: string
+        format: date-time
+
+  Scorecard:
+   required:
+    - reviewerId
+    - submitterId
+    - submissionId
+   properties:
+    id:
+      type: integer
+    reviewerId: 
+      type: integer
+      description: "the user id of the reviewer"
+    reviwer:
+      type: string
+      description: "handle of the reviwer, TODO: should we only use handle, id or both"
+    submitterId:
+      type: integer
+      description: "the user id of the submitter"
+    submissionId:
+      type: integer
+      description: "id of the submission"
+    scoreSum:
+      type: integer
+      description: "Sum of all the scorecard items scorecard"
+    scorePercent:
+      type: float
+      description: "ScoreSum / ScoreMax from scorecard items"
+    scoreMax:
+      type: float
+      description: "Sum of highest possible score from scorecard items"
+    scorecard_items:
+      type: array
+      description: "array  of scorecard items "
+    status:
+      type: string
+      description: "show if this scorecard is valid ENUM:valid,invalid,late"
+    # TODO: should next three be here or should we do a result object
+    pay:
+      type: boolean
+      description: "determines if scorecard merits awarding place and cash prize"
+    place:
+      type: integer
+      description: "TODO: results instead? awarded place, 1 for 1st, 2 for second ..."
+    prize: 
+      type: float
+      description: "cash payout"
+    
+
+  ScorecardItem:
+    required:
+      - ScorecardId
+      - requirmentId
+    properties:
+     id:
+      type: integer
+    requirmentId:
+      type: integer
+    requirementText:
+      type: string
+    score:
+      type: float
+      description: "stores the reviewers assigned score for this req"
+    comment: 
+      type: string
+      description: "text from reviewer to submitter"
+      
+  Results:
+    required:
+      - ScorecardId
+    properties:
+      id:
+        type: integer
+   # TODO: next three items could also aregualbly on scorecard
+    pay:
+      type: boolean
+      description: "determines if scorecard merits awarding place and cash prize"
+    place:
+      type: integer
+      description: "TODO: results instead? awarded place, 1 for 1st, 2 for second ..."
+    prize: 
+      type: float
+      description: "cash payout"    
+      
+    
+      
+
+      
+
+
+# Default Responses 
+
+  totalCount:
+      type: integer
+
+
+
+
+  PostResponse:
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+      result:
+        properties:
+          success:
+            type: boolean
+            description: Was the request a success
+          status:
+            type: integer
+            format: int32
+            description: The http status code
+
+  ErrorResponse:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: The http status code
+      message:
+        type: string
+
