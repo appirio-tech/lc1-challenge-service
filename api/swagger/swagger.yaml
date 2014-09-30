@@ -25,7 +25,7 @@ paths:
     get:
       description: get all the challenges
       # used as the method name of the controller
-      operationId: findAndCountAll
+      operationId: getAllChallenges
       responses:
         200:
           description: Returns a list of all challenge resources
@@ -45,7 +45,7 @@ paths:
 #    get:
     
   /challenges/{challengeId}/scorecards:
-    x-swagger-router-controller: challenges
+    x-swagger-router-controller: scorecards
     post:
       description: Creates a new scorecard
       operationId: createScorecard
@@ -99,11 +99,11 @@ paths:
             $ref: ErrorResponse
             
   /challenges/{challengeId}/scorecards/{scorecardId}:
-    x-swagger-router-controller: challenges
+    x-swagger-router-controller: scorecards
     
     delete:
       description: "delete a scorecard"
-      operationId: deleteScorecardI
+      operationId: deleteScorecard
       parameters:
         - name: scorecardId
           type: integer
@@ -121,6 +121,7 @@ paths:
             $ref: ErrorResponse
     put:
       description: "update a scorecard"
+      operationId: updateScorecard
       parameters:
         - name: scorecardId
           in: path
@@ -142,8 +143,35 @@ paths:
             $ref: ErrorResponse
       
   /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems:
-    x-swagger-router-controller: challenges
+    x-swagger-router-controller: scorecardItems
     
+    get:
+      description: Retrieve all scorecard items for a scorecard
+      operationId: getScoreCardItems
+      parameters: 
+        - name: challengeId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: scorecardId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Array of ScorecardItem resources
+          schema:
+              totalCount:
+                type: integer
+              data:
+                $ref: ScorecardItem
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+        
     post: 
       description: generates a scorecard item for each requirement of a challenge
       operationId: createScorecardItem
@@ -175,8 +203,8 @@ paths:
           schema:
             $ref: ErrorResponse
             
-  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems{scorecardItemsId}:
-    x-swagger-router-controller: challenges
+  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems/{scorecardItemsId}:
+    x-swagger-router-controller: scorecardItems
     
     get:
       description: "gets a scorecard item"
@@ -318,9 +346,6 @@ definitions:
     scoreMax:
       type: float
       description: "This is a derived value and may only be a placeholder -TBD-. Sum of highest possible score from scorecard items"
-    scorecard_items:
-      type: array
-      description: "This is a derived value and may only be a placeholder -TBD-. array  of scorecard items "
     status:
       type: string
       description: "show if this scorecard is valid ENUM:valid,invalid,late"
@@ -378,29 +403,7 @@ definitions:
       type: string
       description: The handle fo the user  
 
-  Results:
-    required:
-      - ScorecardId
-    properties:
-      id:
-        type: integer
-   # TODO: next three items could also aregualbly on scorecard
-    pay:
-      type: boolean
-      description: "determines if scorecard merits awarding place and cash prize"
-    place:
-      type: integer
-      description: "TODO: results instead? awarded place, 1 for 1st, 2 for second ..."
-    prize: 
-      type: float
-      description: "cash payout"    
-      
-    
-
 # Default Responses 
-
-  totalCount:
-      type: integer
 
   PostResponse:
     required:
