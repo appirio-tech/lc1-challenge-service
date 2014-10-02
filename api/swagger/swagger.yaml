@@ -30,8 +30,7 @@ paths:
         - name: filter
           in: query
           type: string
-          description: "{fieldName1}={fieldValue1}&...{fieldNameN}={fieldValueN} String value needs to be surrounded by single quotation(‘) filedValue can contain multiple values using in() format
-  {fieldName}=in({fieldValue1},{fieldValue1})"
+          description: "{fieldName1}={fieldValue1}&...{fieldNameN}>{fieldValueN}. String value needs to be surrounded by single quotation(‘). filedValue can contain multiple values using in() format {fieldName}=in({fieldValue1},{fieldValue1}). Operations can be =, > or <.  < and > operations are only for number, inteters and dates"
         - name: limit
           in: query
           type: integer
@@ -184,6 +183,10 @@ definitions:
         type: string
         format: date-time
         description: last time a member can submit.
+      completeDate:
+        type: string
+        format: date-time
+        description: The closing date of the challenge.
       title:
         type: string
         description: Title of the challenge.
@@ -221,13 +224,27 @@ definitions:
       updatedBy:
         type: string
         description: The handle of the user last updated the row
-      
-# schema is TBD
   ResultResource:
+    required:
+      - ScorecardId
     properties:
       id:
         type: integer
         format: int64
+      pay:
+        type: boolean
+        description: "determines if scorecard merits awarding place and cash prize"
+      place:
+        type: integer
+        format: int32
+        minimum: 1
+        maxium: 6
+        description: "TODO: results instead? awarded place, 1 for 1st, 2 for second ..."
+      prize: 
+        type: number
+        format: double
+        description: "cash payout"    
+
       
 # Responses
   ChallengesResponse:
