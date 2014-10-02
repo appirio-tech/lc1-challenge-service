@@ -3,13 +3,17 @@
 module.exports = function(grunt) {
   var databaseUrl;
 
+  var paths = {
+    js: ['*.js', 'api/**/*.js', '!test/coverage/**', '!bower_components/**']
+  };
+
   if (process.env.NODE_ENV !== 'production') {
     require('time-grunt')(grunt);
   }
 
-  var envConfig = require('config');
-  databaseUrl = envConfig.pgURL ||
-      'postgres://' + envConfig.pg.username + ':' + envConfig.pg.password + '@' + envConfig.pg.host + ':5432/' + envConfig.pg.database;
+  //var envConfig = require('config');
+  //databaseUrl = envConfig.pgURL ||
+//      'postgres://' + envConfig.pg.username + ':' + envConfig.pg.password + '@' + envConfig.pg.host + ':5432/' + envConfig.pg.database;
 
 
   // Project Configuration

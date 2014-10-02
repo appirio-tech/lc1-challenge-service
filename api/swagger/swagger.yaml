@@ -5,9 +5,9 @@ info:
   description: "API to host challenge, requirements, scorecard and results"
 # during dev, should point to your local machine
 host: localhost
-# basePath prefixes all resource paths 
+# basePath prefixes all resource paths
 basePath: /
-# 
+#
 schemes:
   # tip: remove http to make production-grade
   - http
@@ -21,65 +21,88 @@ produces:
 x-volos-resources: {}
 paths:
   /challenges:
-    x-swagger-router-controller: challenges
     get:
+      x-swagger-router-controller: challenges
       description: get all the challenges
       # used as the method name of the controller
-      operationId: getAllChallenges
+      operationId: getAll
+      parameters:
+        - name: filter
+          in: query
+          type: string
+          description: "{fieldName1}={fieldValue1}&...{fieldNameN}={fieldValueN} String value needs to be surrounded by single quotation(‘) filedValue can contain multiple values using in() format
+  {fieldName}=in({fieldValue1},{fieldValue1})"
+        - name: limit
+          in: query
+          type: integer
+          format: int32
+          description: maximum number of records to return
+        - name: offset
+          in: query
+          type: integer
+          format: int32
+          description: id to start return values
+        - name: orderBy
+          in: query
+          type: string
+          description: field name to sort {asc [nulls {first | last} ] | desc  [nulls {first | last} }
       responses:
         200:
           description: Returns a list of all challenge resources
           schema:
-              totalCount:
-                type: integer
-              data:
-                $ref: Challenge
+            $ref: ChallengesResponse
         default:
           description: Error
           schema:
             $ref: ErrorResponse
-
-#  /challenges/{challengeId/requirements
-#    x-swagger-router-controller: challenges
-#    post:
-#    get:
-    
-  /challenges/{challengeId}/scorecards:
-    x-swagger-router-controller: scorecards
     post:
-      description: Creates a new scorecard
-      operationId: createScorecard
+      x-swagger-router-contorller: challenges
+      description: Create a new challenge
+      operationId: create
       parameters:
-        - name: challengeId
-          in: path
-          description: the id for the challenge to create a scorecard for
-          type: integer
-          format: base64
-          required: true
-        - name: reviewerId
+        - name: body
           in: body
-          description: id of the user running the opperation
           required: true
-        - name: submissionId
-          in: body
-          description: id of submssion record
-          required: true
-          schema:
-            submissionId:
-              type: integer
+          schema: 
+            $ref: ChallengeResource
       responses:
         200:
           description: Success
           schema:
-            $ref: PostResponse
+            $ref: ActionResponse
         default:
           description: Error
           schema:
             $ref: ErrorResponse
+  /challenges/results:
     get:
-      description: "get all the scorecards for a particualr challenge"
-      operationId: getAllScorecards
-      parameters: 
+      x-swagger-router-controller: results
+      description: Get all results for a list of challenges
+      operationId: getResultsByChallenge
+      parameters:
+        - name: challengeIds
+          in: query
+          required: false
+          type: array
+          format: csv
+          items:
+            type: string
+          description: an array of id's sperated by commas
+      responses:
+        200:
+          description: Sucessfull response
+          schema:
+            $ref: ResultsResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}:
+    get:
+      x-swagger-router-controller: challenges
+      operationId: getByChallengeId
+      description: Get a challenge
+      parameters:
         - name: challengeId
           in: path
           required: true
@@ -87,194 +110,68 @@ paths:
           format: int64
       responses:
         200:
-          description: Array of scorecard resources
+          description: A full challenge resource
           schema:
-              totalCount:
-                type: integer
-              data:
-                $ref: Scorecard
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-            
-  /challenges/{challengeId}/scorecards/{scorecardId}:
-    x-swagger-router-controller: scorecards
-    
-    delete:
-      description: "delete a scorecard"
-      operationId: deleteScorecard
-      parameters:
-        - name: scorecardId
-          type: integer
-          in: path
-          required: true
-      responses:
-        200:
-          description: "Sucess, Id of scorecard delete"
-          schema:
-            success:
-              $ref: PostResponse
+            $ref: ChallengeResource
         default:
           description: Error
           schema:
             $ref: ErrorResponse
     put:
-      description: "update a scorecard"
-      operationId: updateScorecard
+      x-swagger-router-controller: challenges
+      description: Update a challenge
+      operationId: update
       parameters:
-        - name: scorecardId
-          in: path
-          required: true
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: Scorecard
-      responses:
-       200:
-        description: "Success, Id of scorecard updated"
-        schema:
-         success:
-          $ref: PostResponse
-       default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-      
-  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems:
-    x-swagger-router-controller: scorecardItems
-    
-    get:
-      description: Retrieve all scorecard items for a scorecard
-      operationId: getScoreCardItems
-      parameters: 
         - name: challengeId
           in: path
           required: true
           type: integer
           format: int64
-        - name: scorecardId
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: ChallengeResource
+      responses:
+        200:
+          description: Update successful
+          schema:
+            properties:
+              success:
+                type: boolean
+                description: True or False if the request was a success
+              status:
+                type: integer
+                description:  The HTTP status code
+              content:
+                $ref: ChallengeResource
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      x-swagger-router-controller: challenges
+      description: Delete a challenge
+      operationId: delete
+      parameters:
+        - name: challengeId
           in: path
           required: true
           type: integer
           format: int64
       responses:
         200:
-          description: Array of ScorecardItem resources
+          description: Challenge was deleted
           schema:
-              totalCount:
-                type: integer
-              data:
-                $ref: ScorecardItem
+            $ref: ActionResponse
         default:
           description: Error
           schema:
             $ref: ErrorResponse
         
-    post: 
-      description: generates a scorecard item for each requirement of a challenge
-      operationId: createScorecardItem
-      parameters:
-        - name: challengeId
-          in: path
-          type: integer
-          required: true
-          description: Id of the challenge
-        - name: scorecardId
-          in: path
-          type: integer
-          required: true
-          description: id of the scorecard that the item should belong to
-        - name: requirementId
-          in: body
-          description: id of a requirement attached to challenge
-          required: true
-          schema:
-            requirementId: 
-              type: integer
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: PostResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-            
-  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems/{scorecardItemsId}:
-    x-swagger-router-controller: scorecardItems
-    
-    get:
-      description: "gets a scorecard item"
-      operationId: getScorecardItem
-      parameters:
-        - name: scorecardItemId
-          type: integer
-          description: "id of scorecardItem"
-          in: path
-          required: true
-      responses:
-        200:
-          description: "Success"
-          schema:
-            $ref: ScorecardItem
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    put:
-      description: "update a scorecrd item"
-      operationId: updateScorecardItem
-      parameters:
-        - name: scorecardItemId
-          in: path
-          required: true
-          type: integer
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: ScorecardItem
-      responses:
-        200:
-          description: "Success, scorecard item update id"
-          schema:  
-            success:
-              $ref: PostResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    delete:
-      description: "delete a scorecard item deleted"
-      operationId: deleteScorecardItem
-      parameters:
-        - name: scorecardItemId
-          type: integer
-          in: path
-          required: true
-      responses:
-        200:
-          description: "Sucess, Id of scorecard item"
-          schema:
-            success:
-              $ref: PostResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-          
-
-
-
-
-
-# Custom Responses            
-# complex objects have schema definitions
+# Custom Responses
 definitions:
-  Challenge:
+  ChallengeResource:
     properties:
       id:
         type: integer
@@ -290,122 +187,105 @@ definitions:
       title:
         type: string
         description: Title of the challenge.
+        default: Untitled Challenge
+        required: true
+        minLength: 1
       overview:
         type: string
         description: 140 Char overview
+        maxLength: 140
       description:
         type: string
         description: the body of the challenge
-      registedDescription:
-        type: string
-        description: NOT USED text that only can be seen by registed users
       tags:
         type: array
+        items:
+          type: string
       status:
         type: string
-        description: ENUM - DRAFT, ACTIVE, REVIEW, COMPLETE
+        description: The current status of the challenge
+        enum:
+          - DRAFT
+          - ACTIVE
+          - REVIEW
+          - COMPLETE
       createdAt:
         type: string
         format: date-time
-      updateAt:
+      updatedAt:
         type: string
         format: date-time
       createdBy:
         type: string
-        description: The handle fo the user
+        description: The handle of the user who created the row
       updatedBy:
         type: string
-        description: The handle fo the user  
-
-  Scorecard:
-   required:
-    - reviewerId
-    - submitterId
-    - submissionId
-   properties:
-    id:
-      type: integer
-    reviewerId: 
-      type: integer
-      description: "the user id of the reviewer"
-    reviwer:
-      type: string
-      description: "handle of the reviwer, TODO: should we only use handle, id or both"
-    submitterId:
-      type: integer
-      description: "the user id of the submitter"
-    submissionId:
-      type: integer
-      description: "id of the submission"
-    scoreSum:
-      type: integer
-      description: "This is a derived value and may only be a placeholder -TBD-. Sum of all the scorecard items scorecard"
-    scorePercent:
-      type: float
-      description: "This is a derived value and may only be a placeholder -TBD-. ScoreSum / ScoreMax from scorecard items"
-    scoreMax:
-      type: float
-      description: "This is a derived value and may only be a placeholder -TBD-. Sum of highest possible score from scorecard items"
-    status:
-      type: string
-      description: "show if this scorecard is valid ENUM:valid,invalid,late"
-    # TODO: should next three be here or should we do a result object
-    pay:
-      type: boolean
-      description: "determines if scorecard merits awarding place and cash prize"
-    place:
-      type: integer
-      description: "TODO: results instead? awarded place, 1 for 1st, 2 for second ..."
-    prize: 
-      type: float
-      description: "cash payout"
-    createdAt:
-      type: string
-      format: date-time
-    updateAt:
-      type: string
-      format: date-time
-    createdBy:
-      type: string
-      description: The handle fo the user
-    updatedBy:
-      type: string
-      description: The handle fo the user
-    
-  ScorecardItem:
-    required:
-     - requirementId
-     - scorecardId
+        description: The handle of the user last updated the row
+      
+# schema is TBD
+  ResultResource:
     properties:
-     id:
-      type: integer
-      description: postgres primary key
-     requirmentId:
-      type: integer
-     requirementText:
-      type: string
-     score:
-      type: float
-      description: "stores the reviewers assigned score for this req"
-     comment: 
-      type: string
-      description: "text from reviewer to submitter"
-     createdAt:
-      type: string
-      format: date-time
-     updateAt:
-      type: string
-      format: date-time
-     createdBy:
-      type: string
-      description: The handle fo the user
-     updatedBy:
-      type: string
-      description: The handle fo the user  
-
-# Default Responses 
-
-  PostResponse:
+      id:
+        type: integer
+        format: int64
+      
+# Responses
+  ChallengesResponse:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        type: array
+        items:
+          $ref: ChallengeResource
+          minItems: 0
+          uniqueItems: true
+  ChallengeResponse:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        $ref: ChallengeResource
+  ResultsResponse:
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        type: array
+        items:
+          $ref: ResultResource
+          minItems: 0
+          uniqueItems: true
+  ActionResponse:
     required:
       - id
     properties:
@@ -421,7 +301,15 @@ definitions:
             type: integer
             format: int32
             description: The http status code
-
+  ChallengeBody:
+    properties:
+      id:
+        type: integer
+  MetadataListResponse:
+    properties:
+      totalCount:
+        type: inteter
+        format: int32
   ErrorResponse:
     required:
       - code
@@ -433,4 +321,3 @@ definitions:
         description: The http status code
       message:
         type: string
-
