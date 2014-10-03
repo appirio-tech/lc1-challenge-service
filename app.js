@@ -1,55 +1,34 @@
 'use strict';
 
 var a127 = require('a127-magic');
-//var express = require('express');
-//var app = express();
-//var config = require('config');
-//var datasource = require('./datasource');
+var express = require('express');
+var app = express();
+var config = require('config');
+var datasource = require('./datasource');
+var routeHelper = require('./lib/routeHelper');
 
-var swaggerTools = require('swagger-tools');
+var app = express();
 
 // uncomment the following if you need to parse incoming form data
-//app.use(express.bodyParser());
+app.use(bodyParser.json());
 
 // @TODO add try/catch logic
-//datasource.init(config);
+datasource.init(config);
 
-
-var a127Config = a127.config.load();
-var a127Magic = a127Config['a127.magic'];
-var result = swaggerTools.specs.v2.validate(a127Magic.swaggerObject);
-
-if (typeof result !== 'undefined') {
-  if (result.errors.length > 0) {
-    console.log('The server could not start due to invalid Swagger document...');
-
-    console.log('');
-
-    console.log('Errors');
-    console.log('------');
-
-    result.errors.forEach(function (err) {
-      console.log('#/' + err.path.join('/') + ': ' + err.message);
-    });
-
-    console.log('');
-  }
-
-  if (result.warnings.length > 0) {
-    console.log('Warnings');
-    console.log('--------');
-
-    result.warnings.forEach(function (warn) {
-      console.log('#/' + warn.path.join('/') + ': ' + warn.message);
-    });
-  }
-
-  if (result.errors.length > 0) {
-    process.exit(1);
-  }
+var port;
+if (config.has('app.port')) {
+  port = config.get('app.port');
+} else {
+  port = 10010;
 }
 
+// a127 middlewares
+app.use(a127.middleware());
+// generic error handler
+app.use(routeHelper.errorHandler);
+// render response data as JSON
+app.use(routeHelper.renderJson);
 
-//app.use(a127.middleware());
+app.listen(port);
 
-//app.listen(port);
+console.log('app started at '+port);
