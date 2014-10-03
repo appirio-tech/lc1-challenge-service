@@ -167,6 +167,245 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+  /challenges/{challengeId}/scorecards:
+    post:
+      description: Creates a new scorecard
+      x-swagger-router-controller: scorecards
+      operationId: create
+      parameters:
+        - name: challengeId
+          in: path
+          description: the id for the challenge to create a scorecard for
+          type: integer
+          format: int64
+          required: true
+        - name: body
+          in: body
+          description:  body of post
+          required: true
+          schema:
+            $ref: NewScorecard
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    get:
+      description: get all the scorecards for a particualr challenge
+      x-swagger-router-controller: scorecards
+      operationId: getAllByChallengeId
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Array of scorecard resources
+          schema:
+            $ref: ScoreCardsResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /challenges/{challengeId}/scorecards/{scorecardId}:
+    get:
+      x-swagger-route-controller: scorecards
+      description: Get a scorecard
+      operationId: getbyId
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: scorecardId
+          type: integer
+          format: int64
+          in: path
+          required: true
+      responses:
+        200:
+          description: A scorecard
+          schema:
+            $ref: ScorecardResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      x-swagger-router-controller: scorecards
+      description: delete a scorecard
+      operationId: delete
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: scorecardId
+          type: integer
+          format: int64
+          in: path
+          required: true
+      responses:
+        200:
+          description: Success, Id of scorecard delete
+          schema:
+            success:
+              $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      description: update a scorecard
+      operationId: update
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: scorecardId
+          type: integer
+          format: int64
+          in: path
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: ScorecardResource
+      responses:
+       200:
+        description: "Success, Id of scorecard updated"
+        schema:
+         success:
+          $ref: ActionResponse
+       default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems:
+    get:
+      x-swagger-router-controller: scorecardItems
+      description: Retrieve all scorecard items for a scorecard
+      operationId: getScoreCardItemsByScorecard
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: scorecardId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Array of ScorecardItem resources
+          schema:
+            $ref: ScorecardItemsResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    post:
+      description: generates a scorecard item for each requirement of a challenge
+      x-swagger-router-controller: scorecardItems
+      operationId: create
+      parameters:
+        - name: scorecardId
+          type: integer
+          format: int64
+          in: path
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: ScorecardItemResource
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems/{scorecardItemsId}:
+    get:
+      description: "gets a scorecard item"
+      x-swagger-router-controller: scorecardItems
+      operationId: getScorecardItem
+      parameters:
+        - name: scorecardItemId
+          type: integer
+          format: int64
+          description: "id of scorecardItem"
+          in: path
+          required: true
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: ScorecardItemResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      description: "update a scorecrd item"
+      operationId: updateScorecardItem
+      parameters:
+        - name: scorecardItemId
+          in: path
+          required: true
+          type: integer
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: ScorecardItemResource
+      responses:
+        200:
+          description: "Success, scorecard item update id"
+          schema:
+            success:
+              $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      description: "delete a scorecard item deleted"
+      operationId: deleteScorecardItem
+      parameters:
+        - name: scorecardItemId
+          type: integer
+          in: path
+          required: true
+      responses:
+        200:
+          description: "Sucess, Id of scorecard item"
+          schema:
+            success:
+              $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
         
 # Custom Responses
 definitions:
@@ -244,7 +483,128 @@ definitions:
         type: number
         format: double
         description: "cash payout"    
-
+  ResultsResponse:
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        type: array
+        items:
+          $ref: ResultResource
+          minItems: 0
+          uniqueItems: true
+  ScorecardResource:
+   required:
+    - reviewerId
+    - submitterId
+    - submissionId
+   properties:
+    id:
+      type: integer
+    reviewerId:
+      type: integer
+      description: "the user id of the reviewer"
+    reviewer:
+      type: string
+      description: "handle of the reviwer, TODO: should we only use handle, id or both"
+    submitterId:
+      type: integer
+      description: "the user id of the submitter"
+    submissionId:
+      type: integer
+      description: "id of the submission"
+    scoreSum:
+      type: integer
+      description: "This is a derived value and may only be a placeholder -TBD-. Sum of all the scorecard items scorecard"
+    scorePercent:
+      type: number
+      format: float
+      description: "This is a derived value and may only be a placeholder -TBD-. ScoreSum / ScoreMax from scorecard items"
+    scoreMax:
+      type: number
+      format: float
+      description: "This is a derived value and may only be a placeholder -TBD-. Sum of highest possible score from scorecard items"
+    status:
+      type: string
+      enum:
+        - VALID
+        - INVALID
+        - LATE
+      description: "show if this scorecard is valid ENUM:valid,invalid,late"
+    # TODO: should next three be here or should we do a result object
+    pay:
+      type: boolean
+      description: "determines if scorecard merits awarding place and cash prize"
+    place:
+      type: integer
+      description: "TODO: results instead? awarded place, 1 for 1st, 2 for second ..."
+    prize:
+      type: number
+      format: float
+      description: "cash payout"
+    createdAt:
+      type: string
+      format: date-time
+    updateAt:
+      type: string
+      format: date-time
+    createdBy:
+      type: string
+      description: The handle fo the user
+    updatedBy:
+      type: string
+      description: The handle fo the user
+  ScorecardItemResource:
+    required:
+     - requirementId
+     - scorecardId
+    properties:
+     id:
+      type: integer
+      description: postgres primary key
+     requirmentId:
+      type: integer
+     requirementText:
+      type: string
+     score:
+      type: number
+      format: float
+      description: "stores the reviewers assigned score for this req"
+     comment:
+      type: string
+      description: "text from reviewer to submitter"
+     createdAt:
+      type: string
+      format: date-time
+     updateAt:
+      type: string
+      format: date-time
+     createdBy:
+      type: string
+      description: The handle fo the user
+     updatedBy:
+      type: string
+      description: The handle fo the user
+  NewScorecard:
+    properties:
+      reviewerId:
+        description: id of the user running the opperation
+        type: integer
+        format: int64
+      submissionId:
+        description: id of submssion record
+        type: integer
+        format: int64
+    required:
+      - reviewId
+      - submissionId
       
 # Responses
   ChallengesResponse:
@@ -285,7 +645,11 @@ definitions:
         $ref: MetadataListResponse
       content:
         $ref: ChallengeResource
-  ResultsResponse:
+  ScoreCardsResponse:
+    required:
+      - success
+      - status
+      - content
     properties:
       success:
         type: boolean
@@ -299,9 +663,65 @@ definitions:
       content:
         type: array
         items:
-          $ref: ResultResource
+          $ref: ScorecardResource
           minItems: 0
           uniqueItems: true
+  ScorecardResponse:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        $ref: ScorecardResource
+  ScorecardItemsResponse:
+    properties:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        type: array
+        items:
+          $ref: ScorecardItemResource
+          minItems: 0
+          uniqueItems: true
+  ScorecardItemResponse:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        $ref: ScorecardItemResource
   ActionResponse:
     required:
       - id
