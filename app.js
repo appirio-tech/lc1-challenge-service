@@ -2,7 +2,6 @@
 
 var a127 = require('a127-magic');
 var express = require('express');
-var app = express();
 var config = require('config');
 var datasource = require('./datasource');
 var routeHelper = require('./lib/routeHelper');
@@ -31,4 +30,4 @@ app.use(routeHelper.renderJson);
 
 app.listen(port);
 
-console.log('app started at '+port);
+console.log('app started at ' + port);

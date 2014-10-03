@@ -11,9 +11,13 @@ module.exports = function(grunt) {
     require('time-grunt')(grunt);
   }
 
-  //var envConfig = require('config');
-  //databaseUrl = envConfig.pgURL ||
-//      'postgres://' + envConfig.pg.username + ':' + envConfig.pg.password + '@' + envConfig.pg.host + ':5432/' + envConfig.pg.database;
+  var envConfig = require('config');
+  databaseUrl = envConfig.get('app.pgURL') ||
+    'postgres://' + envConfig.get('app.pg.username') +
+    ':' + envConfig.get('app.pg.password') +
+    '@' + envConfig.get('app.pg.host') +
+    ':' + envConfig.get('app.pg.port') +
+    '/' + envConfig.get('app.pg.database');
 
 
   // Project Configuration
@@ -96,7 +100,10 @@ module.exports = function(grunt) {
   grunt.registerTask('heroku:production', ['jshint']);
 
   // db migrate
-  grunt.registerTask('dbmigrate', 'db up all the appliable scripts', function () {
+  grunt.registerTask('dbmigrate', 'db up all the applicable scripts', function () {
     grunt.task.run('migrate:up');
+  });
+  grunt.registerTask('dbdown', 'db down all the applicable scripts', function () {
+    grunt.task.run('migrate:down');
   });
 };
