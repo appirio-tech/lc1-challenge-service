@@ -68,3 +68,7 @@ Migration can be run via grunt ```grunt dbmigrate```
 ## Running the server
 
 You can run the server using ```grunt``` which will use the local config.
+
+## Tests
+
+Tests are built using mocha tests.   They can be run with ```grunt test```.  There is an example postman configuration file at test/postman.json.  This can be imported into Postman for testing.
