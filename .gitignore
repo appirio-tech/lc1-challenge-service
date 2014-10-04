@@ -58,3 +58,10 @@ modules/views/
 # Local Config
 # --------------------
 config/env/local.js
+.*~
+*~
+*.*~
+.logs
+clean.sh
+tarme.sh
+
