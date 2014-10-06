@@ -16,10 +16,10 @@
     "express": "4.x.x",
     "forever": "^0.11.1",
     "fs-extra": "^0.11.0",
-    "grunt-cli": "^0.1.13",
+    "grunt-cli": ">=0.1.13",
     "grunt-concurrent": "^0.5.0",
     "grunt-contrib-clean": "^0.5.0",
-    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-jshint": ">=0.10.0",
     "grunt-contrib-uglify": "^0.4.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-db-migrate": "0.2.0",
@@ -30,17 +30,20 @@
     "lodash": "^2.4.1",
     "pg": "^3.4.1",
     "sequelize": "^1.7.10",
-    "time-grunt": "^0.3.1"
+    "time-grunt": "^0.3.1",
+    "grunt-swagger-tools": ">=0.1.1",
+    "jshint": "^2.5.5"
   },
   "devDependencies": {
+    "grunt": ">=0.4.5",
     "should": "3.1.x",
     "mocha": "1.21.4",
-    "jshint": "2.5.5",
     "grunt-mocha-test": "^0.10.2"
   },
   "scripts": {
     "start": "grunt",
-    "test": "grunt test"
+    "test": "grunt test",
+    "yamlTest": "grunt yamlTest"
   },
   "api": {
     "name": "serenity-discussion-api",
