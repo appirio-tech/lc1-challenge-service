@@ -18,7 +18,7 @@ module.exports = function(grunt) {
   var envConfig = require('config');
 
   if (envConfig.has('app.pgURL')) {
-    databaseUrl = envConfig.get('app.pgURL')
+    databaseUrl = envConfig.get('app.pgURL');
   } else {
     databaseUrl =  'postgres://' + envConfig.get('app.pg.username') +
     ':' + envConfig.get('app.pg.password') +
@@ -68,7 +68,10 @@ module.exports = function(grunt) {
     mochaTest: {
       test: {
         options: {
-          reporter: 'spec'
+          reporter: 'spec',
+          require: [
+            'app.js'
+          ]
         },
         src: ['test/**/*.js']
       }
@@ -84,7 +87,8 @@ module.exports = function(grunt) {
     },
     env: {
       test: {
-        NODE_ENV: 'test'
+        NODE_ENV: 'test',
+        A127_APPROOT: __dirname
       },
       local: {
         NODE_ENV: 'local'

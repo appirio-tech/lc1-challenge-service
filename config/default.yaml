@@ -1,2 +1,3 @@
 app:
   port: 10010
+  loadDoc: true

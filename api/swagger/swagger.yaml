@@ -20,68 +20,10 @@ produces:
   - application/json
 x-volos-resources: {}
 paths:
-  /files/{fileId}:
-    get:
-      x-swagger-routers-controller: files
-      description: Get the metadata information for a file
-      operationId: get
-      parameters:
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-      responses:
-        "200":
-          description: Returns a file resource
-          schema:
-            $ref: FileResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    put:
-      x-swagger-routers-controller: files
-      description: Update a file
-      operationId: update
-      parameters:
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: FileResource
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: ActionResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    delete:
-      x-swagger-routers-controller: files
-      description: Delete a file
-      operationId: delete
-      parameters:
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: ActionResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
   /challenges:
     get:
+      tags:
+        - challenges
       x-swagger-router-controller: challenges
       description: get all the challenges
       # used as the method name of the controller
@@ -115,6 +57,8 @@ paths:
           schema:
             $ref: ErrorResponse
     post:
+      tags:
+        - challenges
       x-swagger-router-controller: challenges
       description: Create a new challenge
       operationId: create
@@ -135,6 +79,8 @@ paths:
             $ref: ErrorResponse
   /challenges/{challengeId}:
     get:
+      tags:
+        - challenges
       x-swagger-router-controller: challenges
       operationId: getByChallengeId
       description: Get a challenge
@@ -154,6 +100,8 @@ paths:
           schema:
             $ref: ErrorResponse
     put:
+      tags:
+        - challenges
       x-swagger-router-controller: challenges
       description: Update a challenge
       operationId: update
@@ -186,6 +134,8 @@ paths:
           schema:
             $ref: ErrorResponse
     delete:
+      tags:
+        - challenges
       x-swagger-router-controller: challenges
       description: Delete a challenge
       operationId: delete
@@ -206,6 +156,9 @@ paths:
             $ref: ErrorResponse
   /challenges/{challengeId}/files:
     post:
+      tags:
+        - challenges
+        - files
       description:  Add a new file to the challenge
       x-swagger-router-controller: challenges
       operationId: addfile
@@ -232,6 +185,9 @@ paths:
           schema:
             $ref: ErrorResponse
     get:
+      tags:
+        - challenges
+        - files
       description: Get files assoicated to a challenge
       x-swagger-router-controller: challenges
       operationId: getFiles
@@ -251,9 +207,98 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
-
+  /challenges/{challengeId}/files/{fileId}:
+    get:
+      tags:
+        - challenges
+        - files
+      x-swagger-routers-controller: challenges
+      description: Get the metadata information for a file
+      operationId: getFile
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+      responses:
+        "200":
+          description: Returns a file resource
+          schema:
+            $ref: FileResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      tags:
+        - challenges
+        - files
+      x-swagger-routers-controller: challenges
+      description: Update a file
+      operationId: updateFile
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: FileResource
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      tags:
+        - challenges
+        - files
+      x-swagger-routers-controller: challenges
+      description: Delete a file
+      operationId: deleteFile
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
   /challenges/{challengeId}/participants:
     post:
+      tags:
+        - challenges
+        - participants
       description: Add a new participant to a challenge
       x-swagger-router-controller: challenges
       operationId: addParticipant
@@ -280,6 +325,9 @@ paths:
           schema:
             $ref: ErrorResponse
     get:
+      tags:
+        - challenges
+        - participants
       description: Get all participants for a challenge
       x-swagger-router-controller: challenges
       operationId: getAllParticipants
@@ -305,6 +353,9 @@ paths:
             $ref: ErrorResponse
   /challenges/{challengeId}/participants/{participantId}:
     put:
+      tags:
+        - challenges
+        - participants
       description: Update the relationship from a user to a challenge
       x-swagger-router-controller: challenges
       operationId: updateParticipant
@@ -335,6 +386,9 @@ paths:
           schema:
             $ref: ErrorResponse
     delete:
+      tags:
+        - challenges
+        - participants
       description: Remove a participant from a challenge
       x-swagger-router-controller: challenges
       operationId: removeParticipant
@@ -361,6 +415,9 @@ paths:
             $ref: ErrorResponse
   /challenges/{challengeId}/submissions:
     post:
+      tags:
+        - challenges
+        - submissions
       description: Submit to a challenge
       x-swagger-router-controller: challenge
       operationId: submit
@@ -387,6 +444,9 @@ paths:
           schema:
             $ref: ErrorResponse
     get:
+      tags:
+        - challenges
+        - submissions
       description: Get the submissions for a challenge
       x-swagger-router-controller: challenge
       operationId: getSubmissions
@@ -408,6 +468,9 @@ paths:
             $ref: ErrorResponse
   /challenges/{challengeId}/submissions/{submissionId}:
     put:
+      tags:
+        - challenges
+        - submissions
       description: Update the submission
       x-swagger-router-controller: challenges
       operationId: updateSubmission
@@ -438,6 +501,9 @@ paths:
           schema:
             $ref: ErrorResponse
     delete:
+      tags:
+        - challenges
+        - submissions
       description: Remove a submission from a challenge
       x-swagger-router-controller: challenges
       operationId: removeSubmission
@@ -464,6 +530,10 @@ paths:
             $ref: ErrorResponse
   /challenges/{challengeId}/submissions/{submissionId}/files:
     post:
+      tags:
+        - challenges
+        - submissions
+        - files
       description:  Add a new file to the challenge
       x-swagger-router-controller: challenges
       operationId: addfile
@@ -496,6 +566,10 @@ paths:
           schema:
             $ref: ErrorResponse
     get:
+      tags:
+        - challenges
+        - submissions
+        - files
       description: Get files assoicated to a challenge
       x-swagger-router-controller: challenges
       operationId: getFiles
@@ -521,8 +595,119 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+  /challenges/{challengeId}/submissions/{submissionId}/files/{fileId}:
+    get:
+      tags:
+        - challenges
+        - files
+        - submissions
+      x-swagger-routers-controller: challenges
+      description: Get the metadata information for a file
+      operationId: getFile
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: submissionId
+          in: path
+          description: the id of the challenge
+          type: integer
+          format: int64
+          required: true
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+      responses:
+        "200":
+          description: Returns a file resource
+          schema:
+            $ref: FileResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      tags:
+        - challenges
+        - submissions
+        - files
+      x-swagger-routers-controller: files
+      description: Update a file
+      operationId: update
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: submissionId
+          in: path
+          description: the id of the challenge
+          type: integer
+          format: int64
+          required: true
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: FileResource
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      tags:
+        - challenges
+        - submissions
+        - files
+      x-swagger-routers-controller: files
+      description: Delete a file
+      operationId: delete
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: submissionId
+          in: path
+          description: the id of the challenge
+          type: integer
+          format: int64
+          required: true
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
   /challenges/{challengeId}/scorecards:
     post:
+      tags:
+        - challenges
+        - scorecards
       description: Creates a new scorecard
       x-swagger-router-controller: scorecards
       operationId: create
@@ -549,6 +734,9 @@ paths:
           schema:
             $ref: ErrorResponse
     get:
+      tags:
+        - challenges
+        - scorecards
       description: get all the scorecards for a particular challenge
       x-swagger-router-controller: scorecards
       operationId: getAllByChallengeId
@@ -570,6 +758,9 @@ paths:
 
   /challenges/{challengeId}/scorecards/{scorecardId}:
     get:
+      tags:
+        - challenges
+        - scorecards
       x-swagger-route-controller: scorecards
       description: Get a scorecard
       operationId: getbyId
@@ -594,6 +785,9 @@ paths:
           schema:
             $ref: ErrorResponse
     delete:
+      tags:
+        - challenges
+        - scorecards
       x-swagger-router-controller: scorecards
       description: delete a scorecard
       operationId: delete
@@ -619,6 +813,9 @@ paths:
           schema:
             $ref: ErrorResponse
     put:
+      tags:
+        - challenges
+        - scorecards
       description: update a scorecard
       operationId: update
       parameters:
@@ -650,6 +847,9 @@ paths:
 
   /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems:
     get:
+      tags:
+        - challenges
+        - scorecards
       x-swagger-router-controller: scorecardItems
       description: Retrieve all scorecard items for a scorecard
       operationId: getScoreCardItemsByScorecard
@@ -674,6 +874,9 @@ paths:
           schema:
             $ref: ErrorResponse
     post:
+      tags:
+        - challenges
+        - scorecards
       description: generates a scorecard item for each requirement of a challenge
       x-swagger-router-controller: scorecardItems
       operationId: create
@@ -700,6 +903,9 @@ paths:
 
   /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems/{scorecardItemId}:
     get:
+      tags:
+        - challenges
+        - scorecards
       description: "gets a scorecard item"
       x-swagger-router-controller: scorecardItems
       operationId: getScorecardItem
@@ -732,6 +938,9 @@ paths:
           schema:
             $ref: ErrorResponse
     put:
+      tags:
+        - challenges
+        - scorecards
       description: "update a scorecard item"
       operationId: updateScorecardItem
       parameters:
@@ -755,6 +964,9 @@ paths:
           schema:
             $ref: ErrorResponse
     delete:
+      tags:
+        - challenges
+        - scorecards
       description: "delete a scorecard item deleted"
       operationId: deleteScorecardItem
       parameters:
