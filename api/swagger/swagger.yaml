@@ -994,15 +994,15 @@ definitions:
       id:
         type: integer
         description: postgres primary key
-      regStartDate:
+      regStartAt:
         type: string
         format: date-time
         description: the start Date of the challenge
-      subEndDate:
+      subEndAt:
         type: string
         format: date-time
         description: last time a member can submit.
-      completeDate:
+      completedAt:
         type: string
         format: date-time
         description: The closing date of the challenge.
@@ -1065,6 +1065,18 @@ definitions:
         type: number
         format: double
         description: "cash payout"
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+        description: The handle of the user who created the row
+      updatedBy:
+        type: string
+        description: The handle of the user last updated the row
   ScorecardResource:
    required:
     - reviewerId
@@ -1169,7 +1181,7 @@ definitions:
       fileName:
         description: The name of the file
         type: string
-      storageType:
+      storageLocation:
         description: How the file is stored.  Currently allowed values are local or s3.
         type: string
         enum:
@@ -1191,7 +1203,7 @@ definitions:
       - fileName
       - filePath
       - size
-      - storageType
+      - storageLocation
   ParticipantResource:
     properties:
       challengeId:
@@ -1240,6 +1252,18 @@ definitions:
         type: integer
         format: int64
         description: File ID from the file Resource
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+        description: The handle of the user who created the row
+      updatedBy:
+        type: string
+        description: The handle of the user last updated the row
 
   ChallengesResponse:
     required:
