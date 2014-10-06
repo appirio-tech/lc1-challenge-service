@@ -344,12 +344,24 @@ paths:
           schema:
             $ref: ErrorResponse
 
-  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems/{scorecardItemsId}:
+  /challenges/{challengeId}/scorecards/{scorecardId}/scorecardItems/{scorecardItemId}:
     get:
       description: "gets a scorecard item"
       x-swagger-router-controller: scorecardItems
       operationId: getScorecardItem
       parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: scorecardId
+          type: integer
+          format: int64
+          description: "id of scorecard"
+          in: path
+          required: true
         - name: scorecardItemId
           type: integer
           format: int64
@@ -466,9 +478,12 @@ definitions:
         description: The handle of the user last updated the row
   ResultResource:
     required:
-      - ScorecardId
+      - scorecardId
     properties:
       id:
+        type: integer
+        format: int64
+      scorecardId:
         type: integer
         format: int64
       pay:
@@ -567,32 +582,36 @@ definitions:
      - requirementId
      - scorecardId
     properties:
-     id:
-      type: integer
-      description: postgres primary key
-     requirmentId:
-      type: integer
-     requirementText:
-      type: string
-     score:
-      type: number
-      format: float
-      description: "stores the reviewers assigned score for this req"
-     comment:
-      type: string
-      description: "text from reviewer to submitter"
-     createdAt:
-      type: string
-      format: date-time
-     updateAt:
-      type: string
-      format: date-time
-     createdBy:
-      type: string
-      description: The handle fo the user
-     updatedBy:
-      type: string
-      description: The handle fo the user
+      id:
+        type: integer
+        description: postgres primary key
+      scorecardId:
+        type: integer
+        format: int64
+      requirementId:
+        type: integer
+      requirementText:
+        type: string
+        format: int64
+      score:
+        type: number
+        format: float
+        description: "stores the reviewers assigned score for this req"
+      comment:
+        type: string
+        description: "text from reviewer to submitter"
+      createdAt:
+        type: string
+        format: date-time
+      updateAt:
+        type: string
+        format: date-time
+      createdBy:
+        type: string
+        description: The handle fo the user
+      updatedBy:
+        type: string
+        description: The handle fo the user
   NewScorecard:
     properties:
       reviewerId:
@@ -604,7 +623,7 @@ definitions:
         type: integer
         format: int64
     required:
-      - reviewId
+      - reviewerId
       - submissionId
       
 # Responses
@@ -740,19 +759,12 @@ definitions:
             type: integer
             format: int32
             description: The http status code
-  ChallengeBody:
-    properties:
-      id:
-        type: integer
   MetadataListResponse:
     properties:
       totalCount:
         type: integer
         format: int32
   ErrorResponse:
-    required:
-      - code
-      - message
     properties:
       result:
         properties:
