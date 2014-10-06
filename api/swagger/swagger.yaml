@@ -46,7 +46,7 @@ paths:
           type: string
           description: field name to sort {asc [nulls {first | last} ] | desc  [nulls {first | last} }
       responses:
-        ""200"":
+        "200":
           description: Returns a list of all challenge resources
           schema:
             $ref: ChallengesResponse
@@ -65,7 +65,7 @@ paths:
           schema: 
             $ref: ChallengeResource
       responses:
-        ""200"":
+        "200":
           description: Success
           schema:
             $ref: ActionResponse
@@ -88,7 +88,7 @@ paths:
             type: string
           description: an array of id's sperated by commas
       responses:
-        ""200"":
+        "200":
           description: Sucessfull response
           schema:
             $ref: ResultsResponse
@@ -108,7 +108,7 @@ paths:
           type: integer
           format: int64
       responses:
-        ""200"":
+        "200":
           description: A full challenge resource
           schema:
             $ref: ChallengeResource
@@ -132,7 +132,7 @@ paths:
           schema:
             $ref: ChallengeResource
       responses:
-        ""200"":
+        "200":
           description: Update successful
           schema:
             properties:
@@ -159,7 +159,7 @@ paths:
           type: integer
           format: int64
       responses:
-        ""200"":
+        "200":
           description: Challenge was deleted
           schema:
             $ref: ActionResponse
@@ -186,7 +186,7 @@ paths:
           schema:
             $ref: NewScorecard
       responses:
-        ""200"":
+        "200":
           description: Success
           schema:
             $ref: ActionResponse
@@ -205,7 +205,7 @@ paths:
           type: integer
           format: int64
       responses:
-        ""200"":
+        "200":
           description: Array of scorecard resources
           schema:
             $ref: ScoreCardsResponse
@@ -231,7 +231,7 @@ paths:
           in: path
           required: true
       responses:
-        ""200"":
+        "200":
           description: A scorecard
           schema:
             $ref: ScorecardResponse
@@ -255,7 +255,7 @@ paths:
           in: path
           required: true
       responses:
-        ""200"":
+        "200":
           description: Success, Id of scorecard delete
           schema:
             success:
@@ -284,7 +284,7 @@ paths:
           schema:
             $ref: ScorecardResource
       responses:
-       ""200"":
+       "200":
         description: "Success, Id of scorecard updated"
         schema:
          success:
