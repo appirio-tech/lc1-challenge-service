@@ -410,6 +410,8 @@ paths:
 # Custom Responses
 definitions:
   ChallengeResource:
+    required:
+      - title
     properties:
       id:
         type: integer
@@ -430,7 +432,6 @@ definitions:
         type: string
         description: Title of the challenge.
         default: Untitled Challenge
-        required: true
         minLength: 1
       overview:
         type: string
@@ -746,7 +747,7 @@ definitions:
   MetadataListResponse:
     properties:
       totalCount:
-        type: inteter
+        type: integer
         format: int32
   ErrorResponse:
     required:
