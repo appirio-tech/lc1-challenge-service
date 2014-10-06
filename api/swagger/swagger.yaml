@@ -1239,9 +1239,8 @@ definitions:
       fileId:
         type: integer
         format: int64
-        description: File ID from the file Resource.
-      
-# Responses
+        description: File ID from the file Resource
+
   ChallengesResponse:
     required:
       - success
