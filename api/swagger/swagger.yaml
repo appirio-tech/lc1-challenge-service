@@ -20,6 +20,66 @@ produces:
   - application/json
 x-volos-resources: {}
 paths:
+  /files/{fileId}:
+    get:
+      x-swagger-routers-controller: files
+      description: Get the metadata information for a file
+      operationId: get
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+      responses:
+        "200":
+          description: Returns a file resource
+          schema:
+            $ref: FileResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      x-swagger-routers-controller: files
+      description: Update a file
+      operationId: update
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: FileResource
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      x-swagger-routers-controller: files
+      description: Delete a file
+      operationId: delete
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          description: The Id of the file
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
   /challenges:
     get:
       x-swagger-router-controller: challenges
@@ -162,6 +222,15 @@ paths:
           required: true
           schema:
             $ref: FileResource
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
     get:
       description: Get files assoicated to a challenge
       x-swagger-router-controller: challenges
@@ -178,87 +247,6 @@ paths:
           description: Success
           schema:
             $ref: FilesResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-  /challenges/{challengeId}/files/{fileId}:
-    get:
-      x-swagger-routers-controller: files
-      description: Get the information for a file
-      operationId: get
-      parameters:
-        - name: challengeId
-          in: path
-          description: the id of the challenge
-          type: integer
-          format: int64
-          required: true
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-      responses:
-        "200":
-          description: Returns a file resource
-          schema:
-            $ref: FileResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    put:
-      x-swagger-routers-controller: files
-      description: Update a file
-      operationId: update
-      parameters:
-        - name: challengeId
-          in: path
-          description: the id of the challenge
-          type: integer
-          format: int64
-          required: true
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: FileResource
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: ActionResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    delete:
-      x-swagger-routers-controller: files
-      description: Delete a file
-      operationId: delete
-      parameters:
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: ActionResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: ActionResponse
         default:
           description: Error
           schema:
@@ -486,6 +474,12 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: submissionId
+          in: path
+          description: the id of the challenge
+          type: integer
+          format: int64
+          required: true
         - name: body
           in: body
           description:  body of post
@@ -512,83 +506,17 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: submissionId
+          in: path
+          description: the id of the challenge
+          type: integer
+          format: int64
+          required: true
       responses:
         "200":
           description: Success
           schema:
             $ref: FilesResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-  /challenges/{challengeId}/submissions/{submissionId}/files/{fileId}:
-    get:
-      x-swagger-routers-controller: files
-      description: Get the information for a file
-      operationId: get
-      parameters:
-        - name: challengeId
-          in: path
-          description: the id of the challenge
-          type: integer
-          format: int64
-          required: true
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-      responses:
-        "200":
-          description: Returns a file resource
-          schema:
-            $ref: FileResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    put:
-      x-swagger-routers-controller: files
-      description: Update a file
-      operationId: update
-      parameters:
-        - name: challengeId
-          in: path
-          description: the id of the challenge
-          type: integer
-          format: int64
-          required: true
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: FileResource
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: ActionResponse
-        default:
-          description: Error
-          schema:
-            $ref: ErrorResponse
-    delete:
-      x-swagger-routers-controller: files
-      description: Delete a file
-      operationId: delete
-      parameters:
-        - name: fileId
-          in: path
-          required: true
-          description: The Id of the file
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: ActionResponse
         default:
           description: Error
           schema:
