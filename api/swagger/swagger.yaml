@@ -23,7 +23,7 @@ paths:
   /files:
     post:
       x-swagger-routers-controller: files
-      description: Add file information.  The API is not responsible for the storage of the file.  Only the metadata
+      description: Add file information.  The API is not responsible for the storage of the file.  Only the metadata.
       operationId: create
       parameters:
         - name: body
@@ -43,7 +43,7 @@ paths:
   /files/{fileId}:
     get:
       x-swagger-routers-controller: files
-      description: Get the information for a file
+      description: Get the metadata information for a file
       operationId: get
       parameters:
         - name: fileId
@@ -111,7 +111,7 @@ paths:
         - name: filter
           in: query
           type: string
-          description: "{fieldName1}={fieldValue1}&...{fieldNameN}>{fieldValueN}. String value needs to be surrounded by single quotation(‘). filedValue can contain multiple values using in() format {fieldName}=in({fieldValue1},{fieldValue1}). Operations can be =, > or <.  < and > operations are only for number, inteters and dates"
+          description: "{fieldName1}={fieldValue1}&...{fieldNameN}>{fieldValueN}. String value needs to be surrounded by single quotation(‘). fieldValue can contain multiple values using in() format {fieldName}=in({fieldValue1},{fieldValue1}). Operations can be =, > or <.  < and > operations are only for number, integers and dates"
         - name: limit
           in: query
           type: integer
@@ -136,7 +136,7 @@ paths:
           schema:
             $ref: ErrorResponse
     post:
-      x-swagger-router-contorller: challenges
+      x-swagger-router-controller: challenges
       description: Create a new challenge
       operationId: create
       parameters:
@@ -167,10 +167,10 @@ paths:
           format: csv
           items:
             type: string
-          description: an array of id's sperated by commas
+          description: an array of id's separated by commas
       responses:
         "200":
-          description: Sucessfull response
+          description: Successful response
           schema:
             $ref: ResultsResponse
         default:
@@ -288,7 +288,7 @@ paths:
           required: true
         - name: role
           in: query
-          description: The role to filer the results by
+          description: The role to filter the results by
           type: string
       responses:
         "200":
@@ -383,7 +383,7 @@ paths:
           schema:
             $ref: ErrorResponse
     get:
-      description: Get the submissions for a challnge
+      description: Get the submissions for a challenge
       x-swagger-router-controller: challenge
       operationId: getSubmissions
       parameters:
@@ -487,7 +487,7 @@ paths:
           schema:
             $ref: ErrorResponse
     get:
-      description: get all the scorecards for a particualr challenge
+      description: get all the scorecards for a particular challenge
       x-swagger-router-controller: scorecards
       operationId: getAllByChallengeId
       parameters:
@@ -670,7 +670,7 @@ paths:
           schema:
             $ref: ErrorResponse
     put:
-      description: "update a scorecrd item"
+      description: "update a scorecard item"
       operationId: updateScorecardItem
       parameters:
         - name: scorecardItemId
@@ -702,7 +702,7 @@ paths:
           required: true
       responses:
         "200":
-          description: "Sucess, Id of scorecard item"
+          description: "Success, Id of scorecard item"
           schema:
             success:
               $ref: ActionResponse
@@ -785,7 +785,7 @@ definitions:
         type: integer
         format: int32
         minimum: 1
-        maxium: 6
+        maximum: 6
         description: "TODO: results instead? awarded place, 1 for 1st, 2 for second ..."
       prize: 
         type: number
@@ -836,15 +836,15 @@ definitions:
     createdAt:
       type: string
       format: date-time
-    updateAt:
+    updatedAt:
       type: string
       format: date-time
     createdBy:
       type: string
-      description: The handle fo the user
+      description: The handle of the user
     updatedBy:
       type: string
-      description: The handle fo the user
+      description: The handle of the user
   ScorecardItemResource:
     required:
      - requirementId
@@ -876,18 +876,18 @@ definitions:
         format: date-time
       createdBy:
         type: string
-        description: The handle fo the user
+        description: The handle of the user
       updatedBy:
         type: string
-        description: The handle fo the user
+        description: The handle of the user
   NewScorecard:
     properties:
       reviewerId:
-        description: id of the user running the opperation
+        description: id of the user running the operation
         type: integer
         format: int64
       submissionId:
-        description: id of submssion record
+        description: id of submission record
         type: integer
         format: int64
     required:
@@ -1179,7 +1179,7 @@ definitions:
       id:
         type: integer
         format: int64
-        description:  The ID that was created for a new object.  Otherwise the id of the effected object
+        description:  The ID that was created for a new object.  Otherwise the id of the affected object
       result:
         properties:
           success:
