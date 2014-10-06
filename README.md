@@ -10,7 +10,10 @@ Routing is done using [swagger tools](https://github.com/apigee-127/swagger-tool
 The documentaiton for the API and resources are in swagger.  You can view the swagger config using a127 tools.
 
 Edit swagger config: ```a127 project edit```
-View
+
+## Swagger validation
+
+You can test the validity of a swagger configuration file by running ```grunt yamlTest```.  **All challenges must have a valid yaml file.**
 
 
 ## Configuration
@@ -71,4 +74,5 @@ You can run the server using ```grunt``` which will use the local config.
 
 ## Tests
 
-Tests are built using mocha tests.   They can be run with ```grunt test```.  There is an example postman configuration file at test/postman.json.  This can be imported into Postman for testing.
+Tests are built using mocha tests.   They can be run with ```grunt test```.  
+There is an example postman configuration file at test/postman.json.  This can be imported into Postman for testing.
