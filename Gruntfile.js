@@ -16,12 +16,17 @@ module.exports = function(grunt) {
   }
 
   var envConfig = require('config');
-  databaseUrl = envConfig.get('app.pgURL') ||
-    'postgres://' + envConfig.get('app.pg.username') +
+
+  if (envConfig.has('app.pgURL')) {
+    databaseUrl = envConfig.get('app.pgURL')
+  } else {
+    databaseUrl =  'postgres://' + envConfig.get('app.pg.username') +
     ':' + envConfig.get('app.pg.password') +
     '@' + envConfig.get('app.pg.host') +
     ':' + envConfig.get('app.pg.port') +
     '/' + envConfig.get('app.pg.database');
+  }
+
 
 
   // Project Configuration

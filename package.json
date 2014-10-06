@@ -31,7 +31,7 @@
     "pg": "^3.4.1",
     "sequelize": "^1.7.10",
     "time-grunt": "^0.3.1",
-	"grunt-swagger-tools": ">=0.1.1",
+    "grunt-swagger-tools": ">=0.1.1",
     "jshint": "^2.5.5"
   },
   "devDependencies": {

@@ -57,7 +57,12 @@ modules/views/
 # --------------------
 # Local Config
 # --------------------
-config/env/local.js
+config/local.yaml
+config/local.*.yaml
+
+# --------------------
+# Other Files
+# --------------------
 .*~
 *~
 *.*~
