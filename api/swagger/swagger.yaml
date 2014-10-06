@@ -476,7 +476,7 @@ paths:
           description:  body of post
           required: true
           schema:
-            $ref: NewScorecard
+            $ref: ScorecardResource
       responses:
         "200":
           description: Success
@@ -880,19 +880,6 @@ definitions:
       updatedBy:
         type: string
         description: The handle fo the user
-  NewScorecard:
-    properties:
-      reviewerId:
-        description: id of the user running the opperation
-        type: integer
-        format: int64
-      submissionId:
-        description: id of submssion record
-        type: integer
-        format: int64
-    required:
-      - reviewerId
-      - submissionId
   FileResource:
     properties:
       title:
