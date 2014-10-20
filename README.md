@@ -1,6 +1,6 @@
-## serenity-discussion-api is a Challenge API Service
+## serenity-challenge-api is a Challenge API Service
 
-The topcoder Discussion API was initially built using the [Apigee a127 scaffolding](https://github.com/apigee-127/a127-documentation/wiki).
+The topcoder Challenge API was initially built using the [Apigee a127 scaffolding](https://github.com/apigee-127/a127-documentation/wiki).
 
 Routing is handled by using the swagger config file at api\swagger\swagger.yaml.
 Routing is done using [swagger tools](https://github.com/apigee-127/swagger-tools) and the [a127-magic](https://github.com/apigee-127/magic) modules.

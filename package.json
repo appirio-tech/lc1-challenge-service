@@ -1,8 +1,8 @@
 {
-  "name": "serenity-discussion-api",
+  "name": "lc1-challenge-service",
   "version": "0.0.1",
   "private": "false",
-  "description": "topcoder Discussion API",
+  "description": "topcoder Challenge service",
   "keywords": [],
   "author": "Appirio",
   "license": "",
@@ -28,20 +28,23 @@
     "grunt-db-migrate": "0.2.0",
     "grunt-env": "^0.4.1",
     "grunt-nodemon": "0.2.1",
+    "grunt-swagger-tools": ">=0.1.1",
     "js-yaml": "",
+    "jshint": "^2.5.5",
     "load-grunt-tasks": "^0.4.0",
     "lodash": "^2.4.1",
+    "multiparty": "^3.3.2",
     "pg": "^3.4.1",
     "sequelize": "^1.7.10",
-    "time-grunt": "^0.3.1",
-    "grunt-swagger-tools": ">=0.1.1",
-    "jshint": "^2.5.5"
+    "swagger-tools": "0.5.8",
+    "time-grunt": "^0.3.1"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",
-    "should": "3.1.x",
+    "should": "^4.0.4",
     "mocha": "1.21.4",
-    "grunt-mocha-test": "^0.10.2"
+    "supertest": "^0.13.0",
+    "grunt-mocha-test": "^0.12.0"
   },
   "scripts": {
     "start": "grunt",
@@ -49,7 +52,7 @@
     "yamlTest": "grunt yamlTest"
   },
   "api": {
-    "name": "serenity-discussion-api",
+    "name": "lc1-challenge-service",
     "basePath": "/",
     "docsPath": "/docs",
     "main": "app.js "

@@ -81,7 +81,7 @@ module.exports = function(grunt) {
         env: {
           DATABASE_URL: databaseUrl   // the databaseUrl is resolved at the beginning based on the NODE_ENV, this value injects the config in the database.json
         },
-        'dir': 'config/schema-migrations', // defines the dir for the migration scripts
+        'migrations-dir': 'config/schema-migrations', // defines the dir for the migration scripts
         verbose: true   // tell me more stuff
       }
     },

@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2014 TopCoder, Inc. All rights reserved.
+ */
 'use strict';
 
 module.exports = function(config) {
@@ -15,7 +18,7 @@ module.exports = function(config) {
     config.get('app.pg.port') + '/' +
     config.get('app.pg.database'));
 
-  var sequelize = new Sequelize(postgresurl, config.pg);
+  var sequelize = new Sequelize(postgresurl, config.get('app.pg'));
   var db = {};
 
   // Add JSON and JSONB data type to Sequelize

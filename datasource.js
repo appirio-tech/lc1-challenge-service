@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2014 TopCoder, Inc. All rights reserved.
+ */
 'use strict';
 var datasource = {};
 
@@ -7,7 +10,9 @@ var datasource = {};
  * @param {Function} callback Callback function
  */
 datasource.init = function(config) {
-  this.db = require('./api/models')(config);
+  if (!this.db) {
+    this.db = require('./api/models')(config);
+  }
 };
 
 /**

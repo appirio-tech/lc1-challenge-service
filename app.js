@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2014 TopCoder, Inc. All rights reserved.
+ */
 'use strict';
 
 var a127 = require('a127-magic');
