@@ -1,3 +1,4 @@
 app:
   pgURL: DATABASE_URL
+  pgURLWercker: WERCKER_POSTGRESQL_URL
   port: PORT
