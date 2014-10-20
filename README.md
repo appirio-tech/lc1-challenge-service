@@ -5,6 +5,16 @@ The topcoder Challenge API was initially built using the [Apigee a127 scaffoldin
 Routing is handled by using the swagger config file at api\swagger\swagger.yaml.
 Routing is done using [swagger tools](https://github.com/apigee-127/swagger-tools) and the [a127-magic](https://github.com/apigee-127/magic) modules.
 
+## Build Status
+
+Travis CI
+
+[![Build Status](https://travis-ci.org/appirio-tech/lc1-challenge-service.svg?branch=master)](https://travis-ci.org/appirio-tech/lc1-challenge-service)
+
+Werker
+
+[![wercker status](https://app.wercker.com/status/e9f58b8a92af1c7811dfa7abe2dece27/m "wercker status")](https://app.wercker.com/project/bykey/e9f58b8a92af1c7811dfa7abe2dece27)
+
 ## Swagger
 
 The documentaiton for the API and resources are in swagger.  You can view the swagger config using a127 tools or the built in Swagger UI.
