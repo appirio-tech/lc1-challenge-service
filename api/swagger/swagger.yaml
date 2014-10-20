@@ -4,7 +4,7 @@ info:
   title: Serenity Challenge API
   description: "API to host challenge, requirements, scorecard and results"
 # during dev, should point to your local machine
-host: localhost:10010
+host: lc1-challenge-service.herokuapp.com
 # basePath prefixes all resource paths
 # basePath: /
 #
@@ -68,7 +68,7 @@ paths:
         - name: body
           in: body
           required: true
-          schema: 
+          schema:
             $ref: ChallengeResource
       responses:
         "200":
@@ -1182,7 +1182,7 @@ definitions:
         minimum: 1
         maximum: 6
         description: "TODO: results instead? awarded place, 1 for 1st, 2 for second ..."
-      prize: 
+      prize:
         type: number
         format: double
         description: "cash payout"
