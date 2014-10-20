@@ -3,6 +3,8 @@
  */
 'use strict';
 
+require('newrelic');
+
 var a127 = require('a127-magic');
 var express = require('express');
 var config = require('config');

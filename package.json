@@ -34,6 +34,7 @@
     "load-grunt-tasks": "^0.4.0",
     "lodash": "^2.4.1",
     "multiparty": "^3.3.2",
+    "newrelic": "^1.12.1",
     "pg": "^3.4.1",
     "sequelize": "^1.7.10",
     "swagger-tools": "0.5.8",
