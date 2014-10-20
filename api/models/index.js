@@ -10,15 +10,22 @@ module.exports = function(config) {
   var _ = require('lodash');
 
   // reading config.
-  var postgresurl = config.get('app.pgURL') ||
-    (config.get('app.pg.dialect') +'://' +
-    config.get('app.pg.username') + ':' +
-    config.get('app.pg.password') + '@' +
-    config.get('app.pg.host') + ':' +
-    config.get('app.pg.port') + '/' +
-    config.get('app.pg.database'));
+  var postgresurl;
 
-  var sequelize = new Sequelize(postgresurl, config.get('app.pg'));
+  // @TODO setup test heroku so we don't need this
+  if (config.has('app.pgURLWercker')) {
+    postgresurl = config.get('app.pgURLWercker');
+  } else if (config.has('app.pgURL')) {
+    postgresurl = config.get('app.pgURL');
+  } else {
+    postgresurl =  'postgres://' + config.get('app.pg.username') +
+    ':' + config.get('app.pg.password') +
+    '@' + config.get('app.pg.host') +
+    ':' + config.get('app.pg.port') +
+    '/' + config.get('app.pg.database');
+  }
+
+  var sequelize = new Sequelize(postgresurl);
   var db = {};
 
   // Add JSON and JSONB data type to Sequelize

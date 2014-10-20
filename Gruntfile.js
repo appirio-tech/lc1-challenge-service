@@ -17,7 +17,10 @@ module.exports = function(grunt) {
 
   var envConfig = require('config');
 
-  if (envConfig.has('app.pgURL')) {
+  // @TODO setup test heroku so we don't need this
+  if (envConfig.has('app.pgURLWercker')) {
+    databaseUrl = envConfig.get('app.pgURLWercker');
+  } else if (envConfig.has('app.pgURL')) {
     databaseUrl = envConfig.get('app.pgURL');
   } else {
     databaseUrl =  'postgres://' + envConfig.get('app.pg.username') +
@@ -26,8 +29,6 @@ module.exports = function(grunt) {
     ':' + envConfig.get('app.pg.port') +
     '/' + envConfig.get('app.pg.database');
   }
-
-
 
   // Project Configuration
   grunt.initConfig({
@@ -110,7 +111,7 @@ module.exports = function(grunt) {
   grunt.registerTask('validate', ['env:test', 'mochaTest', 'jshint']);
 
   //Test task.
-  grunt.registerTask('test', ['env:test', 'dbmigrate', 'mochaTest', 'yamlTest', 'jshint']);;
+  grunt.registerTask('test', ['env:test', 'dbmigrate', 'mochaTest', 'yamlTest', 'jshint']);
 
   // For Heroku users only.
   grunt.registerTask('heroku:production', ['jshint']);

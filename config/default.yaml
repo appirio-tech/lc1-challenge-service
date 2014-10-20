@@ -1,6 +1,5 @@
 app:
   port: 10010
   loadDoc: true
-  pg:
   query:
     pageSize: 20
