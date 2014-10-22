@@ -8,7 +8,7 @@ module.exports = function(grunt) {
   var swagger_file = __dirname + '/api/swagger/swagger.yaml';
 
   var paths = {
-    js: ['*.js', 'api/**/*.js', '!test/coverage/**', '!bower_components/**']
+    js: ['*.js', 'api/**/*.js', 'lib/*.js', '!test/coverage/**', '!bower_components/**']
   };
 
   if (process.env.NODE_ENV !== 'production') {
