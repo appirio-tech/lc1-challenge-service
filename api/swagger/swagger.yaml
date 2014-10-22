@@ -4,6 +4,7 @@ info:
   title: Serenity Challenge API
   description: "API to host challenge, requirements, scorecard and results"
 # during dev, should point to your local machine
+# This will update based upon env variable SWAGGER_HOST
 host: lc1-challenge-service.herokuapp.com
 # basePath prefixes all resource paths
 # basePath: /
@@ -786,6 +787,156 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+  /challenges/{challengeId}/requirements:
+    post:
+      tags:
+        - challenges
+        - requirements
+      description: Create a new requirement on a challenge
+      summary: Create a new requirement
+      x-swagger-router-controller: requirements
+      operationId: createRequirement
+      parameters:
+        - name: challengeId
+          in: path
+          description: the id for the challenge to create a scorecard for
+          type: integer
+          format: int64
+          required: true
+        - name: body
+          in: body
+          description:  body of post
+          required: true
+          schema:
+            $ref: RequirementResource
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    get:
+      tags:
+        - challenges
+        - requirements
+      description: Get all the requirements for a particular challenge
+      summary: Get all the requirements for a particular challenge
+      x-swagger-router-controller: requirements
+      operationId: getAllRequirementsByChallengeId
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Array of requirement resources
+          schema:
+            $ref: RequirementsResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}/requirements/{requirementId}
+    get:
+      tags:
+        - challenges
+        - requirements
+      x-swagger-router-controller: requirements
+      description: Get the requirements details
+      summary: Get the requirements details
+      operationId: getRequirements
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: requirementId
+          in: path
+          type: integer
+          format: int64
+          required: true
+          description: The Id of the requirement
+      responses:
+        "200":
+          description: Returns a requirements resource
+          schema:
+            $ref: RequirementResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    put:
+      tags:
+        - challenges
+        - requirements
+      x-swagger-router-controller: requirements
+      description: Update a requirement
+      summary: Update a requirement
+      operationId: updateRequirement
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: requirementId
+          in: path
+          type: integer
+          format: int64
+          required: true
+          description: The Id of the requirement
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: RequirementResource
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    delete:
+      tags:
+        - challenges
+        - requirements
+      x-swagger-router-controller: requirements
+      description: Delete a requirement
+      summary: Delete a requirement
+      operationId: deleteRequirements
+      parameters:
+        - name: challengeId
+          in: path
+          description: The Challenge Id
+          type: integer
+          format: int64
+          required: true
+        - name: requirementId
+          in: path
+          type: integer
+          format: int64
+          required: true
+          description: The Id of the requirement
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
   /challenges/{challengeId}/scorecards:
     post:
       tags:
@@ -1148,9 +1299,20 @@ definitions:
         description: The current status of the challenge
         enum:
           - DRAFT
-          - ACTIVE
+          - SUBMISSION
           - REVIEW
           - COMPLETE
+      prizes:
+        description: The prizes to be awarded for this challenge.
+        type: array
+        items:
+          type: number
+      account:
+        type: string
+        description: The Account to bill the challenge against
+      accountId:
+        type: string
+        description: The account id from salesforce
       createdAt:
         type: string
         format: date-time
@@ -1258,6 +1420,7 @@ definitions:
   ScorecardItemResource:
     required:
       - requirementId
+      - scorecardId
     properties:
       id:
         type: integer
@@ -1268,8 +1431,8 @@ definitions:
         format: int64
       requirementId:
         type: integer
-      requirementText:
-        type: string
+        format: int64
+        description: The requirement id
       score:
         type: number
         format: float
@@ -1396,6 +1559,19 @@ definitions:
       updatedBy:
         type: string
         description: The handle of the user last updated the row
+  RequirementResource:
+    properties:
+      Id:
+        type: integer
+        format: int64
+        description: postgres primary key
+      requirementText:
+        type: string
+        description: The requirement
+      challengeId:
+        type: integer
+        format: int64
+        description: The id of the challenge
   ChallengesResponse:
     required:
       - success
@@ -1642,6 +1818,45 @@ definitions:
           $ref: ResultResource
           minItems: 0
           uniqueItems: true
+  RequirementResponse:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        $ref: RequirementResource
+  RequirementsResponse:
+    properties:
+      required:
+        - success
+        - status
+        - content
+      properties:
+        success:
+          type: boolean
+          description: Was the request a success
+        status:
+          type: integer
+          format: int32
+          description: The http status code
+        metadata:
+          $ref: MetadataListResponse
+        content:
+          type: array
+          items:
+            $ref: RequirementResource
+            minItems: 0
+            uniqueItems: true
   ActionResponse:
     required:
       - id

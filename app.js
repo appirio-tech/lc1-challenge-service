@@ -3,7 +3,9 @@
  */
 'use strict';
 
-require('newrelic');
+if (process.env.NODE_ENV == 'production') {
+  require('newrelic');
+}
 
 var a127 = require('a127-magic');
 var express = require('express');
