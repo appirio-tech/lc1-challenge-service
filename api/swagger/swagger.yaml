@@ -1843,27 +1843,26 @@ definitions:
       content:
         $ref: RequirementResource
   RequirementsResponse:
+    required:
+      - success
+      - status
+      - content
     properties:
-      required:
-        - success
-        - status
-        - content
-      properties:
-        success:
-          type: boolean
-          description: Was the request a success
-        status:
-          type: integer
-          format: int32
-          description: The http status code
-        metadata:
-          $ref: MetadataListResponse
-        content:
-          type: array
-          items:
-            $ref: RequirementResource
-            minItems: 0
-            uniqueItems: true
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        type: array
+        items:
+          $ref: RequirementResource
+          minItems: 0
+          uniqueItems: true
   ActionResponse:
     required:
       - id
