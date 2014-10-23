@@ -11,7 +11,7 @@ exports.up = function(db, callback) {
         db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD COLUMN "source" text'),
         db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD COLUMN "sourceId" text'),
         // scorecard item table edit
-        db.runSql.bind(db, 'ALTER TABLE ONLY scorecard_items DROP COLUMN "requirementText"'),
+        db.runSql.bind(db, 'ALTER TABLE ONLY scorecard_items DROP COLUMN "requirementText"')
     ], callback);
 };
 
@@ -21,6 +21,6 @@ exports.down = function(db, callback) {
         db.runSql.bind(db, 'ALTER TABLE ONLY challenges drop COLUMN account'),
         db.runSql.bind(db, 'ALTER TABLE ONLY challenges drop COLUMN "accountId"'),
         db.runSql.bind(db, 'ALTER TABLE ONLY challenges drop COLUMN "source"'),
-        db.runSql.bind(db, 'ALTER TABLE ONLY challenges drop COLUMN "sourceId"'),
+        db.runSql.bind(db, 'ALTER TABLE ONLY challenges drop COLUMN "sourceId"')
     ], callback);
 };
