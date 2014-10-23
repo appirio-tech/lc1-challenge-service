@@ -1313,6 +1313,12 @@ definitions:
       accountId:
         type: string
         description: The account id from salesforce
+      source:
+        type: string
+        description: Used for integraiton with remote system
+      sourceId:
+        type: string
+        description: Used for integratino with remote systems
       createdAt:
         type: string
         format: date-time
@@ -1574,12 +1580,6 @@ definitions:
         type: integer
         format: int64
         description: The id of the challenge
-      source:
-        type: string
-        description: Used for integraiton with remote system
-      sourceId:
-        type: string
-        description: Used for integratino with remote systems
   ChallengesResponse:
     required:
       - success
