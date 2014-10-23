@@ -39,7 +39,7 @@ describe('Files Controller', function() {
     // create a challenge
     var challengeData = {
       title: 'Serenity Challenge',
-      status: 'ACTIVE',
+      status: 'SUBMISSION',
       regStartAt: '2014-10-09'
     };
 

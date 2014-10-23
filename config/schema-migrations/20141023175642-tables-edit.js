@@ -9,9 +9,7 @@ exports.up = function(db, callback) {
         db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD COLUMN account character varying(255)'),
         db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD COLUMN "accountId" character varying(255)'),
         db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD COLUMN "source" text'),
-        db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD COLUMN "sourceId" text'),
-        // scorecard item table edit
-        db.runSql.bind(db, 'ALTER TABLE ONLY scorecard_items DROP COLUMN "requirementText"')
+        db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD COLUMN "sourceId" text')
     ], callback);
 };
 
