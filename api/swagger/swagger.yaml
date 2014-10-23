@@ -841,7 +841,7 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
-  /challenges/{challengeId}/requirements/{requirementId}
+  /challenges/{challengeId}/requirements/{requirementId}:
     get:
       tags:
         - challenges
