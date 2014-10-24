@@ -15,6 +15,11 @@ exports.up = function (db, callback) {
         'overview character varying(140), ' +
         'description text, ' +
         'tags text[], ' +
+        'prizes NUMERIC(11,2)[], ' +
+        'account character varying(255), ' +
+        '"accountId" character varying(255), ' +
+        '"source" text, ' +
+        '"sourceId" text, ' +
         'status enum_challenges_status NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
@@ -94,7 +99,6 @@ exports.up = function (db, callback) {
       'CREATE TABLE scorecard_items ( ' +
         'id bigserial NOT NULL, ' +
         '"requirementId" integer, ' +
-        '"requirementText" text, ' +
         'score double precision, ' +
         'comment text, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
@@ -104,6 +108,16 @@ exports.up = function (db, callback) {
         '"scorecardId" bigint NOT NULL ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY scorecard_items ADD CONSTRAINT scorecard_items_pkey PRIMARY KEY (id);'),
+
+    // requirements table
+    db.runSql.bind(db,
+      'CREATE TABLE requirements ( ' +
+      'id bigserial NOT NULL, ' +
+      '"requirementText" text, ' +
+      '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL, ' +
+      '"createdAt" timestamp with time zone NOT NULL, ' +
+      '"updatedAt" timestamp with time zone NOT NULL ' +
+      ');'),
 
     // users table
     db.runSql.bind(db,
@@ -124,6 +138,7 @@ exports.up = function (db, callback) {
 exports.down = function (db, callback) {
   async.series([
     db.dropTable.bind(db, 'users'),
+    db.dropTable.bind(db, 'requirements'),
     db.dropTable.bind(db, 'scorecard_items'),
     db.dropTable.bind(db, 'scorecards'),
     db.dropTable.bind(db, 'submissions'),
