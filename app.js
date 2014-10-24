@@ -3,6 +3,7 @@
  */
 'use strict';
 
+// New relic
 if (process.env.NODE_ENV === 'production') {
   require('newrelic');
 }
