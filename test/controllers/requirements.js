@@ -2,16 +2,16 @@
  * Copyright (c) 2014 TopCoder, Inc. All rights reserved.
  */
 /**
- * This module contains codes for testing scorecard controller.
+ * This module contains codes for testing requirements controller.
  *
  * @version 1.0
- * @author peakpado
+ * @author spanhawk
  */
 'use strict';
 
 
 /**
- * Test Scorecards controller APIs.
+ * Test RequiremeNt controller APIs.
  */
 var should = require('should'); 
 var assert = require('assert');
@@ -24,11 +24,11 @@ datasource.init(config);
 var db = datasource.getDataSource();
 var sequelize = db.sequelize;
 sequelize.options.logging = false;    // turn of sequelize logging.
+var Requirement = db.Requirement;
 var Challenge = db.Challenge;
-var Scorecard = db.Scorecard;
 
 
-describe('Scorecards Controller', function() {
+describe('Requirements Controller', function() {
   var url = 'http://localhost:'+config.app.port;
   var reqData;
   var challenge;
@@ -47,28 +47,20 @@ describe('Scorecards Controller', function() {
     });
   });
 
-  describe('Scorecards API', function() {
-    var scorecardId;
+  describe('Requirements API', function() {
+    var requirementId;
     beforeEach(function(done) {
       reqData = {
-        scoreSum: 97,
-        scorePercent: 96.5,
-        scoreMax: 99.9,
-        status: 'VALID',
-        pay: false,
-        place: 1,
-        prize: 1500,
-        challengeId: 111,
-        reviewerId: 222,
-        submissionId: 333
+        requirementText: 'Need deployment guide',
+        challengeId: challenge.id,
       };
       done();
     });
 
-    it('should able to create a scorecard with valid data', function(done) {
+    it('should able to create a requirement item with valid data', function(done) {
       // send request
       request(url)
-      .post('/challenges/'+challenge.id+'/scorecards/')
+      .post('/challenges/'+challenge.id+'/requirements')
       .send(reqData)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
@@ -78,31 +70,30 @@ describe('Scorecards Controller', function() {
         res.body.id.should.be.a.Number;
         res.body.result.success.should.be.true;
         res.body.result.status.should.equal(200);
-        scorecardId = res.body.id;
+        requirementId = res.body.id;
         done();
       });
     });
 
-    it('should fail to create a scorecard without reviewerId', function(done) {
-      delete reqData.reviewerId;
+    it('should fail to create a requirement with invalid challenge id', function(done) {
       // send request
       request(url)
-      .post('/challenges/'+challenge.id+'/scorecards/')
+      .post('/challenges/'+9999+'/requirements')
       .send(reqData)
       .end(function(err, res) {
         // verify response
-        res.status.should.equal(400);
+        res.status.should.equal(404);
         res.body.result.success.should.be.false;
-        res.body.result.status.should.equal(400);
+        res.body.result.status.should.equal(404);
         res.body.should.have.property('content');
         done();
       });
     });
 
-    it('should able to get the all scorecards', function(done) {
+    it('should able to get the all requirements', function(done) {
       // send request
       request(url)
-      .get('/challenges/'+challenge.id+'/scorecards/')
+      .get('/challenges/'+challenge.id+'/requirements')
       .end(function(err, res) {
         // verify response
         should.not.exist(err);
@@ -117,44 +108,42 @@ describe('Scorecards Controller', function() {
       });
     });
 
-    it('should able to get the existing scorecard', function(done) {
+    it('should able to get the existing requirement', function(done) {
       // send request
       request(url)
-      .get('/challenges/'+challenge.id+'/scorecards/'+scorecardId)
+      .get('/challenges/'+challenge.id+'/requirements/'+requirementId)
       .end(function(err, res) {
         // verify response
         res.status.should.equal(200);
         res.body.success.should.be.true;
         res.body.status.should.equal(200);
-        res.body.content.id.should.equal(scorecardId);
-        res.body.content.challengeId.should.equal(challenge.id);
-        res.body.content.scoreSum.should.equal(reqData.scoreSum);
-        res.body.content.status.should.equal(reqData.status);
+        res.body.content.id.should.equal(requirementId);
+        res.body.content.requirementText.should.equal(reqData.requirementText);
         done();
       });
     });
 
-    it('should able to update the existing scorecard', function(done) {
+    it('should able to update the existing requirement', function(done) {
       // send request
-      reqData.status = 'LATE';
+      reqData.requirementText = 'Mocha tests along with deployment guide';
       request(url)
-      .put('/challenges/'+challenge.id+'/scorecards/'+scorecardId)
+      .put('/challenges/'+challenge.id+'/requirements/'+requirementId)
       .send(reqData)
       .end(function(err, res) {
         // verify response
         res.status.should.equal(200);
         res.body.id.should.be.a.Number;
-        res.body.id.should.equal(scorecardId);
+        res.body.id.should.equal(requirementId);
         res.body.result.success.should.equal(true);
         res.body.result.status.should.equal(200);
         done();
       });
     });
 
-    it('should able to delete the existing scorecard', function(done) {
+    it('should able to delete the existing requirement', function(done) {
       // send request
       request(url)
-      .delete('/challenges/'+challenge.id+'/scorecards/'+scorecardId)
+      .delete('/challenges/'+challenge.id+'/requirements/'+requirementId)
       .end(function(err, res) {
         // verify response
         res.status.should.equal(200);
@@ -169,7 +158,7 @@ describe('Scorecards Controller', function() {
 
   after(function(done) {
     // delete data created during test.
-    async.eachSeries([Scorecard, Challenge], function(model, callback) {
+    async.eachSeries([Challenge], function(model, callback) {
       model.findAll().success(function(entities) {
         async.each(entities, function(entity, cb) {
           entity.destroy().success(function() {

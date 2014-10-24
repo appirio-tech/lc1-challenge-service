@@ -41,7 +41,10 @@ describe('Challenges Controller', function() {
     beforeEach(function(done) {
       reqData = {
         title: 'Serenity Challenge',
-        status: 'ACTIVE',
+        status: 'SUBMISSION',
+        account: 'account',
+        accountId: '12ASD',
+        prizes: [500.00, 250.00],
         regStartAt: '2014-10-09'
       };
       done();
@@ -152,7 +155,7 @@ describe('Challenges Controller', function() {
   describe('Paging, orderBy and filtering in get all challenges API', function() {
     var challenges = [];
     before(function(done) {
-      var statuses = ['ACTIVE', 'REVIEW', 'COMPLETE'];
+      var statuses = ['SUBMISSION', 'REVIEW', 'COMPLETE'];
       // create 10 challenges
       async.timesSeries(10, function(index, callback) {
         var createdBy = '_indy-'+index;
@@ -328,14 +331,14 @@ describe('Challenges Controller', function() {
     });
 
     it('should able to filter the challenges by field value', function(done) {
-      var params = "filter=status='ACTIVE'";
+      var params = "filter=status='SUBMISSION'";
       // send request
       sendGetAllChallengesRequest(params, function(err, res) {
         should.not.exist(err);
         res.status.should.equal(200);
         res.body.success.should.be.true;
         async.eachSeries(res.body.content, function(challenge, innerNext) {
-          challenge.status.should.equal('ACTIVE');
+          challenge.status.should.equal('SUBMISSION');
           innerNext();
         }, function(err) {
           done();
@@ -344,7 +347,7 @@ describe('Challenges Controller', function() {
     });
 
     it('should able to filter the challenges by in operator', function(done) {
-      var params = "filter=status=in('ACTIVE','REVIEW')";
+      var params = "filter=status=in('SUBMISSION','REVIEW')";
       // send request
       sendGetAllChallengesRequest(params, function(err, res) {
         should.not.exist(err);
@@ -402,7 +405,7 @@ describe('Challenges Controller', function() {
       // create a challenge
       var challengeData = {
         title: 'Serenity Challenge',
-        status: 'ACTIVE',
+        status: 'SUBMISSION',
         regStartAt: '2014-10-09'
       };
       Challenge.create(challengeData).success(function(savedEntity) {
