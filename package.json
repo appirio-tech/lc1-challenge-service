@@ -37,7 +37,7 @@
     "newrelic": "^1.12.1",
     "pg": "^3.4.1",
     "sequelize": "^1.7.10",
-    "swagger-tools": "0.5.8",
+    "swagger-tools": "^0.5.8",
     "time-grunt": "^0.3.1"
   },
   "devDependencies": {
