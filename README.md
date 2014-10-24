@@ -7,9 +7,7 @@ Routing is done using [swagger tools](https://github.com/apigee-127/swagger-tool
 
 ## Build Status
 
-Travis CI
-
-[![Build Status](https://travis-ci.org/appirio-tech/lc1-challenge-service.svg?branch=master)](https://travis-ci.org/appirio-tech/lc1-challenge-service)
+[![Build Status](https://travis-ci.org/appirio-tech/lc1-challenge-service.svg?branch=master)](https://travis-ci.org/appirio-tech/lc1-challenge-service) [![Dependency Status](https://gemnasium.com/appirio-tech/lc1-challenge-service.svg)](https://gemnasium.com/appirio-tech/lc1-challenge-service) [![Code Climate](https://codeclimate.com/github/appirio-tech/lc1-challenge-service/badges/gpa.svg)](https://codeclimate.com/github/appirio-tech/lc1-challenge-service)
 
 Werker
 
