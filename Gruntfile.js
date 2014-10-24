@@ -5,10 +5,10 @@ module.exports = function(grunt) {
 
   var re;
   var swagger;
-  var swagger_file = __dirname + '/api/swagger/swagger.yaml';
+  var swaggerFile = __dirname + '/api/swagger/swagger.yaml';
 
   var paths = {
-    js: ['*.js', 'api/**/*.js', 'lib/*.js', '!test/coverage/**', '!bower_components/**']
+    js: ['*.js', 'api/**/*.js', 'lib/*.js', '!test/coverage/**', '!bower_components/**', '!newrelic.js']
   };
 
   if (process.env.NODE_ENV !== 'production') {
@@ -138,14 +138,25 @@ module.exports = function(grunt) {
     // No logging of loaded YAML data
     swagger.validator.set('log', 'true');
 
-    // Run the validator on file at swagger_file
-    console.log('YAML Test for file: ' + swagger_file + '\n');
-    re = swagger.validator.Validate(swagger_file, undefined, {version: '2.0'});
+    // Run the validator on file at swaggerFile
+    console.log('YAML Test for file: ' + swaggerFile + '\n');
+    re = swagger.validator.Validate(swaggerFile, undefined, {version: '2.0'});
 
   } catch (e) { re = e.message; }
 
     // If has error, result in console
     console.log('YAML 2.0 RESULT: ' + re + '\n');
+  });
+
+  grunt.registerTask('cleandb', 'Clean db and re-apply all migrations', function () {
+    var fs = require('fs');
+    var files = fs.readdirSync('./config/schema-migrations');
+    if (files) {
+      files.forEach(function() {
+        grunt.task.run('migrate:down');
+      });
+      grunt.task.run('migrate:up');
+    }
   });
 
 };
