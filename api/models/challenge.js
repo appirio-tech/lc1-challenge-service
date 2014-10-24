@@ -38,12 +38,17 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     overview: DataTypes.STRING(140),
+    account: DataTypes.STRING(255),
+    accountId: DataTypes.STRING(255),
     description: DataTypes.TEXT,
+    source: DataTypes.TEXT,
+    sourceId: DataTypes.TEXT,
     tags: DataTypes.ARRAY(DataTypes.TEXT),
+    prizes: DataTypes.ARRAY(DataTypes.DOUBLE),
     // the phase status of challenge
     status : {
       type: DataTypes.ENUM,
-      values: ['DRAFT', 'ACTIVE', 'REVIEW', 'COMPLETE']
+      values: ['DRAFT', 'SUBMISSION', 'REVIEW', 'COMPLETE']
     },
     createdBy: DataTypes.STRING(128),
     updatedBy: DataTypes.STRING(128)

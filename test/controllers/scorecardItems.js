@@ -39,7 +39,7 @@ describe('ScorecardItems Controller', function() {
     // create a challenge
     var challengeData = {
       title: 'Serenity Challenge',
-      status: 'ACTIVE',
+      status: 'SUBMISSION',
       regStartAt: '2014-10-09'
     };
 
@@ -68,7 +68,6 @@ describe('ScorecardItems Controller', function() {
         score: 98,
         scorecardId: 111,
         requirementId: 222,
-        requirementText: 'video is required',
         comment: 'excellent job'
       };
       done();

@@ -30,7 +30,6 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     requirementId: DataTypes.INTEGER,
-    requirementText: DataTypes.TEXT,
     // score of submission
     score: DataTypes.FLOAT,
     // comment from reviewer
