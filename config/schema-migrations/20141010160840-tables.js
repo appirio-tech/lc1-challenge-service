@@ -15,11 +15,11 @@ exports.up = function (db, callback) {
         'overview character varying(140), ' +
         'description text, ' +
         'tags text[], ' +
-        'prizes NUMERIC(11,2)[]' +
-        'account character varying(255)' +
-        '"accountId" character varying(255)' +
-        '"source" text' +
-        '"sourceId" text' +
+        'prizes NUMERIC(11,2)[], ' +
+        'account character varying(255), ' +
+        '"accountId" character varying(255), ' +
+        '"source" text, ' +
+        '"sourceId" text, ' +
         'status enum_challenges_status NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
