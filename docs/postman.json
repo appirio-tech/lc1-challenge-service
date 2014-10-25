@@ -17,7 +17,8 @@
 				"2970f164-3e71-431f-1928-b2dfa6825721",
 				"285ceea4-f364-376d-7f2a-e45ebd12e17e",
 				"97751534-9eef-8778-c8c8-b18d996829e9",
-				"ab0f055e-4a50-59cf-8527-5dd1a85157d9"
+				"ab0f055e-4a50-59cf-8527-5dd1a85157d9",
+				"857eb5c4-607c-25aa-8651-663175048f02"
 			],
 			"collection_name": "Challenge Service v2",
 			"collection_id": "2c07c76e-1ef4-9e0f-1550-6f626813d341"
@@ -42,10 +43,22 @@
 			"description": "",
 			"order": [
 				"3f99b782-a7fd-0507-077e-ca25dd1b7c97",
+				"537271d7-dabb-dd98-5b94-fcdd344537a6",
 				"53dd347a-cf9c-fcbd-687f-1797ee5a4cad",
 				"4b020f23-862d-5645-f88e-a7db9c485e15",
 				"a48829c3-15c3-5f88-f099-b39b4dd05de4",
 				"e5160183-2783-4e0f-c7b3-65964f84d957"
+			],
+			"collection_name": "Challenge Service v2",
+			"collection_id": "2c07c76e-1ef4-9e0f-1550-6f626813d341"
+		},
+		{
+			"id": "a1b708c8-f8df-27f1-3eb5-00b85f347ee7",
+			"name": "Requirements",
+			"description": "",
+			"order": [
+				"a98974f0-0e35-35b0-2ba6-a2de54495c12",
+				"dadbd88c-1e11-57d2-8cf4-2cf0be3d0ca4"
 			],
 			"collection_name": "Challenge Service v2",
 			"collection_id": "2c07c76e-1ef4-9e0f-1550-6f626813d341"
@@ -226,7 +239,7 @@
 		{
 			"id": "2daeb0e5-9681-ff33-0149-02d1088d5936",
 			"headers": "Content-Type: application/json\n",
-			"url": "{{url}}/challenges/1/submissions/1/files",
+			"url": "{{url}}/challenges/1/requirements",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "POST",
@@ -234,13 +247,13 @@
 			"dataMode": "raw",
 			"version": 2,
 			"tests": "",
-			"time": 1413085206216,
+			"time": 1414207318074,
 			"name": "Create a File in Challenge/Submission",
 			"description": "",
 			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
 			"responses": [],
 			"synced": false,
-			"rawModeData": "{\n  \"title\": \"Submission zip file\",\n  \"filePath\": \"/uploads/challengeId/\",\n  \"size\": 123,\n  \"fileName\": \"swagger-submission.zip\",\n  \"storageLocation\": \"local\"\n}"
+			"rawModeData": "{\n  \"challengeId\": 1,\n  \"requirementText\": \"List all the sword used in the quicking by McLeod, Rameriz and the Kurgen\"\n}"
 		},
 		{
 			"id": "3e37fd58-77b0-7053-b5d2-41e31eb5e7f4",
@@ -273,7 +286,7 @@
 			"version": 2,
 			"tests": "",
 			"time": 1413162742423,
-			"name": "List Participants in Challenge",
+			"name": "List reviews in Challenge",
 			"description": "",
 			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
 			"responses": [],
@@ -303,6 +316,24 @@
 			"tests": "",
 			"time": 1413067572385,
 			"name": "Get a Participant in Challenge",
+			"description": "",
+			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
+			"responses": [],
+			"synced": false
+		},
+		{
+			"id": "537271d7-dabb-dd98-5b94-fcdd344537a6",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/challenges/1/participants",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"time": 1414189886058,
+			"name": "List Participants in a Challenge",
 			"description": "",
 			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
 			"responses": [],
@@ -356,13 +387,13 @@
 			"dataMode": "raw",
 			"version": 2,
 			"tests": "",
-			"time": 1413046126477,
+			"time": 1414200901324,
 			"name": "Create a File in Challenge",
 			"description": "",
 			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
 			"responses": [],
 			"synced": false,
-			"rawModeData": "{\n  \"title\": \"Submission zip file\",\n  \"filePath\": \"/uploads/challengeId/\",\n  \"size\": 123,\n  \"fileName\": \"swagger-submission.zip\",\n  \"storageLocation\": \"local\"\n}"
+			"rawModeData": "{\n  \"title\": \"The Highlander Challenge Guidelines\",\n  \"filePath\": \"/uploads/challengeId/\",\n  \"size\": 123,\n  \"fileName\": \"swords_forTheGatering.zip\",\n  \"storageLocation\": \"local\"\n}"
 		},
 		{
 			"id": "62365fdc-71be-e5b8-326e-ddbbeeeaaa7c",
@@ -475,6 +506,25 @@
 			"responses": [],
 			"synced": false,
 			"rawModeData": "{\n  \"title\": \"Updated - Submission zip file\",\n  \"filePath\": \"/uploads/challengeId/\",\n  \"size\": 123,\n  \"fileName\": \"swagger-submission.zip\",\n  \"storageLocation\": \"local\"\n}"
+		},
+		{
+			"id": "857eb5c4-607c-25aa-8651-663175048f02",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/challenges/1/requirements",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"name": "List Requirements in a Challenge",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1414206184920,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
+			"synced": false
 		},
 		{
 			"id": "87e09f47-30c9-6792-c9ec-134c9c1919da",
@@ -602,7 +652,7 @@
 		{
 			"id": "a23eb47a-6576-5e08-f552-cc49eb0f72a4",
 			"headers": "Content-Type: application/json\n",
-			"url": "{{url}}/challenges/1/submissions/1/files",
+			"url": "{{url}}/challenges/3/submissions/1/files",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "GET",
@@ -610,7 +660,7 @@
 			"dataMode": "params",
 			"version": 2,
 			"tests": "",
-			"time": 1413085071534,
+			"time": 1414206136015,
 			"name": "List Files in Challenge/Submission",
 			"description": "",
 			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
@@ -674,6 +724,26 @@
 			"synced": false
 		},
 		{
+			"id": "a98974f0-0e35-35b0-2ba6-a2de54495c12",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/challenges/1/requirements",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"name": "Create a requirement",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1414211172682,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
+			"synced": false,
+			"rawModeData": "{\n  \"challengeId\": 1,\n  \"requirementText\": \"An immortal Scottish swordsman must confront the last of his immortal opponent, a murderously brutal barbarian who lusts for the fabled Prize.   Define the prize \"\n}"
+		},
+		{
 			"id": "ab0f055e-4a50-59cf-8527-5dd1a85157d9",
 			"headers": "Content-Type: application/json\n",
 			"url": "{{url}}/challenges/2",
@@ -695,7 +765,7 @@
 		{
 			"id": "bea22ca6-2a0d-9660-a619-0866a6f67f8d",
 			"headers": "Content-Type: application/json\n",
-			"url": "{{url}}/challenges/1/submissions",
+			"url": "{{url}}/challenges/3/submissions",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "POST",
@@ -703,13 +773,13 @@
 			"dataMode": "raw",
 			"version": 2,
 			"tests": "",
-			"time": 1413159044610,
+			"time": 1414204410986,
 			"name": "Create a Submission in Challenge",
 			"description": "",
 			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
 			"responses": [],
 			"synced": false,
-			"rawModeData": "{\n  \"submitterId\": 123\n}"
+			"rawModeData": "{\n  \"submitterId\": 30\n}"
 		},
 		{
 			"id": "c9d87bb7-d99e-695c-ac89-7c4986c48eeb",
@@ -768,6 +838,25 @@
 			"rawModeData": "{\n  \"scoreSum\": 97,\n  \"scorePercent\": 97.5,\n  \"scoreMax\": 99.5,\n  \"status\": \"VALID\",\n  \"pay\": false,\n  \"place\": 1,\n  \"prize\": 1400.35,\n  \"reviewerId\": 123,\n  \"submissionId\": 1\n}"
 		},
 		{
+			"id": "dadbd88c-1e11-57d2-8cf4-2cf0be3d0ca4",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/challenges/1/requirements",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"name": "Get Requirements for a challenge",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1414211217218,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
+			"synced": false
+		},
+		{
 			"id": "dcf77d2f-b56b-8d72-68c7-0bd73aae813b",
 			"headers": "Content-Type: application/json\n",
 			"url": "{{url}}/challenges/1/scorecards/1",
@@ -807,26 +896,15 @@
 		{
 			"id": "e90362a8-3aa0-b222-fd3a-3aa4fabf0bb8",
 			"headers": "Content-Type: application/json\n",
-			"url": "{{url}}/challenges/1/submissions",
+			"url": "{{url}}/challenges/3/submissions",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "GET",
-			"data": [
-				{
-					"key": "user_id",
-					"value": "1",
-					"type": "text"
-				},
-				{
-					"key": "file",
-					"value": "",
-					"type": "file"
-				}
-			],
+			"data": [],
 			"dataMode": "params",
 			"version": 2,
 			"tests": "",
-			"time": 1413069048933,
+			"time": 1414204450356,
 			"name": "List Submissions in Challenge",
 			"description": "",
 			"collectionId": "2c07c76e-1ef4-9e0f-1550-6f626813d341",
