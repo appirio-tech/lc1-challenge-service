@@ -17,7 +17,7 @@ ADD_SUBMISSION=false
 ADD_SUBMISSION_FILES=false
 ADD_REQUIREMENTS=false
 ADD_SCORECARD=false
-ADD_SCORECARD_ITEMS=true
+ADD_SCORECARD_ITEMS=false
 
 if  [ $INIT = "false" ] &&  [ $CREATE_CHALLENGES = "false" ] && [ $ADD_PARTICPANTS = "false" ] \
   && [ $ADD_CHALLENGE_FILE = "false" ] && [ $ADD_SUBMISSION = "false" ] && [ $ADD_SUBMISSION_FILES = "false" ] \
@@ -369,6 +369,7 @@ fi
 
 # Section 9.  Add scorecard tiems for the competed challenge number 4
 if [ $ADD_SCORECARD_ITEMS = "true" ]; then
+  # note the requirementText does not save and not part of the model
   echo '\n trying to create scorecard item for challenge 4 scorecard 2 req#17 \n'
   RESOURCE="/4/scorecards/2/scorecardItems"
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
@@ -423,5 +424,65 @@ if [ $ADD_SCORECARD_ITEMS = "true" ]; then
     "score": 98,
     "comment": "Good description of down shifting, I like you secotion on the Jake Brake"
   }' $URL$RESOURCE
+
+
+  ## now create the scorecard items for 4/3
+
+  echo '\n trying to create scorecard item for challenge 4 scorecard 3 req#17 \n'
+  RESOURCE="/4/scorecards/3/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 17,
+    "scorecardId": 3,
+    "requirementText": "Describe how to start a manual car without a battery",
+    "score": 25,
+    "comment": "It is called push start and it can be done"
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 3 req#18 \n'
+  RESOURCE="/4/scorecards/3/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 18,
+    "scorecardId": 3,
+    "requirementText": "Describe the different configurations of a manual tranmssion",
+    "score":100,
+    "comment": "Perfect"
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 3 req#19 \n'
+  RESOURCE="/4/scorecards/3/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 19,
+    "scorecardId": 3,
+    "requirementText": "Guess how many cars I have owned with a stick shift",
+    "score": 100,
+    "comment": "Good guess 4 is right"
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 3 req#20 \n'
+  RESOURCE="/4/scorecards/3/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 20,
+    "scorecardId": 3,
+    "requirementText": "What is the name of the pedel that cars with automatic transmissions dont have, What is its purpose?",
+    "score": 97,
+    "comment": "Yes,Clutch is right, good explicantion"
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 3 req#21 \n'
+  RESOURCE="/4/scorecards/3/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 21,
+    "scorecardId": 3,
+    "requirementText": "Describe the purpose of the Tachometer",
+    "score": 100,
+    "comment": "Perfect"
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 3 req#22 \n'
+  RESOURCE="/4/scorecards/3/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 22,
+    "scorecardId": 3,
+    "requirementText": "Describe how a manual transmission can slow a car down without the breaks.",
+    "score": 98,
+    "comment": "Good Job"
+  }' $URL$RESOURCE
+
+
 
 fi
