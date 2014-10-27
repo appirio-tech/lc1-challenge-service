@@ -13,6 +13,14 @@ Werker
 
 [![wercker status](https://app.wercker.com/status/e9f58b8a92af1c7811dfa7abe2dece27/m "wercker status")](https://app.wercker.com/project/bykey/e9f58b8a92af1c7811dfa7abe2dece27)
 
+# Quick Start (running local)
+1. start postgres
+2. create database travis_ci_test `psql -c 'create database  travis_ci_test;' -U postgres`
+3. run db-migrate to create schema `grunt dbmigrate`
+4. run the curl script in the docs dir to create some records.  Set INIT=true to create the DROP/CREATE the db and run the migration script
+
+** also there is a POSTMAN file supplied to add records by hand,   You must use the standalone postman app and need to create the enivorment for the url
+
 ## Swagger
 
 The documentaiton for the API and resources are in swagger.  You can view the swagger config using a127 tools or the built in Swagger UI.
