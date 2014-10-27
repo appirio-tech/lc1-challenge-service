@@ -16,10 +16,12 @@ ADD_CHALLENGE_FILE=false
 ADD_SUBMISSION=false
 ADD_SUBMISSION_FILES=false
 ADD_REQUIREMENTS=false
+ADD_SCORECARD=false
+ADD_SCORECARD_ITEMS=true
 
 if  [ $INIT = "false" ] &&  [ $CREATE_CHALLENGES = "false" ] && [ $ADD_PARTICPANTS = "false" ] \
   && [ $ADD_CHALLENGE_FILE = "false" ] && [ $ADD_SUBMISSION = "false" ] && [ $ADD_SUBMISSION_FILES = "false" ] \
-  &&  [ $ADD_REQUIREMENTS = "false" ]; then
+  &&  [ $ADD_REQUIREMENTS = "false" ]   &&  [ $ADD_SCORECARD = "false" ] &&  [ $ADD_SCORECARD_ITEMS = "false" ] ; then
   echo 'You must set one var to be true, see Section 0 in the script  \n '
 fi
 
@@ -335,5 +337,91 @@ if [ $ADD_REQUIREMENTS = "true" ]; then
 
 
 
+
+fi
+
+
+# Section 8, Create an empty scorecard for challenge 3 and 4
+if [ $ADD_SCORECARD = "true" ]; then
+  echo '\n createing empty scorecards for challnge 3 is a magic number, submmsion 1 and reviewer 20 \n'
+  RESOURCE="/3/scorecards"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
+    "status": "VALID",
+    "reviewerId": 20,
+    "submissionId": 1
+  }' $URL$RESOURCE
+  echo '\n createing empty scorecards for challnge 4 on the floor, submmsion 2 and reviewer 20 \n'
+  RESOURCE="/4/scorecards"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
+    "status": "VALID",
+    "reviewerId": 20,
+    "submissionId": 2
+  }' $URL$RESOURCE
+  echo '\n createing empty scorecards for challnge 4 on the floor, submmsion 3 and reviewer 20 \n'
+  RESOURCE="/4/scorecards"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
+    "status": "VALID",
+    "reviewerId": 20,
+    "submissionId": 3
+  }' $URL$RESOURCE
+
+fi
+
+# Section 9.  Add scorecard tiems for the competed challenge number 4
+if [ $ADD_SCORECARD_ITEMS = "true" ]; then
+  echo '\n trying to create scorecard item for challenge 4 scorecard 2 req#17 \n'
+  RESOURCE="/4/scorecards/2/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 17,
+    "scorecardId": 2,
+    "requirementText": "Describe how to start a manual car without a battery",
+    "score": 92,
+    "comment": "yes you are right it help if you park on a hill."
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 2 req#18 \n'
+  RESOURCE="/4/scorecards/2/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 18,
+    "scorecardId": 2,
+    "requirementText": "Describe the different configurations of a manual tranmssion",
+    "score": 70,
+    "comment": "Pretty good but you forgot three on the tree."
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 2 req#19 \n'
+  RESOURCE="/4/scorecards/2/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 19,
+    "scorecardId": 2,
+    "requirementText": "Guess how many cars I have owned with a stick shift",
+    "score": 25,
+    "comment": "Nice try but the answer is 4, Two Saab 9-3s, a 79 JEEP CJ-5 Golden Eagle, and a Honda Civic, that poped out of 1st and 5th"
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 2 req#20 \n'
+  RESOURCE="/4/scorecards/2/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 20,
+    "scorecardId": 2,
+    "requirementText": "What is the name of the pedel that cars with automatic transmissions dont have, What is its purpose?",
+    "score": 98,
+    "comment": "Yes, good level of detail."
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 2 req#21 \n'
+  RESOURCE="/4/scorecards/2/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 21,
+    "scorecardId": 2,
+    "requirementText": "Describe the purpose of the Tachometer",
+    "score": 70,
+    "comment": "I could have used a little more detail"
+  }' $URL$RESOURCE
+  echo '\n trying to create scorecard item for challenge 4 scorecard 2 req#22 \n'
+  RESOURCE="/4/scorecards/2/scorecardItems"
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+    "requirementId": 22,
+    "scorecardId": 2,
+    "requirementText": "Describe how a manual transmission can slow a car down without the breaks.",
+    "score": 98,
+    "comment": "Good description of down shifting, I like you secotion on the Jake Brake"
+  }' $URL$RESOURCE
 
 fi
