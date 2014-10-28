@@ -38,7 +38,8 @@
     "pg": "^3.4.1",
     "sequelize": "^1.7.10",
     "swagger-tools": "^0.5.8",
-    "time-grunt": "^0.3.1"
+    "time-grunt": "^0.3.1",
+    "json-mask": "^0.3.2"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",

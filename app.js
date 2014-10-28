@@ -14,6 +14,7 @@ var config = require('config');
 var datasource = require('./datasource');
 var routeHelper = require('./lib/routeHelper');
 var bodyParser = require('body-parser');
+var responseHelper = require('./lib/responseHelper');
 
 var app = express();
 
@@ -47,6 +48,8 @@ if (config.has('app.port')) {
 app.use(a127.middleware());
 // generic error handler
 app.use(routeHelper.errorHandler);
+// use the partial response middleware
+app.use(responseHelper());
 // render response data as JSON
 app.use(routeHelper.renderJson);
 
