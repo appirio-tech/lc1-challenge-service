@@ -21,9 +21,9 @@ var requirementController = controllerHelper.buildController(Requirement, [Chall
 
 
 module.exports = {
-    createRequirement: requirementController.create,
-    getAllRequirementsByChallengeId: requirementController.all,
-    getRequirements: requirementController.get,
-    updateRequirement: requirementController.update,
-    deleteRequirements: requirementController.delete
+  createRequirement: requirementController.create,
+  getAllRequirementsByChallengeId: requirementController.all,
+  getRequirements: requirementController.get,
+  updateRequirement: requirementController.update,
+  deleteRequirements: requirementController.delete
 };

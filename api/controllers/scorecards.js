@@ -26,5 +26,4 @@ module.exports = {
   getScorecardbyId: scorecardController.get,
   updateScorecard: scorecardController.update,
   deleteScorecard: scorecardController.delete
-
 };
