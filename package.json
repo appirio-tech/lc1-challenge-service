@@ -39,7 +39,8 @@
     "sequelize": "^1.7.10",
     "swagger-tools": "^0.5.8",
     "time-grunt": "^0.3.1",
-    "inflection": "1.5.1"
+    "inflection": "1.5.1",
+    "grunt-swagger-js-codegen": ">0.2.9"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",
