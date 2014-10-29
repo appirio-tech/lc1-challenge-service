@@ -533,7 +533,7 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to get partial response and a nested file object of the exist challenge', function(done){
+      it('should able to the get partial response and nested file objects of the exist challenge', function(done){
         request(url)
           .get('/challenges/'+challenge.id+'?fields=id,title,files')
           .end(function(err, res) {
@@ -545,6 +545,7 @@ describe('Challenges Controller', function() {
             res.body.should.have.property('content');
             res.body.content.should.have.property('files');
             res.body.content.files.length.should.be.above(0);
+            res.body.content.files[0].should.have.property('id');
             done();
           });
       });
