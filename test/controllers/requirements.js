@@ -18,6 +18,7 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -108,6 +109,28 @@ describe('Requirements Controller', function() {
       });
     });
 
+    it('should able to get partial response for all requirements', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/requirements?fields=requirementText,challengeId,id')
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
+        res.body.status.should.equal(200);
+        res.body.should.have.property('metadata');
+        res.body.metadata.totalCount.should.be.above(0);
+        res.body.should.have.property('content');
+        res.body.content.length.should.be.above(0);
+        // verify partial response from API
+        _.forEach(res.body.content, function(obj) {
+          _.keys(obj).length.should.equal(3);
+        });
+        done();
+      });
+    });
+
     it('should able to get the existing requirement', function(done) {
       // send request
       request(url)
@@ -119,6 +142,36 @@ describe('Requirements Controller', function() {
         res.body.status.should.equal(200);
         res.body.content.id.should.equal(requirementId);
         res.body.content.requirementText.should.equal(reqData.requirementText);
+        done();
+      });
+    });
+
+    it('should able to get partial response for existing requirement', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/requirements/'+requirementId+'?fields=id,requirementText')
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
+        res.body.status.should.equal(200);
+        res.body.content.id.should.equal(requirementId);
+        res.body.content.requirementText.should.equal(reqData.requirementText);
+        // verify partial response from API
+        _.keys(res.body.content).length.should.equal(2);
+        done();
+      });
+    });
+
+    it('should fail to get partial response for invalid field request', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/requirements/'+requirementId+'?fields=id,requirementText,invalidfield')
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(400);
+        res.body.result.success.should.equal(false);
         done();
       });
     });

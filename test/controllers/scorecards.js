@@ -18,6 +18,7 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -117,6 +118,41 @@ describe('Scorecards Controller', function() {
       });
     });
 
+    it('should able to get partial response for all scorecards', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/scorecards?fields=id,scoreSum,scorePercent')
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
+        res.body.status.should.equal(200);
+        res.body.should.have.property('metadata');
+        res.body.metadata.totalCount.should.be.above(0);
+        res.body.should.have.property('content');
+        res.body.content.length.should.be.above(0);
+        // verify partial response from API
+        _.forEach(res.body.content, function(obj) {
+          _.keys(obj).length.should.equal(3);
+        });
+        done();
+      });
+    });
+
+    it('should fail to get partial response for invalid field request', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/scorecards?fields=id,scoreSum,scorePercent,invalidfield')
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(400);
+        res.body.result.success.should.equal(false);
+        done();
+      });
+    });
+
     it('should able to get the existing scorecard', function(done) {
       // send request
       request(url)
@@ -130,6 +166,25 @@ describe('Scorecards Controller', function() {
         res.body.content.challengeId.should.equal(challenge.id);
         res.body.content.scoreSum.should.equal(reqData.scoreSum);
         res.body.content.status.should.equal(reqData.status);
+        done();
+      });
+    });
+
+    it('should able to get partial response for existing scorecard', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/scorecards/'+scorecardId+'?fields=id,scoreSum,scorePercent,challengeId,status')
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
+        res.body.status.should.equal(200);
+        res.body.content.id.should.equal(scorecardId);
+        res.body.content.challengeId.should.equal(challenge.id);
+        res.body.content.scoreSum.should.equal(reqData.scoreSum);
+        res.body.content.status.should.equal(reqData.status);
+        // verify partial response from API
+        _.keys(res.body.content).length.should.equal(5);
         done();
       });
     });

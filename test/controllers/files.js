@@ -18,6 +18,7 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -121,6 +122,41 @@ describe('Files Controller', function() {
       });
     });
 
+    it('should able to get partial response for all files', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/submissions/'+submission.id+'/files?fields=id,fileName,filePath')
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
+        res.body.status.should.equal(200);
+        res.body.should.have.property('metadata');
+        res.body.metadata.totalCount.should.be.above(0);
+        res.body.should.have.property('content');
+        res.body.content.length.should.be.above(0);
+        // verify partial response from API
+        _.forEach(res.body.content, function(obj) {
+          _.keys(obj).length.should.equal(3);
+        });
+        done();
+      });
+    });
+
+    it('should fail to get partial response for invalid field request', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/submissions/'+submission.id+'/files?fields=id,fileName,filePath,invalidfield')
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(400);
+        res.body.result.success.should.equal(false);
+        done();
+      });
+    });
+
     it('should able to get the existing file', function(done) {
       // send request
       request(url)
@@ -134,6 +170,25 @@ describe('Files Controller', function() {
         res.body.content.challengeId.should.equal(challenge.id);
         res.body.content.title.should.equal(reqData.title);
         res.body.content.fileName.should.equal(reqData.fileName);
+        done();
+      });
+    });
+
+    it('should able to get partial response for existing file', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challenge.id+'/submissions/'+submission.id+'/files/'+fileId+'?fields=id,fileName,filePath,challengeId,title')
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
+        res.body.status.should.equal(200);
+        res.body.content.id.should.equal(fileId);
+        res.body.content.challengeId.should.equal(challenge.id);
+        res.body.content.title.should.equal(reqData.title);
+        res.body.content.fileName.should.equal(reqData.fileName);
+        // verify partial response from API
+        _.keys(res.body.content).length.should.equal(5);
         done();
       });
     });

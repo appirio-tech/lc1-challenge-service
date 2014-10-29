@@ -18,6 +18,7 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -102,6 +103,41 @@ describe('Challenges Controller', function() {
       });
     });
 
+    it('should able to get partial response for all challenges', function(done) {
+      // send request
+      request(url)
+      .get('/challenges?fields=id,title,overview')
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
+        res.body.status.should.equal(200);
+        res.body.should.have.property('metadata');
+        res.body.metadata.totalCount.should.be.above(0);
+        res.body.should.have.property('content');
+        res.body.content.length.should.be.above(0);
+        // verify partial response from API
+        _.forEach(res.body.content, function(obj) {
+          _.keys(obj).length.should.equal(3);
+        });
+        done();
+      });
+    });
+
+    it('should fail to get partial response for invalid field request', function(done) {
+      // send request
+      request(url)
+      .get('/challenges?fields=id,title,overview,invalidfield')
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(400);
+        res.body.result.success.should.equal(false);
+        done();
+      });
+    });
+
     it('should able to get the existing challenge', function(done) {
       // send request
       request(url)
@@ -114,6 +150,24 @@ describe('Challenges Controller', function() {
         res.body.content.id.should.equal(challengeId);
         res.body.content.title.should.equal(reqData.title);
         res.body.content.status.should.equal(reqData.status);
+        done();
+      });
+    });
+
+    it('should able to get partial response for single challenge', function(done) {
+      // send request
+      request(url)
+      .get('/challenges/'+challengeId+'?fields=id,overview,title,status')
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
+        res.body.status.should.equal(200);
+        res.body.content.id.should.equal(challengeId);
+        res.body.content.title.should.equal(reqData.title);
+        res.body.content.status.should.equal(reqData.status);
+        // verify partial response from API
+        _.keys(res.body.content).length.should.equal(4);
         done();
       });
     });
@@ -148,7 +202,6 @@ describe('Challenges Controller', function() {
         done();
       });
     });
-
   });
 
 
@@ -288,35 +341,35 @@ describe('Challenges Controller', function() {
     });
 
     it('should able to get nulls first by nulls first in the challenges response', function(done) {
-        var params = 'orderBy=createdBy desc nulls first';
-        // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
+      var params = 'orderBy=createdBy desc nulls first';
+      // send request
+      sendGetAllChallengesRequest(params, function(err, res) {
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
 
-          var firstChallenge = res.body.content[0];
-          (firstChallenge.createdBy === null).should.be.true;
-          var lastChallenge = res.body.content[res.body.content.length-1];
-          lastChallenge.createdBy.should.be.ok;
-          done();
-        });
+        var firstChallenge = res.body.content[0];
+        (firstChallenge.createdBy === null).should.be.true;
+        var lastChallenge = res.body.content[res.body.content.length-1];
+        lastChallenge.createdBy.should.be.ok;
+        done();
+      });
     });
 
     it('should able to get nulls last by nulls last in the challenges response', function(done) {
-        var params = 'orderBy=createdBy desc nulls last';
-        // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
+      var params = 'orderBy=createdBy desc nulls last';
+      // send request
+      sendGetAllChallengesRequest(params, function(err, res) {
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
 
-          var firstChallenge = res.body.content[0];
-          firstChallenge.createdBy.should.be.ok;
-          var lastChallenge = res.body.content[res.body.content.length-1];
-          (lastChallenge.createdBy === null).should.be.true;
-          done();
-        });
+        var firstChallenge = res.body.content[0];
+        firstChallenge.createdBy.should.be.ok;
+        var lastChallenge = res.body.content[res.body.content.length-1];
+        (lastChallenge.createdBy === null).should.be.true;
+        done();
+      });
     });
 
     it('should fail to get challenges without first or last in nulls filter', function(done) {
@@ -480,6 +533,41 @@ describe('Challenges Controller', function() {
         });
       });
 
+      it('should able to get partial response for all files', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/files?fields=id,filePath')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          // verify partial response from API
+          _.forEach(res.body.content, function(obj) {
+            _.keys(obj).length.should.equal(2);
+          });
+          done();
+        });
+      });
+
+      it('should fail to get partial response for invalid field', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/files?fields=id,filePath,invalidfield')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(400);
+          res.body.result.success.should.equal(false);
+          done();
+        });
+      });
+
       it('should able to get the existing file', function(done) {
         // send request
         request(url)
@@ -493,6 +581,25 @@ describe('Challenges Controller', function() {
           res.body.content.challengeId.should.equal(challenge.id);
           res.body.content.title.should.equal(reqData.title);
           res.body.content.fileName.should.equal(reqData.fileName);
+          done();
+        });
+      });
+
+      it('should able to get partial response for existing file', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/files/'+fileId+'?fields=id,challengeId,fileName,filePath,title')
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(fileId);
+          res.body.content.challengeId.should.equal(challenge.id);
+          res.body.content.title.should.equal(reqData.title);
+          res.body.content.fileName.should.equal(reqData.fileName);
+          // verify partial response from API
+          _.keys(res.body.content).length.should.be.equal(5);
           done();
         });
       });
@@ -592,6 +699,41 @@ describe('Challenges Controller', function() {
         });
       });
 
+      it('should able to get partial response for all participants', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/participants?fields=id')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          // verify partial response from API
+          _.forEach(res.body.content, function(obj) {
+            _.keys(obj).length.should.equal(1);
+          });
+          done();
+        });
+      });
+
+      it('should fail to get partial response for invalid field', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/participants?fields=id,invalidfield')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(400);
+          res.body.result.success.should.equal(false);
+          done();
+        });
+      });
+
       it('should able to get the existing participant', function(done) {
         // send request
         request(url)
@@ -604,6 +746,24 @@ describe('Challenges Controller', function() {
           res.body.content.id.should.equal(participantId);
           res.body.content.challengeId.should.equal(challenge.id);
           res.body.content.role.should.equal(reqData.role);
+          done();
+        });
+      });
+
+      it('should able to get partial response for existing participant', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/participants/'+participantId+'?fields=id,challengeId,role')
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(participantId);
+          res.body.content.challengeId.should.equal(challenge.id);
+          res.body.content.role.should.equal(reqData.role);
+          // verify partial response from API
+          _.keys(res.body.content).length.should.equal(3);
           done();
         });
       });
@@ -702,6 +862,41 @@ describe('Challenges Controller', function() {
         });
       });
 
+      it('should able to get partial response all submissions', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/submissions?fields=challengeId,submitterId')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          // verify partial response from API
+          _.forEach(res.body.content, function(obj) {
+            _.keys(obj).length.should.equal(2);
+          });
+          done();
+        });
+      });
+
+      it('should fail to get partial response for invalid field', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/submissions?fields=challengeId,submitterId,invalidfield')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(400);
+          res.body.result.success.should.equal(false);
+          done();
+        });
+      });
+
       it('should able to get the existing submission', function(done) {
         // send request
         request(url)
@@ -714,6 +909,24 @@ describe('Challenges Controller', function() {
           res.body.content.id.should.equal(submissionId);
           res.body.content.challengeId.should.equal(challenge.id);
           res.body.content.submitterId.should.equal(reqData.submitterId);
+          done();
+        });
+      });
+
+      it('should able to get partial response for existing submission', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/submissions/'+submissionId+'?fields=id,challengeId,submitterId')
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(submissionId);
+          res.body.content.challengeId.should.equal(challenge.id);
+          res.body.content.submitterId.should.equal(reqData.submitterId);
+          // verify partial response from API
+          _.keys(res.body.content).length.should.equal(3);
           done();
         });
       });
@@ -774,4 +987,3 @@ describe('Challenges Controller', function() {
   });
 
 });
-
