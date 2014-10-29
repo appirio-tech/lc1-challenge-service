@@ -29,6 +29,7 @@ var Scorecard = db.Scorecard;
 
 
 describe('Scorecards Controller', function() {
+  this.timeout(15000);
   var url = 'http://localhost:'+config.app.port;
   var reqData;
   var challenge;
@@ -117,6 +118,27 @@ describe('Scorecards Controller', function() {
       });
     });
 
+    it('should able to get the partial response of all scorecards', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/scorecards?fields=id,scoreSum')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          res.body.content[0].should.have.property('id');
+          res.body.content[0].should.have.property('scoreSum');
+          res.body.content[0].should.not.have.property('status');
+          done();
+        });
+    });
+
     it('should able to get the existing scorecard', function(done) {
       // send request
       request(url)
@@ -132,6 +154,23 @@ describe('Scorecards Controller', function() {
         res.body.content.status.should.equal(reqData.status);
         done();
       });
+    });
+
+    it('should able to get partial response of the existing scorecard', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/scorecards/'+scorecardId+'?fields=id,challengeId,status')
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(scorecardId);
+          res.body.content.challengeId.should.equal(challenge.id);
+          res.body.content.status.should.equal(reqData.status);
+          res.body.content.should.not.have.property('scoreSum');
+          done();
+        });
     });
 
     it('should able to update the existing scorecard', function(done) {

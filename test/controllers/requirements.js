@@ -29,6 +29,7 @@ var Challenge = db.Challenge;
 
 
 describe('Requirements Controller', function() {
+  this.timeout(15000);
   var url = 'http://localhost:'+config.app.port;
   var reqData;
   var challenge;
@@ -52,7 +53,7 @@ describe('Requirements Controller', function() {
     beforeEach(function(done) {
       reqData = {
         requirementText: 'Need deployment guide',
-        challengeId: challenge.id,
+        challengeId: challenge.id
       };
       done();
     });
@@ -108,6 +109,26 @@ describe('Requirements Controller', function() {
       });
     });
 
+    it('should able to get the partial response of all requirements', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/requirements?fields=id')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          res.body.content[0].should.have.property('id');
+          res.body.content[0].should.not.have.property('requirementText');
+          done();
+        });
+    });
+
     it('should able to get the existing requirement', function(done) {
       // send request
       request(url)
@@ -121,6 +142,21 @@ describe('Requirements Controller', function() {
         res.body.content.requirementText.should.equal(reqData.requirementText);
         done();
       });
+    });
+
+    it('should able to get partial response of the existing requirement', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/requirements/'+requirementId+'?fields=requirementText')
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.requirementText.should.equal(reqData.requirementText);
+          res.body.content.should.not.have.property('id');
+          done();
+        });
     });
 
     it('should able to update the existing requirement', function(done) {
