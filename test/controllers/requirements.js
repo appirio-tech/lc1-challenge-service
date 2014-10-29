@@ -4,7 +4,7 @@
 /**
  * This module contains codes for testing requirements controller.
  *
- * @version 1.0
+ * @version 1.1
  * @author spanhawk
  */
 'use strict';

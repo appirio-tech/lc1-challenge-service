@@ -4,8 +4,8 @@
 /**
  * This module contains codes for testing files controller.
  *
- * @version 1.0
- * @author peakpado
+ * @version 1.1
+ * @author peakpado, spanhawk
  */
 'use strict';
 
