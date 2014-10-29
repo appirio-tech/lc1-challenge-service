@@ -169,7 +169,7 @@
         {
             "collectionId": "cf5c50b8-d789-c06a-8a42-e6a824346404",
             "id": "0e2f846d-6c41-308d-9e9c-6aa557be0eba",
-            "name": "Get a participant for a challenge:Partial response",
+            "name": "Get a participant for a challenge: partial response",
             "description": "",
             "url": "{{url}}/challenges/1/participants/1?fields=id,role,challengeId",
             "method": "GET",
@@ -340,7 +340,7 @@
         {
             "collectionId": "cf5c50b8-d789-c06a-8a42-e6a824346404",
             "id": "42f1386c-6796-e991-d3d2-c1b1b6201821",
-            "name": "Get all participant for a challenge:Partial response",
+            "name": "Get all participant for a challenge: partial response",
             "description": "",
             "url": "{{url}}/challenges/1/participants?fields=id,role,challengeId",
             "method": "GET",
@@ -367,7 +367,7 @@
         {
             "collectionId": "cf5c50b8-d789-c06a-8a42-e6a824346404",
             "id": "47a24f97-1d30-7561-68e4-1b1eb59d630c",
-            "name": "Get a challenges:Partial response",
+            "name": "Get a challenges: partial response",
             "description": "",
             "url": "{{url}}/challenges/1?fields=id,title,overview",
             "method": "GET",
@@ -789,7 +789,7 @@
         {
             "collectionId": "cf5c50b8-d789-c06a-8a42-e6a824346404",
             "id": "c41c4f06-d1f4-4f7c-bc86-aeefc61fdb85",
-            "name": "Get all challenges:Partial response",
+            "name": "Get all challenges: partial response",
             "description": "",
             "url": "{{url}}/challenges?fields=id,title",
             "method": "GET",
