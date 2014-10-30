@@ -1,0 +1,6 @@
+app:
+  port: 10010
+  loadDoc: true
+  pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
+  query:
+    pageSize: 20
