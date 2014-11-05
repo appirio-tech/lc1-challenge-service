@@ -1426,15 +1426,11 @@ definitions:
   ScorecardItemResource:
     required:
       - requirementId
-      - scorecardId
     properties:
       id:
         type: integer
         format: int64
         description: postgres primary key
-      scorecardId:
-        type: integer
-        format: int64
       requirementId:
         type: integer
         format: int64
@@ -1503,10 +1499,6 @@ definitions:
         type: integer
         format: int64
         description: postgres primary key
-      challengeId:
-        type: integer
-        format: int64
-        description: The Challenge id for the participation
       userId:
         type: integer
         format: int64
@@ -1542,10 +1534,6 @@ definitions:
         type: integer
         format: int64
         description: postgres primary key
-      challengeId:
-        type: integer
-        format: int64
-        description: The Challenge id for the participation
       submitterId:
         type: integer
         format: int64
@@ -1563,8 +1551,6 @@ definitions:
         type: string
         description: The handle of the user last updated the row
   RequirementResource:
-    required:
-      - challengeId
     properties:
       Id:
         type: integer
@@ -1573,10 +1559,6 @@ definitions:
       requirementText:
         type: string
         description: The requirement
-      challengeId:
-        type: integer
-        format: int64
-        description: The id of the challenge
   ChallengesResponse:
     required:
       - success

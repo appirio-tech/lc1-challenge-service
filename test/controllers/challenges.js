@@ -422,8 +422,7 @@ describe('Challenges Controller', function() {
           filePath: '/uploads',
           size: 123,
           fileName: 'my-submission.zip',
-          storageLocation: 'local',
-          challengeId: 111
+          storageLocation: 'local'
         };
         done();
       });
@@ -530,11 +529,11 @@ describe('Challenges Controller', function() {
     });
 
     describe('Participants API', function() {
+      // updating the test cases challengeId is not required in post and put request
       var participantId;
       beforeEach(function(done) {
         reqData = {
           role: 'submitter',
-          challengeId: 111,
           userId: 222
         };
         done();
@@ -560,6 +559,40 @@ describe('Challenges Controller', function() {
 
       it('should fail to create a participant without role', function(done) {
         delete reqData.role;
+        // send request
+        request(url)
+        .post('/challenges/'+challenge.id+'/participants')
+        .send(reqData)
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          res.body.should.have.property('content');
+          done();
+        });
+      });
+
+      it('should able to create a participant without challengeId in request body', function(done) {
+        // send request
+        request(url)
+        .post('/challenges/'+challenge.id+'/participants')
+        .send(reqData)
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.result.success.should.be.true;
+          res.body.result.status.should.equal(200);
+          participantId = res.body.id;
+          done();
+        });
+      });
+
+      it('should fail to create a participant with different challengeId in request body than path param', function(done) {
+        // adding some random number to path param challenge id to make it different
+        reqData.challengeId = challenge.id + 120;
         // send request
         request(url)
         .post('/challenges/'+challenge.id+'/participants')
@@ -625,6 +658,41 @@ describe('Challenges Controller', function() {
         });
       });
 
+      it('should able to update the existing participant without challengeId in request body', function(done) {
+        reqData.role = 'submitter';
+        // send request
+        request(url)
+        .put('/challenges/'+challenge.id+'/participants/' + participantId)
+        .send(reqData)
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.result.success.should.be.true;
+          res.body.result.status.should.equal(200);
+          participantId = res.body.id;
+          done();
+        });
+      });
+
+      it('should fail to update the existing participant with different challengeId in request body than path param', function(done) {
+        // adding some random number to path param challenge id to make it different
+        reqData.challengeId = challenge.id + 120;
+        // send request
+        request(url)
+        .put('/challenges/'+challenge.id+'/participants/' + participantId)
+        .send(reqData)
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          res.body.should.have.property('content');
+          done();
+        });
+      });
+
       it('should able to delete the existing participant', function(done) {
         // send request
         request(url)
@@ -644,7 +712,6 @@ describe('Challenges Controller', function() {
       var submissionId;
       beforeEach(function(done) {
         reqData = {
-          challengeId: 111,
           submitterId: 222
         };
         done();
@@ -664,6 +731,41 @@ describe('Challenges Controller', function() {
           res.body.result.success.should.be.true;
           res.body.result.status.should.equal(200);
           submissionId = res.body.id;
+          done();
+        });
+      });
+
+      it('should able to create a submission without challengeId in request body', function(done) {
+        // send request
+        request(url)
+        .post('/challenges/'+challenge.id+'/submissions')
+        .send(reqData)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.result.success.should.be.true;
+          res.body.result.status.should.equal(200);
+          submissionId = res.body.id;
+          done();
+        });
+      });
+
+      it('should fail to create a submission with different challengeId in request body than path param', function(done) {
+        reqData.challengeId = challenge.id + 234;
+        // send request
+        request(url)
+        .post('/challenges/'+challenge.id+'/submissions')
+        .send(reqData)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          res.body.should.have.property('content');
           done();
         });
       });
@@ -731,6 +833,40 @@ describe('Challenges Controller', function() {
           res.body.id.should.equal(submissionId);
           res.body.result.success.should.equal(true);
           res.body.result.status.should.equal(200);
+          done();
+        });
+      });
+
+      it('should able to update the existing submission without challengeId in request body', function(done) {
+        // send request
+        reqData.submitterId = 123;
+        request(url)
+        .put('/challenges/'+challenge.id+'/submissions/'+submissionId)
+        .send(reqData)
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.id.should.equal(submissionId);
+          res.body.result.success.should.equal(true);
+          res.body.result.status.should.equal(200);
+          done();
+        });
+      });
+
+      it('should fail to update the existing submission with challengeId different in request body and path param', function(done) {
+        // send request
+        reqData.submitterId = 123;
+        reqData.challengeId = challenge.id + 2324;
+        request(url)
+        .put('/challenges/'+challenge.id+'/submissions/'+submissionId)
+        .send(reqData)
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          res.body.should.have.property('content');
           done();
         });
       });
