@@ -1542,11 +1542,8 @@ definitions:
         description: The name of the file
         type: string
       storageLocation:
-        description: How the file is stored.  Currently allowed values are local or s3.
+        description: How the file is stored.  How the app loads the file.
         type: string
-        enum:
-          - local
-          - s3
       createdAt:
         type: string
         format: date-time
