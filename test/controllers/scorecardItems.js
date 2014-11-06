@@ -18,6 +18,8 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
+var sampleData = require('./../sampledata');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -64,12 +66,7 @@ describe('ScorecardItems Controller', function() {
   describe('ScorecardItems API', function() {
     var scorecardItemId;
     beforeEach(function(done) {
-      reqData = {
-        score: 98,
-        scorecardId: 111,
-        requirementId: 222,
-        comment: 'excellent job'
-      };
+      reqData = _.clone(sampleData.scorecardItemData, true);
       done();
     });
 

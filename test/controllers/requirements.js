@@ -18,6 +18,8 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
+var sampleData = require('./../sampledata');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -50,10 +52,8 @@ describe('Requirements Controller', function() {
   describe('Requirements API', function() {
     var requirementId;
     beforeEach(function(done) {
-      reqData = {
-        requirementText: 'Need deployment guide',
-        challengeId: challenge.id,
-      };
+      reqData = _.clone(sampleData.requirementData, true);
+      reqData.challengeId = challenge.id;
       done();
     });
 

@@ -18,6 +18,8 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
+var sampleData = require('./../sampledata');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -50,18 +52,7 @@ describe('Scorecards Controller', function() {
   describe('Scorecards API', function() {
     var scorecardId;
     beforeEach(function(done) {
-      reqData = {
-        scoreSum: 97,
-        scorePercent: 96.5,
-        scoreMax: 99.9,
-        status: 'VALID',
-        pay: false,
-        place: 1,
-        prize: 1500,
-        challengeId: 111,
-        reviewerId: 222,
-        submissionId: 333
-      };
+      reqData = _.clone(sampleData.scorecardData, true);
       done();
     });
 
