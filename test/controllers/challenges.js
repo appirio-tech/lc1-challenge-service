@@ -17,7 +17,9 @@ var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
+var _ = require('lodash');
 var config = require('config');
+var sampleData = require('./../sampledata');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -39,14 +41,7 @@ describe('Challenges Controller', function() {
   describe('Challenges API', function() {
     var challengeId;
     beforeEach(function(done) {
-      reqData = {
-        title: 'Serenity Challenge',
-        status: 'SUBMISSION',
-        account: 'account',
-        accountId: '12ASD',
-        prizes: [500.00, 250.00],
-        regStartAt: '2014-10-09'
-      };
+      reqData = _.clone(sampleData.challengeData, true);
       done();
     });
 
@@ -146,6 +141,120 @@ describe('Challenges Controller', function() {
         res.body.result.success.should.equal(true);
         res.body.result.status.should.equal(200);
         done();
+      });
+    });
+
+    it('should return fields respecting the Swagger documentation file', function (done) {
+      var challengeId;
+      var challengeFileId;
+      var participantId;
+      var requirementId;
+      var scorecardId;
+      var scorecardItemId;
+      var submissionId;
+      var submissionFileId;
+      async.series([function (callback) {
+        // create challenge
+        request(url)
+          .post('/challenges')
+          .send(sampleData.challengeData)
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            challengeId = res.body.id;
+            callback();
+          });
+      }, function (callback) {
+        // add file to challenge
+        request(url)
+          .post('/challenges/'+challengeId+'/files')
+          .send(sampleData.challengeFileData)
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            challengeFileId = res.body.id;
+            callback();
+          });
+      }, function (callback) {
+        // add participant
+        request(url)
+          .post('/challenges/'+challengeId+'/participants')
+          .send(sampleData.participantData)
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            participantId = res.body.id;
+            callback();
+          });
+      }, function (callback) {
+        // add requirement
+        request(url)
+          .post('/challenges/'+challengeId+'/requirements')
+          .send(sampleData.requirementData)
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            requirementId = res.body.id;
+            callback();
+          });
+      }, function (callback) {
+        // add scorecard
+        request(url)
+          .post('/challenges/'+challengeId+'/scorecards/')
+          .send(sampleData.scorecardData)
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            scorecardId = res.body.id;
+            callback();
+          });
+      }, function (callback) {
+        // add scorecard item
+        request(url)
+          .post('/challenges/'+challengeId+'/scorecards/'+scorecardId+'/scorecardItems')
+          .send(sampleData.scorecardItemData)
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            scorecardItemId = res.body.id;
+            callback();
+          });
+      }, function (callback) {
+        // add submission
+        request(url)
+          .post('/challenges/'+challengeId+'/submissions')
+          .send(sampleData.submissionData)
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            submissionId = res.body.id;
+            callback();
+          });
+      }, function (callback) {
+        // add file to submission
+        request(url)
+          .post('/challenges/'+challengeId+'/submissions/'+submissionId+'/files')
+          .send(sampleData.challengeFileData)
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            submissionFileId = res.body.id;
+            callback();
+          });
+      }], function () {
+        var replacementMap = {
+          challengeId: challengeId,
+          fileId: {
+            '/challenges/{challengeId}/files/': challengeFileId,
+            '/challenges/{challengeId}/submissions/{submissionId}/files/': submissionFileId
+          },
+          participantId: participantId,
+          requirementId: requirementId,
+          scorecardId: scorecardId,
+          scorecardItemId: scorecardItemId,
+          submissionId: submissionId
+        };
+        require('./../swaggerTestHelper').validateGetRequests(url, __dirname + '/../../api/swagger/swagger.yaml', replacementMap, done);
       });
     });
 
@@ -417,14 +526,7 @@ describe('Challenges Controller', function() {
     describe('Files API', function() {
       var fileId;
       beforeEach(function(done) {
-        reqData = {
-          title: 'File Title',
-          filePath: '/uploads',
-          size: 123,
-          fileName: 'my-submission.zip',
-          storageLocation: 'local',
-          challengeId: 111
-        };
+        reqData = _.clone(sampleData.challengeFileData, true);
         done();
       });
 
@@ -532,11 +634,7 @@ describe('Challenges Controller', function() {
     describe('Participants API', function() {
       var participantId;
       beforeEach(function(done) {
-        reqData = {
-          role: 'submitter',
-          challengeId: 111,
-          userId: 222
-        };
+        reqData = _.clone(sampleData.participantData, true);
         done();
       });
 
@@ -643,10 +741,7 @@ describe('Challenges Controller', function() {
     describe('Submissions API', function() {
       var submissionId;
       beforeEach(function(done) {
-        reqData = {
-          challengeId: 111,
-          submitterId: 222
-        };
+        reqData = _.clone(sampleData.submissionData, true);
         done();
       });
 

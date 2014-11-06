@@ -1,4 +1,4 @@
-swagger: 2.0
+swagger: "2.0"
 info:
   version: "0.2.1"
   title: Serenity Challenge API
@@ -1423,6 +1423,10 @@ definitions:
       updatedBy:
         type: string
         description: The handle of the user
+      challengeId:
+        type: integer
+        format: int64
+        description: The Challenge id for the scorecard
   ScorecardItemResource:
     required:
       - requirementId
@@ -1449,7 +1453,7 @@ definitions:
       createdAt:
         type: string
         format: date-time
-      updateAt:
+      updatedAt:
         type: string
         format: date-time
       createdBy:
@@ -1566,7 +1570,7 @@ definitions:
     required:
       - challengeId
     properties:
-      Id:
+      id:
         type: integer
         format: int64
         description: postgres primary key
@@ -1577,6 +1581,12 @@ definitions:
         type: integer
         format: int64
         description: The id of the challenge
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
   ChallengesResponse:
     required:
       - success

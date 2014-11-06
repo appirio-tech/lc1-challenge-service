@@ -18,6 +18,8 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
+var sampleData = require('./../sampledata');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -59,13 +61,7 @@ describe('Files Controller', function() {
   describe('Files API', function() {
     var fileId;
     beforeEach(function(done) {
-      reqData = {
-        title: 'File Title',
-        filePath: '/uploads',
-        size: 123,
-        fileName: 'my-submission.zip',
-        storageLocation: 'local'
-      };
+      reqData = _.clone(sampleData.submissionFileData, true);
       done();
     });
 
