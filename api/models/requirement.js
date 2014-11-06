@@ -34,6 +34,7 @@ module.exports = function(sequelize, DataTypes) {
     tableName : 'requirements',
     associate : function(models) {
       Requirement.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
+      Requirement.hasMany(models.ScorecardItem);
     }
   });
 

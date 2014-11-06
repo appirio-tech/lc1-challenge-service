@@ -3,4 +3,4 @@ app:
   loadDoc: true
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
   query:
-    pageSize: 1000
+    pageSize: 20
