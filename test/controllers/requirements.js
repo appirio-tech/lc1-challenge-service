@@ -51,9 +51,9 @@ describe('Requirements Controller', function() {
   describe('Requirements API', function() {
     var requirementId;
     beforeEach(function(done) {
+      // removed challengeId from reqData. Not needed
       reqData = {
-        requirementText: 'Need deployment guide',
-        challengeId: challenge.id
+        requirementText: 'Need deployment guide'
       };
       done();
     });
@@ -76,16 +76,35 @@ describe('Requirements Controller', function() {
       });
     });
 
-    it('should fail to create a requirement with invalid challenge id', function(done) {
+    it('should able to create a requirement item without challengeId in request body', function(done) {
       // send request
       request(url)
-      .post('/challenges/'+9999+'/requirements')
+      .post('/challenges/'+challenge.id+'/requirements')
+      .send(reqData)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.id.should.be.a.Number;
+        res.body.result.success.should.be.true;
+        res.body.result.status.should.equal(200);
+        requirementId = res.body.id;
+        done();
+      });
+    });
+
+    it('should fail to create a requirement with challenge id diferrent in request body and path param', function(done) {
+      reqData.challengeId = challenge.id + 3434;
+      // send request
+      request(url)
+      .post('/challenges/'+challenge.id+'/requirements')
       .send(reqData)
       .end(function(err, res) {
         // verify response
-        res.status.should.equal(404);
+        res.status.should.equal(400);
         res.body.result.success.should.be.false;
-        res.body.result.status.should.equal(404);
+        res.body.result.status.should.equal(400);
         res.body.should.have.property('content');
         done();
       });
@@ -176,7 +195,39 @@ describe('Requirements Controller', function() {
       });
     });
 
-    it('should able to delete the existing requirement', function(done) {
+    it('should able to update the existing requirement without challengeId in request body', function(done) {
+      // send request
+      reqData.requirementText = 'Mocha tests along with deployment guide updated';
+      request(url)
+      .put('/challenges/'+challenge.id+'/requirements/'+requirementId)
+      .send(reqData)
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(200);
+        res.body.id.should.be.a.Number;
+        res.body.id.should.equal(requirementId);
+        res.body.result.success.should.equal(true);
+        res.body.result.status.should.equal(200);
+        done();
+      });
+    });
+
+    it('should fail to update the existing requirement with challengeId different in request body and path param', function(done) {
+      reqData.challengeId = challenge.api + 3434;
+      // send request
+      request(url)
+      .put('/challenges/'+challenge.id+'/requirements/'+requirementId)
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(400);
+        res.body.result.success.should.be.false;
+        res.body.result.status.should.equal(400);
+        res.body.should.have.property('content');
+        done();
+      });
+    });
+
+    it('should delete the existing requirement', function(done) {
       // send request
       request(url)
       .delete('/challenges/'+challenge.id+'/requirements/'+requirementId)
