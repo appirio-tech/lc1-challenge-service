@@ -1496,14 +1496,6 @@ definitions:
       updatedBy:
         type: string
         description: The handle of the user last updated the row
-      challengeId:
-        type: integer
-        format: int64
-        description: The Challenge id for the scorecard
-      submissionId:
-        type: integer
-        format: int64
-        description: "id of the submission"
     required:
       - fileName
       - filePath
