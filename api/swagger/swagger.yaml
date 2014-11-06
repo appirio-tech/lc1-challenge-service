@@ -1,4 +1,4 @@
-swagger: 2.0
+swagger: "2.0"
 info:
   version: "0.2.1"
   title: Serenity Challenge API
