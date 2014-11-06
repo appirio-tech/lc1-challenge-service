@@ -1,11 +1,6 @@
 app:
-  pg:
-    database: lc1challengeservice
-    username: postgres
-    password: postgres
-    host: 106.187.92.185
-    dialect: postgres
-    port: 5432
-  port: 10011
+  port: 10010
+  loadDoc: true
+  pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
   query:
     pageSize: 20
