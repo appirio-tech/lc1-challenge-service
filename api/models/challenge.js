@@ -59,6 +59,7 @@ module.exports = function(sequelize, DataTypes) {
       Challenge.hasMany(models.Participant);
       Challenge.hasMany(models.Submission);
       Challenge.hasMany(models.Scorecard);
+      Challenge.hasMany(models.Requirement);
     }
   });
 
