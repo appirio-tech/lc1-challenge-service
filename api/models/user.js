@@ -19,7 +19,12 @@ module.exports = function(sequelize, DataTypes) {
     createdBy: DataTypes.STRING(128),
     updatedBy: DataTypes.STRING(128)
   }, {
-    tableName : 'users'
+    tableName : 'users',
+    associate : function(models) {
+      User.hasMany(models.Participant);
+      User.hasMany(models.Scorecard);
+      User.hasMany(models.Submission);
+    }
   });
 
   return User;

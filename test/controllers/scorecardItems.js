@@ -30,6 +30,7 @@ var ScorecardItem = db.ScorecardItem;
 
 
 describe('ScorecardItems Controller', function() {
+  this.timeout(15000);
   var url = 'http://localhost:'+config.app.port;
   var reqData;
   var challenge;
@@ -158,6 +159,26 @@ describe('ScorecardItems Controller', function() {
       });
     });
 
+    it('should able to get the partial response of all scorecard items', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems?fields=id')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          res.body.content[0].should.have.property('id');
+          res.body.content[0].should.not.have.property('score');
+          done();
+        });
+    });
+
     it('should able to get the existing scorecard item', function(done) {
       // send request
       request(url)
@@ -173,6 +194,36 @@ describe('ScorecardItems Controller', function() {
         res.body.content.comment.should.equal(reqData.comment);
         done();
       });
+    });
+
+    it('should able to get the existing scorecard with fields parameter and expand functionality', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'?fields=id,scorecardItems(id,requirement),reviewer' )
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.content.scorecardItems.length.should.be.above(0);
+          done();
+        });
+    });
+
+    it('should able to get partial response of the existing scorecard item', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems/'+scorecardItemId+'?fields=id,requirementId,score')
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(scorecardItemId);
+          res.body.content.requirementId.should.equal(reqData.requirementId);
+          res.body.content.score.should.equal(reqData.score);
+          res.body.content.should.not.have.property('comment');
+          done();
+        });
     });
 
     it('should able to update the existing scorecard item', function(done) {

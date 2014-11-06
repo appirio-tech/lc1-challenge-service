@@ -33,6 +33,7 @@ var Submission = db.Submission;
  * Test Challenges controller APIs
  */
 describe('Challenges Controller', function() {
+  this.timeout(15000);
   var url = 'http://localhost:'+config.app.port;
   var reqData;
 
@@ -102,6 +103,23 @@ describe('Challenges Controller', function() {
       });
     });
 
+    it('should able to get partial response of all challenges', function(done){
+      request(url)
+        .get('/challenges?fields=id')
+        .end(function(err, res){
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          res.body.content[0].should.not.have.property('title');
+          done();
+        });
+    });
+
     it('should able to get the existing challenge', function(done) {
       // send request
       request(url)
@@ -116,6 +134,22 @@ describe('Challenges Controller', function() {
         res.body.content.status.should.equal(reqData.status);
         done();
       });
+    });
+
+    it('should able to get partial response of the existing challenge', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challengeId+'?fields=id')
+        .end(function(err, res) {
+          // verify response
+          console.log(res.body);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(challengeId);
+          res.body.content.should.not.have.property('title');
+          done();
+        });
     });
 
     it('should able to update the existing challenge', function(done) {
@@ -479,6 +513,60 @@ describe('Challenges Controller', function() {
         });
       });
 
+      it('should able to get partial response of the all files', function(done) {
+        // send request
+        request(url)
+          .get('/challenges/'+challenge.id+'/files?fields=id')
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            res.body.content.length.should.be.above(0);
+            res.body.content[0].should.not.have.property('title');
+            done();
+          });
+      });
+
+      it('should able to the get partial response and nested file objects of the exist challenge', function(done){
+        request(url)
+          .get('/challenges/'+challenge.id+'?fields=id,title,files')
+          .end(function(err, res) {
+            //verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('content');
+            res.body.content.should.have.property('files');
+            res.body.content.files.length.should.be.above(0);
+            res.body.content.files[0].should.have.property('id');
+            done();
+          });
+      });
+
+      it('should able to get partial response of the exist challenge and its nested file object with partial fields', function(done){
+        request(url)
+          .get('/challenges/'+challenge.id+'?fields=id,title,files(id,title)')
+          .end(function(err, res) {
+            //verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('content');
+            res.body.content.should.have.property('files');
+            res.body.content.files.length.should.be.above(0);
+            res.body.content.files[0].should.have.property('title');
+            res.body.content.files[0].should.not.have.property('challengeId');
+            done();
+          });
+      });
+
       it('should able to get the existing file', function(done) {
         // send request
         request(url)
@@ -494,6 +582,22 @@ describe('Challenges Controller', function() {
           res.body.content.fileName.should.equal(reqData.fileName);
           done();
         });
+      });
+
+      it('should able to get partial response of the existing file', function(done) {
+        // send request
+        request(url)
+          .get('/challenges/'+challenge.id+'/files/'+fileId+'?fields=id,title')
+          .end(function(err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.content.id.should.equal(fileId);
+            res.body.content.title.should.equal(reqData.title);
+            res.body.content.should.not.have.property('challengeId');
+            done();
+          });
       });
 
       it('should able to update the existing file', function(done) {
@@ -625,6 +729,26 @@ describe('Challenges Controller', function() {
         });
       });
 
+      it('should able to get the partial response of all participants', function(done) {
+        // send request
+        request(url)
+          .get('/challenges/'+challenge.id+'/participants?fields=id')
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            res.body.content.length.should.be.above(0);
+            res.body.content[0].should.have.property('id');
+            res.body.content[0].should.not.have.property('challengeId');
+            done();
+          });
+      });
+
       it('should able to get the existing participant', function(done) {
         // send request
         request(url)
@@ -639,6 +763,21 @@ describe('Challenges Controller', function() {
           res.body.content.role.should.equal(reqData.role);
           done();
         });
+      });
+
+      it('should able to get partial response of the existing participant', function(done) {
+        // send request
+        request(url)
+          .get('/challenges/'+challenge.id+'/participants/'+participantId+'?fields=id')
+          .end(function(err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.content.id.should.equal(participantId);
+            res.body.content.should.not.have.property('challengeId');
+            done();
+          });
       });
 
       it('should able to update the existing participant', function(done) {
@@ -804,6 +943,27 @@ describe('Challenges Controller', function() {
         });
       });
 
+      it('should able to get the partial response of all submissions', function(done) {
+        // send request
+        request(url)
+          .get('/challenges/'+challenge.id+'/submissions?fields=id')
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            res.body.content.length.should.be.above(0);
+            res.body.content[0].should.have.property('id');
+            res.body.content[0].should.not.have.property('submitterId');
+            res.body.content[0].should.not.have.property('challengeId');
+            done();
+          });
+      });
+
       it('should able to get the existing submission', function(done) {
         // send request
         request(url)
@@ -818,6 +978,22 @@ describe('Challenges Controller', function() {
           res.body.content.submitterId.should.equal(reqData.submitterId);
           done();
         });
+      });
+
+      it('should able to get partial response of the existing submission', function(done) {
+        // send request
+        request(url)
+          .get('/challenges/'+challenge.id+'/submissions/'+submissionId+'?fields=id,submitterId')
+          .end(function(err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.content.id.should.equal(submissionId);
+            res.body.content.submitterId.should.equal(reqData.submitterId);
+            res.body.content.should.not.have.property('challengeId');
+            done();
+          });
       });
 
       it('should able to update the existing submission', function(done) {

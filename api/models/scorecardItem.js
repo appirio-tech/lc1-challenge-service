@@ -40,6 +40,7 @@ module.exports = function(sequelize, DataTypes) {
     tableName : 'scorecard_items',
     associate : function(models) {
       ScorecardItem.belongsTo(models.Scorecard, {foreignKey: 'scorecardId'});
+      ScorecardItem.belongsTo(models.Requirement, {foreignKey: 'requirementId'});
     }
   });
 

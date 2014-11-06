@@ -1,4 +1,4 @@
-swagger: 2.0
+swagger: "2.0"
 info:
   version: "0.2.1"
   title: Serenity Challenge API
@@ -49,6 +49,10 @@ paths:
           in: query
           type: string
           description: field name to sort {asc [nulls {first | last} ] | desc  [nulls {first | last} }
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a list of all challenge resources
@@ -94,6 +98,10 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: A full challenge resource
@@ -198,6 +206,10 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Success
@@ -229,6 +241,10 @@ paths:
           format: int64
           required: true
           description: The Id of the file
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a file resource
@@ -353,6 +369,10 @@ paths:
           in: query
           description: The role to filter the results by
           type: string
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Success
@@ -384,6 +404,10 @@ paths:
           format: int64
           required: true
           description: The Id of the participant
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a participant resource
@@ -500,6 +524,10 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Success
@@ -531,6 +559,10 @@ paths:
           format: int64
           required: true
           description: The Id of the submission
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a submission resource
@@ -661,6 +693,10 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Success
@@ -699,6 +735,10 @@ paths:
           format: int64
           required: true
           description: The Id of the file
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a file resource
@@ -832,6 +872,10 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Array of requirement resources
@@ -863,6 +907,10 @@ paths:
           format: int64
           required: true
           description: The Id of the requirement
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a requirements resource
@@ -982,6 +1030,10 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Array of scorecard resources
@@ -1011,6 +1063,10 @@ paths:
           format: int64
           in: path
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: A scorecard
@@ -1102,6 +1158,10 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Array of ScorecardItem resources
@@ -1172,6 +1232,10 @@ paths:
           description: "id of scorecardItem"
           in: path
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: "Success"

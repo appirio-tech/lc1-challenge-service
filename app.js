@@ -13,6 +13,7 @@ var express = require('express');
 var config = require('config');
 var datasource = require('./datasource');
 var routeHelper = require('./lib/routeHelper');
+var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -42,6 +43,8 @@ if (config.has('app.port')) {
 } else {
   port = 10010;
 }
+
+app.use(partialResponseHelper.parseFields);
 
 // a127 middlewares
 app.use(a127.middleware());
