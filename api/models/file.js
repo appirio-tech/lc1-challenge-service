@@ -21,18 +21,6 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('id'));
       }
     },
-    challengeId: {
-      type: DataTypes.BIGINT, allowNull: false,
-      get: function() {
-        return parseInt(this.getDataValue('challengeId'));
-      }
-    },
-    submissionId: {
-      type: DataTypes.BIGINT, allowNull: false,
-      get: function() {
-        return parseInt(this.getDataValue('submissionId'));
-      }
-    },
     title : {type: DataTypes.TEXT},
     filePath : {type: DataTypes.TEXT, allowNull: false},
     size : {
@@ -54,9 +42,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName : 'files',
     associate : function(models) {
-      File.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
-      File.belongsTo(models.Submission, {foreignKey : 'submissionId'});
-
+      File.hasMany(models.ChallengeFile);
+      File.hasMany(models.SubmissionFile);
     }
   });
 

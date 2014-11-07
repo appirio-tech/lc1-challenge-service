@@ -17,7 +17,7 @@ var controllerHelper = require('./../../lib/controllerHelper');
 
 
 // build controller for the nested files resource
-var requirementController = controllerHelper.buildController(Requirement, [Challenge], {filtering: false});
+var requirementController = controllerHelper.buildController(Requirement, [Challenge], null, {filtering: false});
 
 
 module.exports = {

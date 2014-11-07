@@ -12,6 +12,7 @@
 
 var datasource = require('./../../datasource').getDataSource();
 var Challenge = datasource.Challenge;
+var ChallengeFile = datasource.ChallengeFile;
 var File = datasource.File;
 var Participant = datasource.Participant;
 var Submission = datasource.Submission;
@@ -20,7 +21,7 @@ var controllerHelper = require('./../../lib/controllerHelper');
 
 
 // build controller for challenge resource
-var challengeController = controllerHelper.buildController(Challenge, null, {filtering: true});
+var challengeController = controllerHelper.buildController(Challenge, null, null, {filtering: true});
 
 
 var filteringOff = {
@@ -28,13 +29,13 @@ var filteringOff = {
 };
 
 // build controller for the nested files resource
-var fileController = controllerHelper.buildController(File, [Challenge], filteringOff);
+var fileController = controllerHelper.buildController(File, [Challenge], ChallengeFile, filteringOff);
 
 // build controller for the nested participants resource
-var participantController = controllerHelper.buildController(Participant, [Challenge], {filtering: true});
+var participantController = controllerHelper.buildController(Participant, [Challenge], null, {filtering: true});
 
 // build controller for the nested submissions resource
-var submissionController = controllerHelper.buildController(Submission, [Challenge], filteringOff);
+var submissionController = controllerHelper.buildController(Submission, [Challenge], null, filteringOff);
 
 
 

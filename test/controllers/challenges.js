@@ -592,7 +592,6 @@ describe('Challenges Controller', function() {
           res.body.success.should.be.true;
           res.body.status.should.equal(200);
           res.body.content.id.should.equal(fileId);
-          res.body.content.challengeId.should.equal(challenge.id);
           res.body.content.title.should.equal(reqData.title);
           res.body.content.fileName.should.equal(reqData.fileName);
           done();

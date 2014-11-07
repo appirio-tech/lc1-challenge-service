@@ -11,15 +11,14 @@
 
 
 var datasource = require('./../../datasource').getDataSource();
-var Challenge = datasource.Challenge;
 var Submission = datasource.Submission;
+var SubmissionFile = datasource.SubmissionFile;
 var File = datasource.File;
 var controllerHelper = require('./../../lib/controllerHelper');
 
 
 // build controller for the nested files resource
-var fileController = controllerHelper.buildController(File, [Challenge, Submission], {filtering: false});
-
+var fileController = controllerHelper.buildController(File, [Submission], SubmissionFile, {filtering: false});
 
 module.exports = {
   getFiles: fileController.all,

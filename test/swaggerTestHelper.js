@@ -93,7 +93,7 @@ var _validate = function (route, obj, expectedResponseDefinition, definitions, c
     // if null
     if (!value) {
       // assert field not required
-      assert.ok(expectedResponseDefinition.required.indexOf(key) === -1, route + ': found null on required field ' + fieldPath);
+      assert.ok(expectedResponseDefinition.required && expectedResponseDefinition.required.indexOf(key) === -1, route + ': found null on required field ' + fieldPath);
       continue;
     }
 

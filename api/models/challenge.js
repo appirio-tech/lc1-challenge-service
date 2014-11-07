@@ -55,7 +55,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName : 'challenges',
     associate : function(models) {
-      Challenge.hasMany(models.File);
+      Challenge.hasMany(models.ChallengeFile);
       Challenge.hasMany(models.Participant);
       Challenge.hasMany(models.Submission);
       Challenge.hasMany(models.Scorecard);
