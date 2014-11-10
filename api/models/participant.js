@@ -45,6 +45,7 @@ module.exports = function(sequelize, DataTypes) {
 
   }, {
     tableName : 'participants',
+    underscored: true,
     associate : function(models) {
       Participant.belongsTo(models.User, {foreignKey : 'userId'});
       Participant.belongsTo(models.Challenge, {foreignKey : 'challengeId'});

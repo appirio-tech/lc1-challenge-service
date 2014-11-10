@@ -20,6 +20,7 @@ module.exports = function(sequelize, DataTypes) {
     updatedBy: DataTypes.STRING(128)
   }, {
     tableName : 'users',
+    underscored : true,
     associate : function(models) {
       User.hasMany(models.Participant);
       User.hasMany(models.Scorecard);

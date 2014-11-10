@@ -65,6 +65,7 @@ module.exports = function(sequelize, DataTypes) {
     updatedBy: DataTypes.STRING(128)
   }, {
     tableName : 'scorecards',
+    underscored : true,
     associate : function(models) {
       Scorecard.hasMany(models.ScorecardItem);
       Scorecard.belongsTo(models.Challenge, {foreignKey: 'challengeId'});
