@@ -1034,6 +1034,10 @@ paths:
           in: query
           type: string
           description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
+        - name: filter
+          in: query
+          type: string
+          description: "{fieldName1}={fieldValue1}&...{fieldNameN}>{fieldValueN}. String value needs to be surrounded by single quotation(‘). fieldValue can contain multiple values using in() format {fieldName}=in({fieldValue1},{fieldValue1}). Operations can be =, > or <.  < and > operations are only for number, integers and dates"
       responses:
         "200":
           description: Array of scorecard resources
