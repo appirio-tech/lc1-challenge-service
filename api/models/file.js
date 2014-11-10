@@ -53,6 +53,7 @@ module.exports = function(sequelize, DataTypes) {
 
   }, {
     tableName : 'files',
+    underscored: true,
     associate : function(models) {
       File.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
       File.belongsTo(models.Submission, {foreignKey : 'submissionId'});

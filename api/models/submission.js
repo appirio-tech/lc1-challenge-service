@@ -38,6 +38,7 @@ module.exports = function(sequelize, DataTypes) {
     updatedBy: DataTypes.STRING(128)
   }, {
     tableName : 'submissions',
+    underscored : true,
     associate : function(models) {
       Submission.hasMany(models.File);
       Submission.hasMany(models.Scorecard);
