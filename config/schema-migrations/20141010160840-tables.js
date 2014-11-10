@@ -42,7 +42,7 @@ exports.up = function (db, callback) {
       'challenge_id': { type: 'bigint', notNull: true}
     }),
     db.runSql.bind(db,
-      'ALTER TABLE files ADD COLUMN storage_location enum_files_storage_location NOT_NULL'),
+      'ALTER TABLE files ADD COLUMN storage_location enum_files_storage_location NOT_NULL;'),
 
     // participants table
     db.createTable.bind(db, 'participants', {
@@ -55,7 +55,7 @@ exports.up = function (db, callback) {
       'user_id': { type: 'bigint', notNull: true }
     }),
     db.runSql.bind(db,
-      'ALTER TABLE files ADD COLUMN role enum_participants_role NOT_NULL'),
+      'ALTER TABLE files ADD COLUMN role enum_participants_role NOT_NULL;'),
 
     // submissions table
     db.createTable.bind(db, 'submissions', {
@@ -85,7 +85,7 @@ exports.up = function (db, callback) {
       'submission_id': { type: 'bigint', notNull: true },
       'challenge_id': { type: 'bigint', notNull: true }
     }),
-      db.runSql.bind(db, 'ALTER TABLE scorecards ADD COLUMN status enum_scorecards_status'),
+      db.runSql.bind(db, 'ALTER TABLE scorecards ADD COLUMN status enum_scorecards_status;'),
 
     // scorecard_items table
     db.createTable.bind(db, 'scorecard_items', {
