@@ -18,7 +18,7 @@ exports.up = function (db, callback) {
 exports.down = function (db, callback) {
   async.series([
     db.runSql.bind(db, "DROP TYPE enum_challenges_status;"),
-    db.runSql.bind(db, "DROP TYPE \"enum_files_storageLocation\";"),
+    db.runSql.bind(db, "DROP TYPE \"enum_files_storage_location\";"),
     db.runSql.bind(db, "DROP TYPE enum_participants_role;"),
     db.runSql.bind(db, "DROP TYPE enum_scorecards_status;")
   ], callback);

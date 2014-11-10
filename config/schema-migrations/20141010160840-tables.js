@@ -30,7 +30,7 @@ exports.up = function (db, callback) {
       
     // files table
     db.createTable('files', {
-      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'title': { type: 'text' },
       'file_path': { type: 'text', notNull: true },
       'size': { type: 'bigint', notNull: true },
@@ -48,7 +48,7 @@ exports.up = function (db, callback) {
 
     // participants table
     db.createTable('participants', {
-      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'created_at': { type: 'timestamp', notNull: true },
       'updated_at': { type: 'timestamp', notNull: true },
       'created_by': { type: 'string', length: 128 },
@@ -62,7 +62,7 @@ exports.up = function (db, callback) {
 
     // submissions table
     db.createTable('submissions', {
-      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'created_at': { type: 'timestamp', notNull: true },
       'updated_at': { type: 'timestamp', notNull: true },
       'created_by': { type: 'string', length: 128 },
@@ -73,7 +73,7 @@ exports.up = function (db, callback) {
 
     // scorecards table
     db.createTable('scorecards', {
-      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'score_sum': { type: 'int' },
       'score_percent': { type: 'decimal' },
       'score_max': { type: 'decimal' },
@@ -93,7 +93,7 @@ exports.up = function (db, callback) {
 
     // scorecard_items table
     db.createTable('scorecard_items', {
-      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'requirement_id': { type: 'int' },
       'score': { type: 'decimal' },
       'comment': { type: 'text' },
@@ -106,7 +106,7 @@ exports.up = function (db, callback) {
 
     // requirements table
     db.createTable('requirements', {
-      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'requirement_text': { type: 'text' },
       'created_at': { type: 'timestamp', notNull: true },
       'updated_at': { type: 'timestamp', notNull: true },
@@ -116,7 +116,7 @@ exports.up = function (db, callback) {
 
     // users table
     db.createTable('users', {
-      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'name': { type: 'text' },
       'email': { type: 'text' },
       'created_at': { type: 'timestamp', notNull: true },
