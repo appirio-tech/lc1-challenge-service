@@ -5,7 +5,7 @@ var type = dbm.dataType;
 exports.up = function (db, callback) {
   async.series([
     // challenges table
-    db.createTable('challenges', {
+    db.createTable.bind(db, 'challenges', {
       id: { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       reg_start_at: { type: 'timestamp' },
       sub_end_at: { type: 'timestamp' },
@@ -21,15 +21,14 @@ exports.up = function (db, callback) {
       updated_at: { type: 'timestamp', notNull: true },
       created_by: { type: 'string', length: 128 },
       updated_by: { type: 'string', length: 128 }
-    }, function(a) {
-      db.runSql.bind(db,
-        "ALTER TABLE challenges ADD COLUMN tags text[]," +
-        "ADD COLUMN prizes NUMERIC(11, 2)[]," +
-        "ADD COLUMN status enum_challenges_status NOT NULL;");
     }),
+    db.runSql.bind(db,
+      "ALTER TABLE challenges ADD COLUMN tags text[]," +
+      "ADD COLUMN prizes NUMERIC(11, 2)[]," +
+      "ADD COLUMN status enum_challenges_status NOT NULL;"),
       
     // files table
-    db.createTable('files', {
+    db.createTable.bind(db, 'files', {
       'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'title': { type: 'text' },
       'file_path': { type: 'text', notNull: true },
@@ -41,13 +40,12 @@ exports.up = function (db, callback) {
       'updated_by': { type: 'string', length: 128 },
       'submission_id': { type: 'bigint' },
       'challenge_id': { type: 'bigint', notNull: true}
-    }, function(a) {
-      db.runSql.bind(db,
-        'ALTER TABLE files ADD COLUMN storage_location enum_files_storage_location NOT_NULL');
     }),
+    db.runSql.bind(db,
+      'ALTER TABLE files ADD COLUMN storage_location enum_files_storage_location NOT_NULL'),
 
     // participants table
-    db.createTable('participants', {
+    db.createTable.bind(db, 'participants', {
       'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'created_at': { type: 'timestamp', notNull: true },
       'updated_at': { type: 'timestamp', notNull: true },
@@ -55,13 +53,12 @@ exports.up = function (db, callback) {
       'updated_by': { type: 'string', length: 128 },
       'challenge_id': { type: 'bigint', notNull: true },
       'user_id': { type: 'bigint', notNull: true }
-    }, function(a) {
-      db.runSql.bind(db,
-        'ALTER TABLE files ADD COLUMN role enum_participants_role NOT_NULL');
     }),
+    db.runSql.bind(db,
+      'ALTER TABLE files ADD COLUMN role enum_participants_role NOT_NULL'),
 
     // submissions table
-    db.createTable('submissions', {
+    db.createTable.bind(db, 'submissions', {
       'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'created_at': { type: 'timestamp', notNull: true },
       'updated_at': { type: 'timestamp', notNull: true },
@@ -72,7 +69,7 @@ exports.up = function (db, callback) {
     }),
 
     // scorecards table
-    db.createTable('scorecards', {
+    db.createTable.bind(db, 'scorecards', {
       'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'score_sum': { type: 'int' },
       'score_percent': { type: 'decimal' },
@@ -87,12 +84,11 @@ exports.up = function (db, callback) {
       'reviewer_id': { type: 'bigint', notNull: true },
       'submission_id': { type: 'bigint', notNull: true },
       'challenge_id': { type: 'bigint', notNull: true }
-    }, function(a) {
-      db.runSql.bind(db, 'ALTER TABLE scorecards ADD COLUMN status enum_scorecards_status');
     }),
+      db.runSql.bind(db, 'ALTER TABLE scorecards ADD COLUMN status enum_scorecards_status'),
 
     // scorecard_items table
-    db.createTable('scorecard_items', {
+    db.createTable.bind(db, 'scorecard_items', {
       'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'requirement_id': { type: 'int' },
       'score': { type: 'decimal' },
@@ -105,17 +101,16 @@ exports.up = function (db, callback) {
     }),
 
     // requirements table
-    db.createTable('requirements', {
+    db.createTable.bind(db, 'requirements', {
       'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'requirement_text': { type: 'text' },
       'created_at': { type: 'timestamp', notNull: true },
       'updated_at': { type: 'timestamp', notNull: true }
-    }, function(a) {
-      db.runSql.bind(db, 'ALTER TABLE requirements ADD COLUMN challenge_id bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL;');
     }),
+      db.runSql.bind(db, 'ALTER TABLE requirements ADD COLUMN challenge_id bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL;'),
 
     // users table
-    db.createTable('users', {
+    db.createTable.bind(db, 'users', {
       'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'name': { type: 'text' },
       'email': { type: 'text' },
