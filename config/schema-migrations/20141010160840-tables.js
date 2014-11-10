@@ -85,7 +85,7 @@ exports.up = function (db, callback) {
       'created_by': { type: 'string', length: 128 },
       'updated_by': { type: 'string', length: 128 },
       'reviewer_id': { type: 'bigint', notNull: true },
-      'submission_id': { type: 'bigint', notNull: true }
+      'submission_id': { type: 'bigint', notNull: true },
       'challenge_id': { type: 'bigint', notNull: true }
     }, function(a) {
       db.runSql.bind(db, 'ALTER TABLE scorecards ADD COLUMN status enum_scorecards_status');
@@ -109,7 +109,7 @@ exports.up = function (db, callback) {
       'id': { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
       'requirement_text': { type: 'text' },
       'created_at': { type: 'timestamp', notNull: true },
-      'updated_at': { type: 'timestamp', notNull: true },
+      'updated_at': { type: 'timestamp', notNull: true }
     }, function(a) {
       db.runSql.bind(db, 'ALTER TABLE requirements ADD COLUMN challenge_id bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL;');
     }),
@@ -122,7 +122,7 @@ exports.up = function (db, callback) {
       'created_at': { type: 'timestamp', notNull: true },
       'updated_at': { type: 'timestamp', notNull: true },
       'created_by': { type: 'string', length: 128 },
-      'updated_by': { type: 'string', length: 128 },
+      'updated_by': { type: 'string', length: 128 }
     }),
   ], callback);
 };
