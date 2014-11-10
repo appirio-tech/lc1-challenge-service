@@ -5,133 +5,125 @@ var type = dbm.dataType;
 exports.up = function (db, callback) {
   async.series([
     // challenges table
-    db.runSql.bind(db,
-      'CREATE TABLE challenges ( ' +
-        'id bigserial NOT NULL, ' +
-        '"regStartAt" timestamp with time zone, ' +
-        '"subEndAt" timestamp with time zone, ' +
-        '"completedAt" timestamp with time zone, ' +
-        'title text NOT NULL DEFAULT \'Untitled Challenge\'::text, ' +
-        'overview character varying(140), ' +
-        'description text, ' +
-        'tags text[], ' +
-        'prizes NUMERIC(11,2)[], ' +
-        'account character varying(255), ' +
-        '"accountId" character varying(255), ' +
-        '"source" text, ' +
-        '"sourceId" text, ' +
-        'status enum_challenges_status NOT NULL, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128) ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD CONSTRAINT challenges_pkey PRIMARY KEY (id);'),
-
+    db.createTable('challenges', {
+      id: { type: 'int', primaryKey: true, autoIncrement: true, notNull: true },
+      reg_start_at: { type: 'timestamp' },
+      sub_end_at: { type: 'timestamp' },
+      completed_at: { type: 'timestamp' },
+      title: { type: 'text', notNull: true, defaultValue: "Untitled Challenge" },
+      overview: { type: 'string', length: 140 },
+      description: { type: 'text' },
+      account: { type: 'string', length: 255 },
+      account_id: { type: 'string', length: 255 },
+      source: { type: 'text' },
+      source_id: { type: 'text' },
+      created_at: { type: 'timestamp', notNull: true },
+      updated_at: { type: 'timestamp', notNull: true },
+      created_by: { type: 'string', length: 128 },
+      updated_by: { type: 'string', length: 128 }
+    }, function(a) {
+      db.runSql.bind(db,
+        "ALTER TABLE challenges ADD COLUMN tags text[]," +
+        "ADD COLUMN prizes NUMERIC(11, 2)[]," +
+        "ADD COLUMN status enum_challenges_status NOT NULL;");
+    }),
+      
     // files table
-    db.runSql.bind(db,
-      'CREATE TABLE files ( ' +
-        'id bigserial NOT NULL, ' +
-        'title text, ' +
-        '"filePath" text NOT NULL, ' +
-        'size bigint NOT NULL, ' +
-        '"fileName" text NOT NULL, ' +
-        '"storageLocation" "enum_files_storageLocation" NOT NULL, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
-        '"submissionId" bigint, ' +
-        '"challengeId" bigint NOT NULL ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY files ADD CONSTRAINT files_pkey PRIMARY KEY (id);'),
+    db.createTable('files', {
+      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'title': { type: 'text' },
+      'file_path': { type: 'text', notNull: true },
+      'size': { type: 'bigint', notNull: true },
+      'file_name': { type: 'text', notNull: true },
+      'created_at': { type: 'timestamp', notNull: true },
+      'updated_at': { type: 'timestamp', notNull: true },
+      'created_by': { type: 'string', length: 128 },
+      'updated_by': { type: 'string', length: 128 },
+      'submission_id': { type: 'bigint' },
+      'challenge_id': { type: 'bigint', notNull: true}
+    }, function(a) {
+      db.runSql.bind(db,
+        'ALTER TABLE files ADD COLUMN storage_location enum_files_storage_location NOT_NULL');
+    }),
 
     // participants table
-    db.runSql.bind(db,
-      'CREATE TABLE participants ( ' +
-        'id bigserial NOT NULL, ' +
-        'role enum_participants_role NOT NULL, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
-        '"challengeId" bigint NOT NULL, ' +
-        '"userId" bigint NOT NULL ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY participants ADD CONSTRAINT participants_pkey PRIMARY KEY (id);'),
+    db.createTable('participants', {
+      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'created_at': { type: 'timestamp', notNull: true },
+      'updated_at': { type: 'timestamp', notNull: true },
+      'created_by': { type: 'string', length: 128 },
+      'updated_by': { type: 'string', length: 128 },
+      'challenge_id': { type: 'bigint', notNull: true },
+      'user_id': { type: 'bigint', notNull: true }
+    }, function(a) {
+      db.runSql.bind(db,
+        'ALTER TABLE files ADD COLUMN role enum_participants_role NOT_NULL');
+    }),
 
     // submissions table
-    db.runSql.bind(db,
-      'CREATE TABLE submissions ( ' +
-        'id bigserial NOT NULL, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
-        '"challengeId" bigint NOT NULL, ' +
-        '"submitterId" bigint NOT NULL ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY submissions ADD CONSTRAINT submissions_pkey PRIMARY KEY (id);'),
+    db.createTable('submissions', {
+      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'created_at': { type: 'timestamp', notNull: true },
+      'updated_at': { type: 'timestamp', notNull: true },
+      'created_by': { type: 'string', length: 128 },
+      'updated_by': { type: 'string', length: 128 },
+      'challenge_id': { type: 'bigint', notNull: true },
+      'submitter_id': { type: 'bigint', notNull: true }
+    }),
 
     // scorecards table
-    db.runSql.bind(db,
-      'CREATE TABLE scorecards ( ' +
-        'id bigserial NOT NULL, ' +
-        '"scoreSum" integer, ' +
-        '"scorePercent" double precision, ' +
-        '"scoreMax" double precision, ' +
-        'status enum_scorecards_status, ' +
-        'pay boolean, ' +
-        'place integer, ' +
-        'prize double precision, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
-        '"reviewerId" bigint NOT NULL, ' +
-        '"submissionId" bigint NOT NULL, ' +
-        '"challengeId" bigint NOT NULL ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY scorecards ADD CONSTRAINT scorecards_pkey PRIMARY KEY (id);'),
+    db.createTable('scorecards', {
+      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'score_sum': { type: 'int' },
+      'score_percent': { type: 'decimal' },
+      'score_max': { type: 'decimal' },
+      'pay': { type: 'boolean' },
+      'place': { type: 'int' },
+      'prize': { type: 'decimal' },
+      'created_at': { type: 'timestamp', notNull: true },
+      'updated_at': { type: 'timestamp', notNull: true },
+      'created_by': { type: 'string', length: 128 },
+      'updated_by': { type: 'string', length: 128 },
+      'reviewer_id': { type: 'bigint', notNull: true },
+      'submission_id': { type: 'bigint', notNull: true }
+      'challenge_id': { type: 'bigint', notNull: true }
+    }, function(a) {
+      db.runSql.bind(db, 'ALTER TABLE scorecards ADD COLUMN status enum_scorecards_status');
+    }),
 
     // scorecard_items table
-    db.runSql.bind(db,
-      'CREATE TABLE scorecard_items ( ' +
-        'id bigserial NOT NULL, ' +
-        '"requirementId" integer, ' +
-        'score double precision, ' +
-        'comment text, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
-        '"scorecardId" bigint NOT NULL ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY scorecard_items ADD CONSTRAINT scorecard_items_pkey PRIMARY KEY (id);'),
+    db.createTable('scorecard_items', {
+      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'requirement_id': { type: 'int' },
+      'score': { type: 'decimal' },
+      'comment': { type: 'text' },
+      'created_at': { type: 'timestamp', notNull: true },
+      'updated_at': { type: 'timestamp', notNull: true },
+      'created_by': { type: 'string', length: 128 },
+      'updated_by': { type: 'string', length: 128 },
+      'scorecard_id': { type: 'bigint', notNull: true }
+    }),
 
     // requirements table
-    db.runSql.bind(db,
-      'CREATE TABLE requirements ( ' +
-      'id bigserial NOT NULL, ' +
-      '"requirementText" text, ' +
-      '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL, ' +
-      '"createdAt" timestamp with time zone NOT NULL, ' +
-      '"updatedAt" timestamp with time zone NOT NULL ' +
-      ');'),
+    db.createTable('requirements', {
+      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'requirement_text': { type: 'text' },
+      'created_at': { type: 'timestamp', notNull: true },
+      'updated_at': { type: 'timestamp', notNull: true },
+    }, function(a) {
+      db.runSql.bind(db, 'ALTER TABLE requirements ADD COLUMN challenge_id bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL;');
+    }),
 
     // users table
-    db.runSql.bind(db,
-      'CREATE TABLE users ( ' +
-        'id bigserial NOT NULL, ' +
-        'name text, ' +
-        'email text, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128) ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY users ADD CONSTRAINT users_pkey PRIMARY KEY (id);')
-
+    db.createTable('users', {
+      'id': { type: 'int', primaryKey: 'true', autoIncrement: true, notNull: true },
+      'name': { type: 'text' },
+      'email': { type: 'text' },
+      'created_at': { type: 'timestamp', notNull: true },
+      'updated_at': { type: 'timestamp', notNull: true },
+      'created_by': { type: 'string', length: 128 },
+      'updated_by': { type: 'string', length: 128 },
+    }),
   ], callback);
 };
 
