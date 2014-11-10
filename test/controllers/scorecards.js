@@ -18,6 +18,7 @@ var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
 var config = require('config');
+var _ = require('lodash');
 
 var datasource = require('./../../datasource');
 datasource.init(config);
@@ -31,7 +32,7 @@ var Scorecard = db.Scorecard;
 describe('Scorecards Controller', function() {
   this.timeout(15000);
   var url = 'http://localhost:'+config.app.port;
-  var reqData;
+  var reqData, reqData2, reqData3, reqData4;
   var challenge;
 
   before(function(done) {
@@ -62,7 +63,58 @@ describe('Scorecards Controller', function() {
         reviewerId: 222,
         submissionId: 333
       };
-      done();
+      reqData2 = {
+        scoreSum: 97,
+        scorePercent: 96.5,
+        scoreMax: 99.9,
+        status: 'VALID',
+        pay: true,
+        place: 1,
+        prize: 1500,
+        reviewerId: 222,
+        submissionId: 333
+      };
+      reqData3 = {
+        scoreSum: 97,
+        scorePercent: 96.5,
+        scoreMax: 99.9,
+        status: 'VALID',
+        pay: true,
+        place: 1,
+        prize: 500,
+        reviewerId: 222,
+        submissionId: 333
+      };
+      reqData4 = {
+        scoreSum: 97,
+        scorePercent: 96.5,
+        scoreMax: 99.9,
+        status: 'INVALID',
+        pay: true,
+        place: 1,
+        prize: 1500,
+        reviewerId: 222,
+        submissionId: 333
+      };
+      request(url)
+        .post('/challenges/'+challenge.id+'/scorecards/')
+        .send(reqData2)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+            request(url)
+              .post('/challenges/'+challenge.id+'/scorecards/')
+              .send(reqData3)
+              .expect('Content-Type', /json/)
+              .end(function(err, res) {
+                  request(url)
+                    .post('/challenges/'+challenge.id+'/scorecards/')
+                    .send(reqData4)
+                    .expect('Content-Type', /json/)
+                    .end(function(err, res) {
+                        done();
+                    });
+              });
+        });
     });
 
     it('should able to create a scorecard with valid data', function(done) {
@@ -115,6 +167,69 @@ describe('Scorecards Controller', function() {
         res.body.content.length.should.be.above(0);
         done();
       });
+    });
+
+    it('should able to filter all scorecards whose pay=true', function(done) {
+      // send request
+      request(url)
+          .get('/challenges/'+challenge.id+'/scorecards?filter=pay=true')
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            _.forEach(res.body.content, function(scorecard){
+              scorecard.pay.should.equal(true);
+            });
+            done();
+          });
+    });
+
+    it('should able to filter all scorecards whose pay=true and status=VALID', function(done) {
+      // send request
+      request(url)
+          .get('/challenges/'+challenge.id+'/scorecards?filter=pay=true%26status=\'VALID\'')
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            _.forEach(res.body.content, function(scorecard){
+              scorecard.status.should.equal('VALID');
+              scorecard.pay.should.equal(true);
+            });
+            done();
+          });
+    });
+
+    it('should able to filter all scorecards whose pay=true and status=VALID and prize=500', function(done) {
+      // send request
+      request(url)
+          .get('/challenges/'+challenge.id+'/scorecards?filter=pay=true%26status=\'VALID\'%26prize=500')
+          .end(function(err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            _.forEach(res.body.content, function(scorecard){
+              scorecard.status.should.equal('VALID');
+              scorecard.pay.should.equal(true);
+              scorecard.prize.should.equal(500);
+            });
+            done();
+          });
     });
 
     it('should able to get the partial response of all scorecards', function(done) {
