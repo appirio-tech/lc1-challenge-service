@@ -48,7 +48,7 @@ describe('ScorecardItems Controller', function() {
       challenge = savedEntity;
       var scorecardData = {
         scoreSum: 97,
-        status: 'VALID',
+        status: 'NEW',
         pay: false,
         place: 1,
         challengeId: challenge.id,

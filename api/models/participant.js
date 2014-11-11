@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
     // role of participant
     role : {
       type: DataTypes.ENUM,
-      values: ['owner', 'submitter', 'watcher', 'reviewer'],
+      values: ['OWNER', 'SUBMITTER', 'WATCHER', 'REVIEWER'],
       allowNull: false
     },
     createdBy: DataTypes.STRING(128),

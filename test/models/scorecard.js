@@ -38,7 +38,7 @@ describe('<Unit Test>', function() {
         scoreSum: 97,
         scorePercent: 96.5,
         scoreMax: 99.9,
-        status: 'VALID',
+        status: 'NEW',
         pay: false,
         place: 1,
         prize: 1500,
@@ -145,7 +145,7 @@ describe('<Unit Test>', function() {
       });
 
       it('should able to update a submission with valid id', function(done) {
-        entity.status = 'LATE';
+        entity.status = 'SAVED';
         // update an entity
         entity.save().success(function(updatedEntity) {
           updatedEntity.id.should.equal(entity.id);
