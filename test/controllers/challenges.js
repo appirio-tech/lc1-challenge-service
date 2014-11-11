@@ -456,7 +456,7 @@ describe('Challenges Controller', function() {
           filePath: '/uploads',
           size: 123,
           fileName: 'my-submission.zip',
-          storageLocation: 'local'
+          storageLocation: 'LOCAL'
         };
         done();
       });
@@ -637,7 +637,7 @@ describe('Challenges Controller', function() {
       var participantId;
       beforeEach(function(done) {
         reqData = {
-          role: 'submitter',
+          role: 'SUBMITTER',
           userId: 222
         };
         done();
@@ -782,7 +782,7 @@ describe('Challenges Controller', function() {
 
       it('should able to update the existing participant', function(done) {
         // send request
-        reqData.role = 'reviewer';
+        reqData.role = 'REVIEWER';
         request(url)
         .put('/challenges/'+challenge.id+'/participants/'+participantId)
         .send(reqData)
@@ -798,7 +798,7 @@ describe('Challenges Controller', function() {
       });
 
       it('should able to update the existing participant without challengeId in request body', function(done) {
-        reqData.role = 'submitter';
+        reqData.role = 'SUBMITTER';
         // send request
         request(url)
         .put('/challenges/'+challenge.id+'/participants/' + participantId)

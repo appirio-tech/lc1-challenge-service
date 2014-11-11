@@ -43,11 +43,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     fileName : {type: DataTypes.TEXT, allowNull: false},
     // file storage location
-    storageLocation : {
-      type: DataTypes.ENUM,
-      values: ['local', 's3'],
-      allowNull: false
-    },
+    storageLocation : {type: DataTypes.STRING(128), allowNull: false},
     createdBy: DataTypes.STRING(128),
     updatedBy: DataTypes.STRING(128)
 

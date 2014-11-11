@@ -1575,10 +1575,10 @@ definitions:
         type: string
         description: The role the participant has on the challenge
         enum:
-          - owner
-          - submitter
-          - watcher
-          - reviewer
+          - OWNER
+          - SUBMITTER
+          - WATCHER
+          - REVIEWER
       createdAt:
         type: string
         format: date-time
