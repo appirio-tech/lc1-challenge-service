@@ -25,16 +25,31 @@ module.exports = function(sequelize, DataTypes) {
     },
     challengeId: {
       type: DataTypes.BIGINT, allowNull: false,
+      field: 'challenge_id',
       get: function() {
         return parseInt(this.getDataValue('challengeId'));
       }
     },
-    requirementText : DataTypes.TEXT
+    requirementText: {
+      type: DataTypes.TEXT,
+      field: 'requirement_text'
+    }
   }, {
     tableName : 'requirements',
+    underscored: true,
     associate : function(models) {
-      Requirement.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
+      Requirement.belongsTo(models.Challenge, {foreignKey : 'challenge_id'});
       Requirement.hasMany(models.ScorecardItem);
+    },
+    getterMethods: {
+      // FIXME
+      // due to sequelize 1.7 bugfix or 2.0 release we must use getters createdAt and updatedAt
+      createdAt: function() {
+        return this.getDataValue('created_at');
+      },
+      updatedAt: function() {
+        return this.getDataValue('updated_at');
+      }
     }
   });
 

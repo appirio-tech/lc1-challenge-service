@@ -24,12 +24,14 @@ module.exports = function(sequelize, DataTypes) {
     // user id of a participant
     userId : {
       type: DataTypes.BIGINT, allowNull: false,
+      field: 'user_id',
       get: function() {
         return parseInt(this.getDataValue('userId'));
       }
     },
     challengeId: {
       type: DataTypes.BIGINT, allowNull: false,
+      field: 'challenge_id',
       get: function() {
         return parseInt(this.getDataValue('challengeId'));
       }
@@ -37,17 +39,33 @@ module.exports = function(sequelize, DataTypes) {
     // role of participant
     role : {
       type: DataTypes.ENUM,
-      values: ['owner', 'submitter', 'watcher', 'reviewer'],
+      values: ['OWNER', 'SUBMITTER', 'WATCHER', 'REVIEWER'],
       allowNull: false
     },
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
-
+    createdBy: {
+      type: DataTypes.STRING(128),
+      field: 'created_by'
+    },
+    updatedBy: {
+      type: DataTypes.STRING(128),
+      field: 'updated_by'
+    }
   }, {
     tableName : 'participants',
+    underscored: true,
     associate : function(models) {
-      Participant.belongsTo(models.User, {foreignKey : 'userId'});
-      Participant.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
+      Participant.belongsTo(models.User, {foreignKey : 'user_id'});
+      Participant.belongsTo(models.Challenge, {foreignKey : 'challenge_id'});
+    },
+    getterMethods: {
+      // FIXME
+      // due to sequelize 1.7 bugfix or 2.0 release we must use getters createdAt and updatedAt
+      createdAt: function() {
+        return this.getDataValue('created_at');
+      },
+      updatedAt: function() {
+        return this.getDataValue('updated_at');
+      }
     }
   });
 

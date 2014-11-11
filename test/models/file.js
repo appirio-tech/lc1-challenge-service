@@ -39,8 +39,9 @@ describe('<Unit Test>', function() {
         filePath: '/uploads',
         size: 123,
         fileName: 'my-submission.zip',
-        storageLocation: 'local',
-        challengeId: 111
+        storageLocation: 'LOCAL',
+        challengeId: 111,
+        submissionId: 123
       };
       done();
     });

@@ -142,7 +142,6 @@ describe('Challenges Controller', function() {
         .get('/challenges/'+challengeId+'?fields=id')
         .end(function(err, res) {
           // verify response
-          console.log(res.body);
           res.status.should.equal(200);
           res.body.success.should.be.true;
           res.body.status.should.equal(200);
@@ -456,7 +455,7 @@ describe('Challenges Controller', function() {
           filePath: '/uploads',
           size: 123,
           fileName: 'my-submission.zip',
-          storageLocation: 'local'
+          storageLocation: 'LOCAL'
         };
         done();
       });
@@ -469,7 +468,6 @@ describe('Challenges Controller', function() {
         .expect('Content-Type', /json/)
         .end(function(err, res) {
           // verify response
-          should.not.exist(err);
           res.status.should.equal(200);
           res.body.id.should.be.a.Number;
           res.body.result.success.should.be.true;
@@ -1073,14 +1071,14 @@ describe('Challenges Controller', function() {
             cb();
           })
           .error(function(err) {
-            cb();
+            cb(err);
           });
         }, function(err) {
-          callback();
+          callback(err);
         });
       });
     }, function(err) {
-      done();
+      done(err);
     });
 
   });
