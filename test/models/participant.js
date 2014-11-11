@@ -35,7 +35,7 @@ describe('<Unit Test>', function() {
   describe('Model Participant:', function() {
     beforeEach(function(done) {
       data = {
-        role: 'submitter',
+        role: 'SUBMITTER',
         challengeId: 111,
         userId: 222
       };
@@ -138,7 +138,7 @@ describe('<Unit Test>', function() {
       });
 
       it('should able to update a participant with valid id', function(done) {
-        entity.role = 'reviewer';
+        entity.role = 'REVIEWER';
         // update an entity
         entity.save().success(function(updatedEntity) {
           updatedEntity.id.should.equal(entity.id);

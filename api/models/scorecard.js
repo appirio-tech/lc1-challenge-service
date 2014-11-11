@@ -24,6 +24,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     challengeId: {
       type: DataTypes.BIGINT, allowNull: false,
+      field: 'challenge_id',
       get: function() {
         return parseInt(this.getDataValue('challengeId'));
       }
@@ -31,22 +32,35 @@ module.exports = function(sequelize, DataTypes) {
     // user id of reviewer
     reviewerId: {
       type: DataTypes.BIGINT,
+      allowNull: false,
+      field: 'reviewer_id',
       get: function() {
         return parseInt(this.getDataValue('reviewerId'));
       }
     },
     submissionId: {
       type: DataTypes.BIGINT,
+      allowNull: false,
+      field: 'submission_id',
       get: function() {
         return parseInt(this.getDataValue('submissionId'));
       }
     },
     // sum of all the scorecard items scorecard
-    scoreSum: DataTypes.INTEGER,
-    // scoreSum / scoreMax from scorecard items
-    scorePercent: DataTypes.FLOAT,
+    scoreSum: {
+      type: DataTypes.INTEGER,
+      field: 'score_sum'
+    },
+    // score_sum / score_max from scorecard items
+    scorePercent: {
+      type: DataTypes.FLOAT,
+      field: 'score_percent'
+    },
     // sum of highest possible score from scorecard items
-    scoreMax: DataTypes.FLOAT,
+    scoreMax: {
+      type: DataTypes.FLOAT,
+      field: 'score_max'
+    },
     status : {
       type: DataTypes.ENUM,
       values: ['VALID', 'INVALID', 'LATE']
@@ -61,15 +75,30 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     prize: DataTypes.FLOAT,
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.STRING(128),
+      field: 'created_by'
+    },
+    updatedBy: {
+      type: DataTypes.STRING(128),
+      field: 'updated_by'
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at'
+    }
   }, {
     tableName : 'scorecards',
+    underscore: true,
     associate : function(models) {
       Scorecard.hasMany(models.ScorecardItem);
-      Scorecard.belongsTo(models.Challenge, {foreignKey: 'challengeId'});
-      Scorecard.belongsTo(models.Submission, {foreignKey: 'submissionId'});
-      Scorecard.belongsTo(models.User, {foreignKey: 'reviewerId'});
+      Scorecard.belongsTo(models.Challenge, {foreignKey: 'challenge_id'});
+      Scorecard.belongsTo(models.Submission, {foreignKey: 'submission_id'});
+      Scorecard.belongsTo(models.User, {foreignKey: 'reviewer_id'});
     }
   });
 

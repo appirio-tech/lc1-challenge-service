@@ -25,15 +25,28 @@ module.exports = function(sequelize, DataTypes) {
     },
     challengeId: {
       type: DataTypes.BIGINT, allowNull: false,
+      field: 'challenge_id',
       get: function() {
         return parseInt(this.getDataValue('challengeId'));
       }
     },
-    requirementText : DataTypes.TEXT
+    requirementText: {
+      type: DataTypes.TEXT,
+      field: 'requirement_text'
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at'
+    }
   }, {
     tableName : 'requirements',
+    underscore: true,
     associate : function(models) {
-      Requirement.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
+      Requirement.belongsTo(models.Challenge, {foreignKey : 'challenge_id'});
       Requirement.hasMany(models.ScorecardItem);
     }
   });
