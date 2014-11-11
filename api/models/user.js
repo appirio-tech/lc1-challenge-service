@@ -16,10 +16,25 @@ module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
     name: DataTypes.TEXT,
     email: DataTypes.TEXT,
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.STRING(128),
+      field: 'created_by'
+    },
+    updatedBy: {
+      type: DataTypes.STRING(128),
+      field: 'updated_by'
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at'
+    }
   }, {
     tableName : 'users',
+    underscore: true,
     associate : function(models) {
       User.hasMany(models.Participant);
       User.hasMany(models.Scorecard);

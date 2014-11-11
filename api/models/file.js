@@ -22,40 +22,66 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     challengeId: {
-      type: DataTypes.BIGINT, allowNull: false,
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      field: 'challenge_id',
       get: function() {
-        return parseInt(this.getDataValue('challengeId'));
+        return parseInt(this.getDataValue('challenge_id'));
       }
     },
     submissionId: {
-      type: DataTypes.BIGINT, allowNull: false,
+      type: DataTypes.BIGINT,
+      field: 'submission_id',
       get: function() {
-        return parseInt(this.getDataValue('submissionId'));
+        return parseInt(this.getDataValue('submission_id'));
       }
     },
     title : {type: DataTypes.TEXT},
-    filePath : {type: DataTypes.TEXT, allowNull: false},
+    filePath : {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      field: 'file_path'
+    },
     size : {
       type: DataTypes.BIGINT, allowNull: false,
       get: function() {
         return parseInt(this.getDataValue('size'));
       }
     },
-    fileName : {type: DataTypes.TEXT, allowNull: false},
+    fileName : {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      field: 'file_name'
+    },
     // file storage location
     storageLocation : {
       type: DataTypes.ENUM,
-      values: ['local', 's3'],
-      allowNull: false
+      values: ['LOCAL', 'S3'],
+      allowNull: false,
+      field: 'storage_location'
     },
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
-
+    createdBy: {
+      type: DataTypes.STRING(128),
+      field: 'created_by'
+    },
+    updatedBy: {
+      type: DataTypes.STRING(128),
+      field: 'updated_by'
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at'
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at'
+    }
   }, {
     tableName : 'files',
+    underscore: true,
     associate : function(models) {
-      File.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
-      File.belongsTo(models.Submission, {foreignKey : 'submissionId'});
+      File.belongsTo(models.Challenge, {foreignKey : 'challenge_id'});
+      File.belongsTo(models.Submission, {foreignKey : 'submission_id'});
 
     }
   });
