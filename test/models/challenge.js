@@ -33,7 +33,7 @@ var entity;
 /**
  * Test Challenge model CRUD operations
  */
-describe('<Unit Test>', function() {
+describe.only('<Unit Test>', function() {
   describe('Model Challenge:', function() {
     beforeEach(function(done) {
       // challenge data
