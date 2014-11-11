@@ -56,7 +56,7 @@ describe('Scorecards Controller', function() {
         scoreSum: 97,
         scorePercent: 96.5,
         scoreMax: 99.9,
-        status: 'VALID',
+        status: 'NEW',
         pay: false,
         place: 1,
         prize: 1500,
@@ -67,7 +67,7 @@ describe('Scorecards Controller', function() {
         scoreSum: 97,
         scorePercent: 96.5,
         scoreMax: 99.9,
-        status: 'VALID',
+        status: 'SAVED',
         pay: true,
         place: 1,
         prize: 1500,
@@ -78,7 +78,7 @@ describe('Scorecards Controller', function() {
         scoreSum: 97,
         scorePercent: 96.5,
         scoreMax: 99.9,
-        status: 'VALID',
+        status: 'SUBMITTED',
         pay: true,
         place: 1,
         prize: 500,
@@ -89,7 +89,7 @@ describe('Scorecards Controller', function() {
         scoreSum: 97,
         scorePercent: 96.5,
         scoreMax: 99.9,
-        status: 'INVALID',
+        status: 'SUBMITTED',
         pay: true,
         place: 1,
         prize: 1500,
@@ -189,10 +189,10 @@ describe('Scorecards Controller', function() {
           });
     });
 
-    it('should able to filter all scorecards whose pay=true and status=VALID', function(done) {
+    it('should able to filter all scorecards whose pay=true and status=SAVED', function(done) {
       // send request
       request(url)
-          .get('/challenges/'+challenge.id+'/scorecards?filter=pay=true%26status=\'VALID\'')
+          .get('/challenges/'+challenge.id+'/scorecards?filter=pay=true%26status=\'SAVED\'')
           .end(function(err, res) {
             // verify response
             should.not.exist(err);
@@ -203,17 +203,17 @@ describe('Scorecards Controller', function() {
             res.body.metadata.totalCount.should.be.above(0);
             res.body.should.have.property('content');
             _.forEach(res.body.content, function(scorecard){
-              scorecard.status.should.equal('VALID');
+              scorecard.status.should.equal('SAVED');
               scorecard.pay.should.equal(true);
             });
             done();
           });
     });
 
-    it('should able to filter all scorecards whose pay=true and status=VALID and prize=500', function(done) {
+    it('should able to filter all scorecards whose pay=true and status=SUBMITTED and prize=500', function(done) {
       // send request
       request(url)
-          .get('/challenges/'+challenge.id+'/scorecards?filter=pay=true%26status=\'VALID\'%26prize=500')
+          .get('/challenges/'+challenge.id+'/scorecards?filter=pay=true%26status=\'SUBMITTED\'%26prize=500')
           .end(function(err, res) {
             // verify response
             should.not.exist(err);
@@ -224,7 +224,7 @@ describe('Scorecards Controller', function() {
             res.body.metadata.totalCount.should.be.above(0);
             res.body.should.have.property('content');
             _.forEach(res.body.content, function(scorecard){
-              scorecard.status.should.equal('VALID');
+              scorecard.status.should.equal('SUBMITTED');
               scorecard.pay.should.equal(true);
               scorecard.prize.should.equal(500);
             });
@@ -289,7 +289,7 @@ describe('Scorecards Controller', function() {
 
     it('should able to update the existing scorecard', function(done) {
       // send request
-      reqData.status = 'LATE';
+      reqData.status = 'SAVED';
       request(url)
       .put('/challenges/'+challenge.id+'/scorecards/'+scorecardId)
       .send(reqData)

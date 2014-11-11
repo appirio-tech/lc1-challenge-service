@@ -49,7 +49,7 @@ module.exports = function(sequelize, DataTypes) {
     scoreMax: DataTypes.FLOAT,
     status : {
       type: DataTypes.ENUM,
-      values: ['VALID', 'INVALID', 'LATE']
+      values: ['NEW', 'SAVED', 'SUBMITTED']
     },
     // determines if scorecard merits awarding place and cash prize
     pay: DataTypes.BOOLEAN,

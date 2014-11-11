@@ -1464,10 +1464,10 @@ definitions:
       status:
         type: string
         enum:
-          - VALID
-          - INVALID
-          - LATE
-        description: "show if this scorecard is valid ENUM:valid,invalid,late"
+          - NEW
+          - SAVED
+          - SUBMITTED
+        description: "show if this scorecard is valid ENUM:NEW,SAVED,SUBMITTED"
       # TODO: should next three be here or should we do a result object
       pay:
         type: boolean

@@ -11,7 +11,7 @@ exports.up = function (db, callback) {
     db.runSql.bind(db,
         "CREATE TYPE enum_participants_role AS ENUM ('OWNER', 'SUBMITTER', 'WATCHER', 'REVIEWER');"),
     db.runSql.bind(db,
-        "CREATE TYPE enum_scorecards_status AS ENUM ('VALID', 'INVALID', 'LATE');")
+        "CREATE TYPE enum_scorecards_status AS ENUM ('NEW', 'SAVED', 'SUBMITTED');")
   ], callback);
 };
 
