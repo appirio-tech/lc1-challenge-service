@@ -24,7 +24,7 @@ var options = {
 
 
 // build controller for the nested scorecardItems resource
-var scorecardItemController = controllerHelper.buildController(ScorecardItem, [Challenge, Scorecard], options);
+var scorecardItemController = controllerHelper.buildController(ScorecardItem, [Challenge, Scorecard], null, options);
 
 
 module.exports = {
