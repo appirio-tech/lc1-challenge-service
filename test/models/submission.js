@@ -35,7 +35,7 @@ describe('<Unit Test>', function() {
   describe('Model Submission:', function() {
     beforeEach(function(done) {
       data = {
-        status : 'VALID'
+        status : 'VALID',
         challengeId: 111,
         submitterId: 222
       };
