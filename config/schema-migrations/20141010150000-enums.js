@@ -11,7 +11,9 @@ exports.up = function (db, callback) {
     db.runSql.bind(db,
         "CREATE TYPE enum_participants_role AS ENUM ('OWNER', 'SUBMITTER', 'WATCHER', 'REVIEWER');"),
     db.runSql.bind(db,
-        "CREATE TYPE enum_scorecards_status AS ENUM ('NEW', 'SAVED', 'SUBMITTED');")
+        "CREATE TYPE enum_scorecards_status AS ENUM ('NEW', 'SAVED', 'SUBMITTED');"),
+	  db.runSql.bind(db,
+        "CREATE TYPE enum_submissions_status AS ENUM ('VALID', 'INVALID', 'LATE');")
   ], callback);
 };
 
@@ -20,6 +22,7 @@ exports.down = function (db, callback) {
     db.runSql.bind(db, "DROP TYPE enum_challenges_status;"),
     db.runSql.bind(db, "DROP TYPE \"enum_files_storageLocation\";"),
     db.runSql.bind(db, "DROP TYPE enum_participants_role;"),
-    db.runSql.bind(db, "DROP TYPE enum_scorecards_status;")
+    db.runSql.bind(db, "DROP TYPE enum_scorecards_status;"),
+	  db.runSql.bind(db, "DROP TYPE enum_submissions_status;")
   ], callback);
 };
