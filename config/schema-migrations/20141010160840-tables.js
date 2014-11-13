@@ -65,11 +65,12 @@ exports.up = function (db, callback) {
       'CREATE TABLE submissions ( ' +
         'id bigserial NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
+        '"updatedAt" timestamp with time zone NOT NULL, ' +       
         '"createdBy" character varying(128), ' +
         '"updatedBy" character varying(128), ' +
         '"challengeId" bigint NOT NULL, ' +
-        '"submitterId" bigint NOT NULL ' +
+        '"submitterId" bigint NOT NULL, ' +
+        'status enum_submission_status ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY submissions ADD CONSTRAINT submissions_pkey PRIMARY KEY (id);'),
 
