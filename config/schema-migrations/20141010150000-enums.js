@@ -5,6 +5,8 @@ var type = dbm.dataType;
 exports.up = function (db, callback) {
   async.series([
     db.runSql.bind(db,
+      "CREATE TYPE enum_submission_status AS ENUM ( 'VALID','INVALID','LATE');"),
+    db.runSql.bind(db,
        "CREATE TYPE enum_challenges_status AS ENUM ( 'DRAFT', 'SUBMISSION', 'REVIEW', 'COMPLETE');"),
     db.runSql.bind(db,
         "CREATE TYPE \"enum_files_storageLocation\" AS ENUM ('LOCAL', 'S3');"),
