@@ -35,6 +35,7 @@ describe('<Unit Test>', function() {
   describe('Model Submission:', function() {
     beforeEach(function(done) {
       data = {
+        status : 'VALID',
         challengeId: 111,
         submitterId: 222
       };
@@ -72,6 +73,35 @@ describe('<Unit Test>', function() {
           done();
         });
       });
+
+      it('should fail when try to save without a status', function(done) {
+        delete data.status;
+        // create a entity
+        Submission.create(data).success(function(savedEntity) {
+          should.not.exist(savedEntity);
+          done();
+        })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should fail when try to save with an invalid status', function(done) {
+        data.status = 'invalid-status';
+        // create a entity
+        Submission.create(data).success(function(savedEntity) {
+          should.not.exist(savedEntity);
+          done();
+        })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+      
+
+
     });
 
     describe('Method Find/Update/Delete', function() {
