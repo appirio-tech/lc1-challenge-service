@@ -48,7 +48,8 @@ describe('Files Controller', function() {
       challenge = savedEntity;
       var submissionData = {
         challengeId: challenge.id,
-        submitterId: 222
+        submitterId: 222,
+        status : 'VALID'
       };
       Submission.create(submissionData).success(function(savedSubmission) {
         submission = savedSubmission;
