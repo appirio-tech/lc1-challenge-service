@@ -42,6 +42,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     fileName : {type: DataTypes.TEXT, allowNull: false},
+    fileUrl : {type: DataTypes.TEXT, allowNull: false},
     // file storage location
     storageLocation : {type: DataTypes.STRING(128), allowNull: false},
     createdBy: DataTypes.STRING(128),

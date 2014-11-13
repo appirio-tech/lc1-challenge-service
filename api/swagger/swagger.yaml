@@ -1541,6 +1541,9 @@ definitions:
       fileName:
         description: The name of the file
         type: string
+      fileUrl:
+        description : The URL of the file
+        type: string
       storageLocation:
         description: How the file is stored.  How the app loads the file.
         type: string
