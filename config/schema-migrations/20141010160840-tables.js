@@ -70,6 +70,7 @@ exports.up = function (db, callback) {
         '"updatedBy" character varying(128), ' +
         '"challengeId" bigint NOT NULL, ' +
         '"submitterId" bigint NOT NULL ' +
+        '"status" enum_submissions_status NOT NULL, ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY submissions ADD CONSTRAINT submissions_pkey PRIMARY KEY (id);'),
 
