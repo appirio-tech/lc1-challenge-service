@@ -35,10 +35,10 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     status : {
-+      type: DataTypes.ENUM,
-+      values: ['VALID','INVALID','LATE'],
-+      allowNull: false
-+    },
+      type: DataTypes.ENUM,
+      values: ['VALID','INVALID','LATE'],
+      allowNull: false
+    },
     createdBy: DataTypes.STRING(128),
     updatedBy: DataTypes.STRING(128)
   }, {
