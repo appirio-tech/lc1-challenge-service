@@ -452,10 +452,12 @@ describe('Challenges Controller', function() {
       var fileId;
       beforeEach(function(done) {
         reqData = {
-          title: 'File Title',
-          size: 123,
-          fileUrl : '/uploads/my-submission.zip',
-          storageLocation: 'LOCAL'
+           title: 'File Title',
+           filePath: '/uploads',
+           size: 123,
+           fileName: 'my-submission.zip',
+           fileUrl : '/uploads/my-submission.zip',
+           storageLocation: 'LOCAL'
         };
         done();
       });

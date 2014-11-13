@@ -66,6 +66,7 @@ describe('Files Controller', function() {
         filePath: '/uploads',
         size: 123,
         fileName: 'my-submission.zip',
+         fileUrl : '/uploads/my-submission.zip',
         storageLocation: 'LOCAL'
       };
       done();
@@ -89,8 +90,8 @@ describe('Files Controller', function() {
       });
     });
 
-    it('should fail to create a file without fileName', function(done) {
-      delete reqData.fileName;
+    it('should fail to create a file without fileUrl', function(done) {
+      delete reqData.fileUrl;
       // send request
       request(url)
       .post('/challenges/'+challenge.id+'/submissions/'+submission.id+'/files')
@@ -173,7 +174,7 @@ describe('Files Controller', function() {
           res.body.status.should.equal(200);
           res.body.content.id.should.equal(fileId);
           res.body.content.should.not.have.property('title');
-          res.body.content.should.not.have.property('fileName');
+          res.body.content.should.not.have.property('fileUrl');
           res.body.content.should.not.have.property('challengeId');
           done();
         });
