@@ -36,7 +36,8 @@ describe('<Unit Test>', function() {
     beforeEach(function(done) {
       data = {
         challengeId: 111,
-        submitterId: 222
+        submitterId: 222,
+        status:'VALID'
       };
       done();
     });
@@ -52,6 +53,7 @@ describe('<Unit Test>', function() {
           savedEntity.updatedAt.should.not.have.length(0);
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.submitterId.should.equal(data.submitterId);
+          savedEntity.status.should.equal(data.status);
           done();
         })
         .error(function(err) {
@@ -72,6 +74,33 @@ describe('<Unit Test>', function() {
           done();
         });
       });
+
+      it('should fail when try to save without a status', function(done) {
+        delete data.status;
+        // create a entity
+        Submission.create(data).success(function(savedEntity) {
+            should.not.exist(savedEntity);
+            done();
+          })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should fail when try to save with an invalid status', function(done) {
+        data.status = 'invalid-status';
+        // create a entity
+        Submission.create(data).success(function(savedEntity) {
+            should.not.exist(savedEntity);
+            done();
+        })
+        .error(function(err) {
+            should.exist(err);
+            done();
+        });
+      });
+
     });
 
     describe('Method Find/Update/Delete', function() {

@@ -65,6 +65,7 @@ exports.up = function (db, callback) {
     db.runSql.bind(db,
       'CREATE TABLE submissions ( ' +
         'id bigserial NOT NULL, ' +
+        'status enum_submissions_status NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" character varying(128), ' +

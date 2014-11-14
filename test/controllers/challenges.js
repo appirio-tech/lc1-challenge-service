@@ -850,7 +850,8 @@ describe('Challenges Controller', function() {
       var submissionId;
       beforeEach(function(done) {
         reqData = {
-          submitterId: 222
+          submitterId: 222,
+          status : 'VALID'
         };
         done();
       });
@@ -910,6 +911,22 @@ describe('Challenges Controller', function() {
 
       it('should fail to create a submission without submitterId', function(done) {
         delete reqData.submitterId;
+        // send request
+        request(url)
+        .post('/challenges/'+challenge.id+'/submissions')
+        .send(reqData)
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          res.body.should.have.property('content');
+          done();
+        });
+      });
+
+      it('should fail to create a submission without status', function(done) {
+        delete reqData.status;
         // send request
         request(url)
         .post('/challenges/'+challenge.id+'/submissions')

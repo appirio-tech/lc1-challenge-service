@@ -192,11 +192,11 @@ fi
 if [ $ADD_SUBMISSION = "true" ]; then
 
   RESOURCE="/3/submissions"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 30 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 30, "status": "VALID" }' $URL$RESOURCE
 
   RESOURCE="/4/submissions"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 30 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 50 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 30, "status": "VALID" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 50, "status": "INVALID" }' $URL$RESOURCE
 
 
 fi

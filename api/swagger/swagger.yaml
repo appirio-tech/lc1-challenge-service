@@ -1608,6 +1608,13 @@ definitions:
         type: integer
         format: int64
         description: The user_id of the submitter
+      status:
+        type: string
+        description: The current status of the submission
+        enum:
+          - VALID
+          - INVALID
+          - LATE
       createdAt:
         type: string
         format: date-time
