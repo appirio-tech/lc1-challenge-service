@@ -120,6 +120,32 @@ describe('<Unit Test>', function() {
           done();
         });
       });
+      
+      it('should not able to find a submission with status', function(done) {
+        // get an entity
+        Submission.find(INVAL).success(function(retrievedEntity) {
+          should.not.exist(retrievedEntity);
+          done();
+        })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+	  
+	    it('should not be able to update a submission with invalid status', function(done) {
+        entity.status = INVALI;
+        // update an entity
+        entity.save().success(function(updatedEntity) {
+          updatedEntity.id.should.equal(entity.id);
+          updatedEntity.status.should.equal(entity.status);
+          done();
+        })
+        .error(function(err) {
+          should.not.exist(err);
+          done();
+        });
+      });
 
       it('should able to update a submission with valid id', function(done) {
         entity.submitterId = 5555;

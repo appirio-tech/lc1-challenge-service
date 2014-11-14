@@ -1620,6 +1620,13 @@ definitions:
       updatedBy:
         type: string
         description: The handle of the user last updated the row
+      status:
+		    type: string
+        enum:
+          - VALID
+          - INVALID
+          - LATE
+		    description: Shows the submission is valid, invalid or late   
   RequirementResource:
     properties:
       Id:
