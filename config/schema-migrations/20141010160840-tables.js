@@ -33,10 +33,10 @@ exports.up = function (db, callback) {
       'CREATE TABLE files ( ' +
         'id bigserial NOT NULL, ' +
         'title text, ' +
-        '"filePath" text, ' +
+        '"filePath" text NOT NULL, ' +
         'size bigint NOT NULL, ' +
-        '"fileName" text, ' +
-        '"fileUrl"  text NOT NULL, ' +
+        '"fileName" text NOT NULL, ' +
+        '"fileUrl"  text, ' +
         '"storageLocation" "enum_files_storageLocation" NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +

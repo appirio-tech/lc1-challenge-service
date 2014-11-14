@@ -41,8 +41,8 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('size'));
       }
     },
-    fileName : {type: DataTypes.TEXT, allowNull: true},
-    fileUrl : {type: DataTypes.TEXT, allowNull: false},
+    fileName : {type: DataTypes.TEXT, allowNull: false},
+    fileUrl : {type: DataTypes.TEXT},
     // file storage location
     storageLocation : {type: DataTypes.STRING(128), allowNull: false},
     createdBy: DataTypes.STRING(128),
