@@ -35,8 +35,8 @@ exports.up = function (db, callback) {
         'title text, ' +
         '"filePath" text NOT NULL, ' +
         'size bigint NOT NULL, ' +
-        '"fileName" text NOT NULL, ' +
-        '"fileUrl"  text, ' +
+        '"fileName" text , ' +
+        '"fileUrl"  text NOT NULL, ' +
         '"storageLocation" "enum_files_storageLocation" NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
