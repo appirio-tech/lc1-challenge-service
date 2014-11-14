@@ -35,7 +35,8 @@ exports.up = function (db, callback) {
         'title text, ' +
         '"filePath" text NOT NULL, ' +
         'size bigint NOT NULL, ' +
-        '"fileName" text NOT NULL, ' +
+        '"fileName" text , ' +
+        '"fileUrl"  text NOT NULL, ' +
         '"storageLocation" "enum_files_storageLocation" NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
@@ -69,7 +70,8 @@ exports.up = function (db, callback) {
         '"createdBy" character varying(128), ' +
         '"updatedBy" character varying(128), ' +
         '"challengeId" bigint NOT NULL, ' +
-        '"submitterId" bigint NOT NULL ' +
+        '"submitterId" bigint NOT NULL, ' +
+        'status enum_submission_status NOT NULL' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY submissions ADD CONSTRAINT submissions_pkey PRIMARY KEY (id);'),
 

@@ -452,11 +452,12 @@ describe('Challenges Controller', function() {
       var fileId;
       beforeEach(function(done) {
         reqData = {
-          title: 'File Title',
-          filePath: '/uploads',
-          size: 123,
-          fileName: 'my-submission.zip',
-          storageLocation: 'LOCAL'
+           title: 'File Title',
+           filePath: '/uploads',
+           size: 123,
+           fileName: 'my-submission.zip',
+           fileUrl : '/uploads/my-submission.zip',
+           storageLocation: 'LOCAL'
         };
         done();
       });
@@ -479,8 +480,8 @@ describe('Challenges Controller', function() {
         });
       });
 
-      it('should fail to create a file without fileName', function(done) {
-        delete reqData.fileName;
+      it('should fail to create a file without fileUrl', function(done) {
+        delete reqData.fileUrl;
         // send request
         request(url)
         .post('/challenges/'+challenge.id+'/files')
@@ -579,7 +580,7 @@ describe('Challenges Controller', function() {
           res.body.content.id.should.equal(fileId);
           res.body.content.challengeId.should.equal(challenge.id);
           res.body.content.title.should.equal(reqData.title);
-          res.body.content.fileName.should.equal(reqData.fileName);
+          res.body.content.fileUrl.should.equal(reqData.fileUrl);
           done();
         });
       });
@@ -851,7 +852,8 @@ describe('Challenges Controller', function() {
       var submissionId;
       beforeEach(function(done) {
         reqData = {
-          submitterId: 222
+          submitterId: 222,
+          status : 'VALID'
         };
         done();
       });
@@ -911,6 +913,22 @@ describe('Challenges Controller', function() {
 
       it('should fail to create a submission without submitterId', function(done) {
         delete reqData.submitterId;
+        // send request
+        request(url)
+        .post('/challenges/'+challenge.id+'/submissions')
+        .send(reqData)
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          res.body.should.have.property('content');
+          done();
+        });
+      });
+
+       it('should fail to create a submission without status', function(done) {
+        delete reqData.status;
         // send request
         request(url)
         .post('/challenges/'+challenge.id+'/submissions')
