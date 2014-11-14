@@ -50,8 +50,18 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.ENUM,
       values: ['DRAFT', 'SUBMISSION', 'REVIEW', 'COMPLETE']
     },
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'challenges',
     associate : function(models) {

@@ -41,7 +41,9 @@ describe('Files Controller', function() {
     var challengeData = {
       title: 'Serenity Challenge',
       status: 'SUBMISSION',
-      regStartAt: '2014-10-09'
+      regStartAt: '2014-10-09',
+      createdBy: 1,
+      updatedBy: 1
     };
 
     Challenge.create(challengeData).success(function(savedEntity) {
@@ -49,7 +51,9 @@ describe('Files Controller', function() {
       var submissionData = {
         challengeId: challenge.id,
         submitterId: 222,
-        status : 'VALID'
+        status : 'VALID',
+        createdBy: 1,
+        updatedBy: 1
       };
       Submission.create(submissionData).success(function(savedSubmission) {
         submission = savedSubmission;

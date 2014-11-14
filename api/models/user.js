@@ -16,8 +16,18 @@ module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
     name: DataTypes.TEXT,
     email: DataTypes.TEXT,
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'users',
     associate : function(models) {

@@ -45,7 +45,9 @@ describe('<Unit Test>', function() {
         subEndAt: '2014-08-18',
         status: 'SUBMISSION',
         tags: ['tag1', 'tag2'],
-        prizes: [500.00,150.00]
+        prizes: [500.00,150.00],
+        createdBy: 1,
+        updatedBy: 1
       };
       done();
     });
@@ -54,7 +56,6 @@ describe('<Unit Test>', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         Challenge.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -62,6 +63,8 @@ describe('<Unit Test>', function() {
           savedEntity.title.should.equal(data.title);
           savedEntity.overview.should.equal(data.overview);
           savedEntity.status.should.equal(data.status);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -74,6 +77,32 @@ describe('<Unit Test>', function() {
         for (var i=0; i<15; i+=1) {
           data.overview += SAMPLE_TEXT_10;
         }
+        // create an entity
+        Challenge.create(data).success(function(savedEntity) {
+          should.not.exist(savedEntity);
+          done();
+        })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should fail when try to save without `updatedBy` field', function(done) {
+        delete data.updatedBy;
+        // create an entity
+        Challenge.create(data).success(function(savedEntity) {
+          should.not.exist(savedEntity);
+          done();
+        })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should fail when try to save without `createdBy` field', function(done) {
+        delete data.createdBy;
         // create an entity
         Challenge.create(data).success(function(savedEntity) {
           should.not.exist(savedEntity);
@@ -168,7 +197,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();
