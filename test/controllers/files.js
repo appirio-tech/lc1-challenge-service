@@ -62,9 +62,8 @@ describe('Files Controller', function() {
     beforeEach(function(done) {
       reqData = {
         title: 'File Title',
-        filePath: '/uploads',
         size: 123,
-        fileName: 'my-submission.zip',
+        fileUrl: '/uploads/my-submission.zip',
         storageLocation: 'LOCAL'
       };
       done();
@@ -88,8 +87,8 @@ describe('Files Controller', function() {
       });
     });
 
-    it('should fail to create a file without fileName', function(done) {
-      delete reqData.fileName;
+    it('should fail to create a file without fileUrl', function(done) {
+      delete reqData.fileUrl;
       // send request
       request(url)
       .post('/challenges/'+challenge.id+'/submissions/'+submission.id+'/files')
@@ -138,7 +137,7 @@ describe('Files Controller', function() {
           res.body.content.length.should.be.above(0);
           res.body.content[0].should.have.property('id');
           res.body.content[0].should.not.have.property('title');
-          res.body.content[0].should.not.have.property('fileName');
+          res.body.content[0].should.not.have.property('fileUrl');
           res.body.content[0].should.not.have.property('challengeId');
           done();
         });
@@ -156,7 +155,7 @@ describe('Files Controller', function() {
         res.body.content.id.should.equal(fileId);
         res.body.content.challengeId.should.equal(challenge.id);
         res.body.content.title.should.equal(reqData.title);
-        res.body.content.fileName.should.equal(reqData.fileName);
+        res.body.content.fileUrl.should.equal(reqData.fileUrl);
         done();
       });
     });
@@ -172,7 +171,7 @@ describe('Files Controller', function() {
           res.body.status.should.equal(200);
           res.body.content.id.should.equal(fileId);
           res.body.content.should.not.have.property('title');
-          res.body.content.should.not.have.property('fileName');
+          res.body.content.should.not.have.property('fileUrl');
           res.body.content.should.not.have.property('challengeId');
           done();
         });

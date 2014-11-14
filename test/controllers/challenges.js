@@ -453,9 +453,8 @@ describe('Challenges Controller', function() {
       beforeEach(function(done) {
         reqData = {
           title: 'File Title',
-          filePath: '/uploads',
           size: 123,
-          fileName: 'my-submission.zip',
+          fileUrl: '/uploads/my-submission.zip',
           storageLocation: 'LOCAL'
         };
         done();
@@ -479,8 +478,8 @@ describe('Challenges Controller', function() {
         });
       });
 
-      it('should fail to create a file without fileName', function(done) {
-        delete reqData.fileName;
+      it('should fail to create a file without fileUrl', function(done) {
+        delete reqData.fileUrl;
         // send request
         request(url)
         .post('/challenges/'+challenge.id+'/files')
@@ -579,7 +578,7 @@ describe('Challenges Controller', function() {
           res.body.content.id.should.equal(fileId);
           res.body.content.challengeId.should.equal(challenge.id);
           res.body.content.title.should.equal(reqData.title);
-          res.body.content.fileName.should.equal(reqData.fileName);
+          res.body.content.fileUrl.should.equal(reqData.fileUrl);
           done();
         });
       });

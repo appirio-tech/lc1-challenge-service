@@ -36,10 +36,9 @@ describe('<Unit Test>', function() {
     beforeEach(function(done) {
       data = {
         title: 'File Title',
-        filePath: '/uploads',
         size: 123,
-        fileName: 'my-submission.zip',
         storageLocation: 'LOCAL',
+        fileUrl: '/uploads/my-submission.zip',
         challengeId: 111
       };
       done();
@@ -55,7 +54,7 @@ describe('<Unit Test>', function() {
           savedEntity.createdAt.should.not.have.length(0);
           savedEntity.updatedAt.should.not.have.length(0);
           savedEntity.title.should.equal(data.title);
-          savedEntity.fileName.should.equal(data.fileName);
+          savedEntity.fileUrl.should.equal(data.fileUrl);
           savedEntity.size.should.equal(data.size);
           done();
         })
@@ -65,8 +64,8 @@ describe('<Unit Test>', function() {
         });
       });
 
-      it('should fail when try to save without fileName', function(done) {
-        delete data.fileName;
+      it('should fail when try to save without fileUrl', function(done) {
+        delete data.fileUrl;
         // create a entity
         File.create(data).success(function(savedEntity) {
           should.not.exist(savedEntity);
@@ -119,8 +118,7 @@ describe('<Unit Test>', function() {
         File.find(entity.id).success(function(retrievedEntity) {
           retrievedEntity.id.should.equal(entity.id);
           retrievedEntity.title.should.equal(entity.title);
-          retrievedEntity.filePath.should.equal(entity.filePath);
-          retrievedEntity.fileName.should.equal(entity.fileName);
+          retrievedEntity.fileUrl.should.equal(entity.fileUrl);
           retrievedEntity.size.should.equal(entity.size);
           done();
         })

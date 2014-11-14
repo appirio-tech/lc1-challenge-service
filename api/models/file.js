@@ -34,16 +34,17 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     title : {type: DataTypes.TEXT},
-    filePath : {type: DataTypes.TEXT, allowNull: false},
+    filePath : {type: DataTypes.TEXT},
     size : {
       type: DataTypes.BIGINT, allowNull: false,
       get: function() {
         return parseInt(this.getDataValue('size'));
       }
     },
-    fileName : {type: DataTypes.TEXT, allowNull: false},
+    fileName : {type: DataTypes.TEXT},
     // file storage location
     storageLocation : {type: DataTypes.STRING(128), allowNull: false},
+    fileUrl : {type: DataTypes.TEXT, allowNull: false},
     createdBy: DataTypes.STRING(128),
     updatedBy: DataTypes.STRING(128)
 

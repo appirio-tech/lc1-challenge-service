@@ -152,7 +152,8 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   "filePath": "/uploads/challengeId/",
   "size": 123,
   "fileName": "swords_forTheGatering.zip",
-  "storageLocation": "local"
+  "storageLocation": "local",
+  "fileUrl": "/uploads/challengeId/swords_forTheGatering.zip"
   }' $URL$RESOURCE
 
   RESOURCE="/2/files"
@@ -161,7 +162,8 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   "filePath": "www.cs.cornell.edu/~taozou/sosp13/tangososp.pdf",
   "size": 123,
   "fileName": "tangososp.pdf",
-  "storageLocation": "local"
+  "storageLocation": "local",
+  "fileUrl": "www.cs.cornell.edu/~taozou/sosp13/tangososp.pdf"
   }' $URL$RESOURCE
 
   RESOURCE="/3/files"
@@ -170,7 +172,8 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   "filePath": "http://umclidet.com/pdf/Magic.Tricks.for.the.Beginning.Magician.pdf",
   "size": 123,
   "fileName": "Magic.Tricks.for.the.Beginning.Magician.pdf",
-  "storageLocation": "local"
+  "storageLocation": "local",
+  "fileUrl": "http://umclidet.com/pdf/Magic.Tricks.for.the.Beginning.Magician.pdf"
   }' $URL$RESOURCE
 
   RESOURCE="/4/files"
@@ -179,7 +182,8 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   "filePath": "http://www.driverighttraining.com.au/docs/How-to-Drive-a-Manual-Car.pdf",
   "size": 123,
   "fileName": "How-to-Drive-a-Manual-Car.pdf",
-  "storageLocation": "local"
+  "storageLocation": "local",
+  "fileUrl": "http://www.driverighttraining.com.au/docs/How-to-Drive-a-Manual-Car.pdf"
   }' $URL$RESOURCE
 
 fi
@@ -206,7 +210,8 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
     "filePath": "/uploads/challengeId/",
     "size": 123,
     "fileName": "magiclLesson1.zip",
-    "storageLocation": "local"
+    "storageLocation": "local",
+    "fileUrl": "/uploads/challengeId/magiclLesson1.zip"
   }'  $URL$RESOURCE
 
     RESOURCE="/4/submissions/2/files"
@@ -216,7 +221,8 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
     "filePath": "/uploads/challengeId/",
     "size": 123,
     "fileName": "src.zip",
-    "storageLocation": "local"
+    "storageLocation": "local",
+    "fileUrl": "/uploads/challengeId/src.zip"
   }'  $URL$RESOURCE
 
     RESOURCE="/4/submissions/3/files"
@@ -226,7 +232,8 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
     "filePath": "/uploads/challengeId/",
     "size": 123,
     "fileName": "learnStick.zip",
-    "storageLocation": "local"
+    "storageLocation": "local",
+    "fileUrl": "/uploads/challengeId/learnStick.zip"
   }'  $URL$RESOURCE
 fi
 

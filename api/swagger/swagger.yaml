@@ -1544,6 +1544,9 @@ definitions:
       storageLocation:
         description: How the file is stored.  How the app loads the file.
         type: string
+      fileUrl:
+        description: Url of file.
+        type: string
       createdAt:
         type: string
         format: date-time
@@ -1557,8 +1560,7 @@ definitions:
         type: string
         description: The handle of the user last updated the row
     required:
-      - fileName
-      - filePath
+      - fileUrl
       - size
       - storageLocation
   ParticipantResource:
