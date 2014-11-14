@@ -37,7 +37,9 @@ describe('<Unit Test>', function() {
       data = {
         role: 'SUBMITTER',
         challengeId: 111,
-        userId: 222
+        userId: 222,
+        createdBy: 1,
+        updatedBy: 1
       };
       done();
     });
@@ -46,7 +48,6 @@ describe('<Unit Test>', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         Participant.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -54,6 +55,8 @@ describe('<Unit Test>', function() {
           savedEntity.role.should.equal(data.role);
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.userId.should.equal(data.userId);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -78,6 +81,32 @@ describe('<Unit Test>', function() {
       it('should fail when try to save with an invalid role', function(done) {
         data.role = 'invalid-role';
         // create a entity
+        Participant.create(data).success(function(savedEntity) {
+          should.not.exist(savedEntity);
+          done();
+        })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should fail when try to save without `updatedBy` field', function(done) {
+        delete data.updatedBy;
+        // create an entity
+        Participant.create(data).success(function(savedEntity) {
+          should.not.exist(savedEntity);
+          done();
+        })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should fail when try to save without `createdBy` field', function(done) {
+        delete data.createdBy;
+        // create an entity
         Participant.create(data).success(function(savedEntity) {
           should.not.exist(savedEntity);
           done();
@@ -171,7 +200,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();

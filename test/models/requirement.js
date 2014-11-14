@@ -43,8 +43,11 @@ describe('<Unit Test>', function() {
     subEndAt: '2014-08-18',
     status: 'SUBMISSION',
     tags: ['tag1', 'tag2'],
-    prizes: [500.00,150.00]
-  }
+    prizes: [500.00,150.00],
+    createdBy: 1,
+    updatedBy: 1
+  };
+  
   before(function(done) {
     Challenge.create(challengeData).success(function(savedEntity) {
       challenge = savedEntity;
@@ -184,7 +187,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();

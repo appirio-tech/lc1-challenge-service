@@ -41,7 +41,9 @@ describe('ScorecardItems Controller', function() {
     var challengeData = {
       title: 'Serenity Challenge',
       status: 'SUBMISSION',
-      regStartAt: '2014-10-09'
+      regStartAt: '2014-10-09',
+      createdBy: 1,
+      updatedBy: 1
     };
 
     Challenge.create(challengeData).success(function(savedEntity) {
@@ -53,7 +55,9 @@ describe('ScorecardItems Controller', function() {
         place: 1,
         challengeId: challenge.id,
         reviewerId: 222,
-        submissionId: 333
+        submissionId: 333,
+        createdBy: 1,
+        updatedBy: 1
       };
       Scorecard.create(scorecardData).success(function(savedScorecard) {
         scorecard = savedScorecard;

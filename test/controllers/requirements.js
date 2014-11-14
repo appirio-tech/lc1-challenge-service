@@ -39,7 +39,9 @@ describe('Requirements Controller', function() {
     var challengeData = {
       title: 'Serenity Challenge',
       status: 'SUBMISSION',
-      regStartAt: '2014-10-09'
+      regStartAt: '2014-10-09',
+      createdBy: 1,
+      updatedBy: 1
     };
 
     Challenge.create(challengeData).success(function(savedEntity) {

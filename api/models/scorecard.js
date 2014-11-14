@@ -61,8 +61,18 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     prize: DataTypes.FLOAT,
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'scorecards',
     associate : function(models) {

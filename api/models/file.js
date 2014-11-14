@@ -45,9 +45,18 @@ module.exports = function(sequelize, DataTypes) {
     // file storage location
     storageLocation : {type: DataTypes.STRING(128), allowNull: false},
     fileUrl : {type: DataTypes.TEXT, allowNull: false},
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
-
+    createdBy: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'files',
     associate : function(models) {
