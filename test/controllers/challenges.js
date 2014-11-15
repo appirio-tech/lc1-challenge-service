@@ -192,7 +192,7 @@ describe('Challenges Controller', function() {
       var statuses = ['SUBMISSION', 'REVIEW', 'COMPLETE'];
       // create 10 challenges
       async.timesSeries(10, function(index, callback) {
-        var createdBy = '_indy-'+index;
+        var createdBy = index;
         if (index === 4) {
           createdBy = undefined;
         }
@@ -332,7 +332,7 @@ describe('Challenges Controller', function() {
           var firstChallenge = res.body.content[0];
           (firstChallenge.createdBy === null).should.be.true;
           var lastChallenge = res.body.content[res.body.content.length-1];
-          lastChallenge.createdBy.should.be.ok;
+          lastChallenge.createdBy.should.be.equal(0);
           done();
         });
     });
