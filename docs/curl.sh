@@ -10,14 +10,14 @@ clear
 MYPATH="/challenges"
 URL=$HOST$MYPATH
 INIT=false
-CREATE_CHALLENGES=false
-ADD_PARTICPANTS=false
-ADD_CHALLENGE_FILE=false
-ADD_SUBMISSION=false
-ADD_SUBMISSION_FILES=false
-ADD_REQUIREMENTS=false
-ADD_SCORECARD=false
-ADD_SCORECARD_ITEMS=false
+CREATE_CHALLENGES=true
+ADD_PARTICPANTS=true
+ADD_CHALLENGE_FILE=true
+ADD_SUBMISSION=true
+ADD_SUBMISSION_FILES=true
+ADD_REQUIREMENTS=true
+ADD_SCORECARD=true
+ADD_SCORECARD_ITEMS=true
 
 if  [ $INIT = "false" ] &&  [ $CREATE_CHALLENGES = "false" ] && [ $ADD_PARTICPANTS = "false" ] \
   && [ $ADD_CHALLENGE_FILE = "false" ] && [ $ADD_SUBMISSION = "false" ] && [ $ADD_SUBMISSION_FILES = "false" ] \
@@ -118,26 +118,26 @@ if [ $ADD_PARTICPANTS = "true" ]; then
   echo 'Adding owners to all four'
 
   RESOURCE="/1/participants"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "owner", "userId": 1 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1 }' $URL$RESOURCE
 
   echo 'Adding reviews, submitters and watchers to 2,3,4'
 
   RESOURCE="/2/participants"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "owner", "userId": 1 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1 }' $URL$RESOURCE
 
   RESOURCE="/3/participants"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "owner", "userId": 1 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "reviewer", "userId": 20 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "submitter", "userId": 30 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "watcher", "userId": 40 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "REVIEWER", "userId": 20 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 30 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 40 }' $URL$RESOURCE
 
   RESOURCE="/4/participants"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "owner", "userId": 1 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "reviewer", "userId": 20 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "submitter", "userId": 30 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "watcher", "userId": 40 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "submitter", "userId": 50 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "watcher", "userId": 60 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "REVIEWER", "userId": 20 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 30 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 40 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 50 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 60 }' $URL$RESOURCE
 
 fi
 
@@ -149,9 +149,7 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   RESOURCE="/1/files"
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
   "title": "The Highlander Challenge Guidelines",
-  "filePath": "/uploads/challengeId/",
   "size": 123,
-  "fileName": "swords_forTheGatering.zip",
   "storageLocation": "local",
   "fileUrl": "/uploads/challengeId/swords_forTheGatering.zip"
   }' $URL$RESOURCE
@@ -159,9 +157,7 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   RESOURCE="/2/files"
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
   "title": "Tango: Distributed Data Structures over a Shared Log",
-  "filePath": "www.cs.cornell.edu/~taozou/sosp13/tangososp.pdf",
   "size": 123,
-  "fileName": "tangososp.pdf",
   "storageLocation": "local",
   "fileUrl": "www.cs.cornell.edu/~taozou/sosp13/tangososp.pdf"
   }' $URL$RESOURCE
@@ -169,20 +165,16 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   RESOURCE="/3/files"
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
   "title": "Magic Tricks for the Beginning Magician",
-  "filePath": "http://umclidet.com/pdf/Magic.Tricks.for.the.Beginning.Magician.pdf",
   "size": 123,
-  "fileName": "Magic.Tricks.for.the.Beginning.Magician.pdf",
-  "storageLocation": "local",
+  "storageLocation": "LOCAL",
   "fileUrl": "http://umclidet.com/pdf/Magic.Tricks.for.the.Beginning.Magician.pdf"
   }' $URL$RESOURCE
 
   RESOURCE="/4/files"
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
   "title": "Learning to drive a manual car",
-  "filePath": "http://www.driverighttraining.com.au/docs/How-to-Drive-a-Manual-Car.pdf",
   "size": 123,
-  "fileName": "How-to-Drive-a-Manual-Car.pdf",
-  "storageLocation": "local",
+  "storageLocation": "LOCAL",
   "fileUrl": "http://www.driverighttraining.com.au/docs/How-to-Drive-a-Manual-Car.pdf"
   }' $URL$RESOURCE
 
@@ -207,10 +199,8 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
   echo '\n Add a summision file for chal 3 submission 1'
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
     "title": "user 30 sbumission - Magic My way",
-    "filePath": "/uploads/challengeId/",
     "size": 123,
-    "fileName": "magiclLesson1.zip",
-    "storageLocation": "local",
+    "storageLocation": "LOCAL",
     "fileUrl": "/uploads/challengeId/magiclLesson1.zip"
   }'  $URL$RESOURCE
 
@@ -218,10 +208,8 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
     echo '\n Add a summision file for chal 4 submission 2'
     curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
     "title": "user 50 sbumission -the manual transmission a beginners guide",
-    "filePath": "/uploads/challengeId/",
     "size": 123,
-    "fileName": "src.zip",
-    "storageLocation": "local",
+    "storageLocation": "LOCAL",
     "fileUrl": "/uploads/challengeId/src.zip"
   }'  $URL$RESOURCE
 
@@ -229,10 +217,8 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
     echo '\n Add a summision file for chal 4 submission 3'
     curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
     "title": "How to drive a stick - Magic My way user50",
-    "filePath": "/uploads/challengeId/",
     "size": 123,
-    "fileName": "learnStick.zip",
-    "storageLocation": "local",
+    "storageLocation": "LOCAL",
     "fileUrl": "/uploads/challengeId/learnStick.zip"
   }'  $URL$RESOURCE
 fi
@@ -353,21 +339,21 @@ if [ $ADD_SCORECARD = "true" ]; then
   echo '\n createing empty scorecards for challnge 3 is a magic number, submmsion 1 and reviewer 20 \n'
   RESOURCE="/3/scorecards"
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
-    "status": "VALID",
+    "status": "SAVED",
     "reviewerId": 20,
     "submissionId": 1
   }' $URL$RESOURCE
   echo '\n createing empty scorecards for challnge 4 on the floor, submmsion 2 and reviewer 20 \n'
   RESOURCE="/4/scorecards"
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
-    "status": "VALID",
+    "status": "NEW",
     "reviewerId": 20,
     "submissionId": 2
   }' $URL$RESOURCE
   echo '\n createing empty scorecards for challnge 4 on the floor, submmsion 3 and reviewer 20 \n'
   RESOURCE="/4/scorecards"
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
-    "status": "VALID",
+    "status": "SUBMITTED",
     "reviewerId": 20,
     "submissionId": 3
   }' $URL$RESOURCE
