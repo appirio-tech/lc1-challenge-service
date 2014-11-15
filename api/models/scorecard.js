@@ -79,7 +79,6 @@ module.exports = function(sequelize, DataTypes) {
       Scorecard.hasMany(models.ScorecardItem);
       Scorecard.belongsTo(models.Challenge, {foreignKey: 'challengeId'});
       Scorecard.belongsTo(models.Submission, {foreignKey: 'submissionId'});
-      Scorecard.belongsTo(models.User, {foreignKey: 'reviewerId'});
     }
   });
 

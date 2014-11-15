@@ -119,27 +119,14 @@ exports.up = function (db, callback) {
       '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL, ' +
       '"createdAt" timestamp with time zone NOT NULL, ' +
       '"updatedAt" timestamp with time zone NOT NULL ' +
-      ');'),
+      ');')
 
-    // users table
-    db.runSql.bind(db,
-      'CREATE TABLE users ( ' +
-        'id bigserial NOT NULL, ' +
-        'name text, ' +
-        'email text, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" bigint, ' +
-        '"updatedBy" bigint ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY users ADD CONSTRAINT users_pkey PRIMARY KEY (id);')
 
   ], callback);
 };
 
 exports.down = function (db, callback) {
   async.series([
-    db.dropTable.bind(db, 'users'),
     db.dropTable.bind(db, 'requirements'),
     db.dropTable.bind(db, 'scorecard_items'),
     db.dropTable.bind(db, 'scorecards'),

@@ -55,7 +55,6 @@ module.exports = function(sequelize, DataTypes) {
     associate : function(models) {
       Submission.hasMany(models.File);
       Submission.hasMany(models.Scorecard);
-      Submission.belongsTo(models.User, {foreignKey : 'submitterId'});
       Submission.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
     }
   });
