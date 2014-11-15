@@ -1394,11 +1394,11 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
   ResultResource:
     required:
       - scorecardId
@@ -1429,11 +1429,11 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
   ScorecardResource:
     required:
       - reviewerId
@@ -1486,11 +1486,11 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user
+        type: number
+        description: The id of the user
       updatedBy:
-        type: string
-        description: The handle of the user
+        type: number
+        description: The id of the user
   ScorecardItemResource:
     required:
       - requirementId
@@ -1517,11 +1517,11 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user
+        type: number
+        description: The id of the user
       updatedBy:
-        type: string
-        description: The handle fo the user
+        type: number
+        description: The id of the user
   FileResource:
     properties:
       id:
@@ -1544,6 +1544,9 @@ definitions:
       storageLocation:
         description: How the file is stored.  How the app loads the file.
         type: string
+      fileUrl:
+        description: Url of file.
+        type: string
       createdAt:
         type: string
         format: date-time
@@ -1551,14 +1554,13 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
     required:
-      - fileName
-      - filePath
+      - fileUrl
       - size
       - storageLocation
   ParticipantResource:
@@ -1586,11 +1588,11 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
     required:
       - userId
       - role
@@ -1606,6 +1608,13 @@ definitions:
         type: integer
         format: int64
         description: The user_id of the submitter
+      status:
+        type: string
+        description: The current status of the submission
+        enum:
+          - VALID
+          - INVALID
+          - LATE
       createdAt:
         type: string
         format: date-time
@@ -1613,11 +1622,11 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
   RequirementResource:
     properties:
       Id:

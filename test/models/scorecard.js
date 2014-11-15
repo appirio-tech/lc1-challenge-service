@@ -44,7 +44,9 @@ describe('<Unit Test>', function() {
         prize: 1500,
         challengeId: 111,
         reviewerId: 222,
-        submissionId: 333
+        submissionId: 333,
+        createdBy: 1,
+        updatedBy: 1
       };
       done();
     });
@@ -53,7 +55,6 @@ describe('<Unit Test>', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         Scorecard.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -61,6 +62,8 @@ describe('<Unit Test>', function() {
           savedEntity.scoreSum.should.equal(data.scoreSum);
           savedEntity.status.should.equal(data.status);
           savedEntity.submissionId.should.equal(data.submissionId);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -178,7 +181,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();

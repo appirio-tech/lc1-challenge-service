@@ -34,19 +34,29 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     title : {type: DataTypes.TEXT},
-    filePath : {type: DataTypes.TEXT, allowNull: false},
+    filePath : {type: DataTypes.TEXT},
     size : {
       type: DataTypes.BIGINT, allowNull: false,
       get: function() {
         return parseInt(this.getDataValue('size'));
       }
     },
-    fileName : {type: DataTypes.TEXT, allowNull: false},
+    fileName : {type: DataTypes.TEXT},
     // file storage location
     storageLocation : {type: DataTypes.STRING(128), allowNull: false},
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
-
+    fileUrl : {type: DataTypes.TEXT, allowNull: false},
+    createdBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'files',
     associate : function(models) {
