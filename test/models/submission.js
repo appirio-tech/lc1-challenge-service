@@ -37,7 +37,9 @@ describe('<Unit Test>', function() {
       data = {
         challengeId: 111,
         submitterId: 222,
-        status:'VALID'
+        status:'VALID',
+        createdBy: 1,
+        updatedBy: 1
       };
       done();
     });
@@ -46,7 +48,6 @@ describe('<Unit Test>', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         Submission.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -54,6 +55,8 @@ describe('<Unit Test>', function() {
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.submitterId.should.equal(data.submitterId);
           savedEntity.status.should.equal(data.status);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -184,7 +187,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();
