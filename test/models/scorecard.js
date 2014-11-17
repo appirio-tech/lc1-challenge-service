@@ -44,7 +44,6 @@ describe('<Unit Test>', function() {
         prize: 1500,        
         challengeId: 111,
         reviewerId: 222,
-        reviewer_handle: 'testreviewer',
         submissionId: 333,
         createdBy: 1,
         updatedBy: 1
@@ -63,7 +62,6 @@ describe('<Unit Test>', function() {
           savedEntity.scoreSum.should.equal(data.scoreSum);
           savedEntity.status.should.equal(data.status);
           savedEntity.submissionId.should.equal(data.submissionId);
-          savedEntity.reviewerHandle.should.equal(data.reviewer_handle);
           savedEntity.createdBy.should.equal(data.createdBy);
           savedEntity.updatedBy.should.equal(data.updatedBy);
           done();

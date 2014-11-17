@@ -56,7 +56,7 @@ describe('<Unit Test>', function() {
           savedEntity.role.should.equal(data.role);
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.userId.should.equal(data.userId);
-          savedEntity.user_handle.should.equal(data.user_handle);
+          savedEntity.userHandle.should.equal(data.user_handle);
           savedEntity.createdBy.should.equal(data.createdBy);
           savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
