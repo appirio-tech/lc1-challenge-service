@@ -44,7 +44,7 @@ describe('<Unit Test>', function() {
         prize: 1500,        
         challengeId: 111,
         reviewerId: 222,
-        reviewerHandle: 'test_reviewer',
+        reviewerHandle: 'testreviewer',
         submissionId: 333,
         createdBy: 1,
         updatedBy: 1
