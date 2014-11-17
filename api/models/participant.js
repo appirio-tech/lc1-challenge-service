@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('userId'));
       }
     },
-    user_handle: DataTypes.STRING(128),
+    userHandle: DataTypes.STRING(128),
     challengeId: {
       type: DataTypes.BIGINT, allowNull: false,
       get: function() {

@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('submitterId'));
       }
     },
-    submitter_handle: DataTypes.STRING(128),
+    submitterHandle: DataTypes.STRING(128),
     status: {
         type: DataTypes.ENUM,
         values: ['VALID','INVALID','LATE']
