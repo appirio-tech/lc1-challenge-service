@@ -55,7 +55,7 @@ describe('<Unit Test>', function() {
           savedEntity.updatedAt.should.not.have.length(0);
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.submitterId.should.equal(data.submitterId);
-          savedEntity.submitter_handle.should.equal(data.submitter_handle);
+          savedEntity.submitterHandle.should.equal(data.submitter_handle);
           savedEntity.status.should.equal(data.status);
           savedEntity.createdBy.should.equal(data.createdBy);
           savedEntity.updatedBy.should.equal(data.updatedBy);
