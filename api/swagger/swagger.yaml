@@ -1447,7 +1447,7 @@ definitions:
         format: int64
         description: "the user id of the reviewer"
       reviewerHandle:
-        type:string
+        type: string
         description: "The handler of the reviewer"
       submissionId:
         type: integer
