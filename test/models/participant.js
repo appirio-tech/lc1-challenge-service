@@ -38,7 +38,7 @@ describe('<Unit Test>', function() {
         role: 'SUBMITTER',
         challengeId: 111,
         userId: 222,
-        userHandle : 'test_user',
+        user_handle : 'test_user',
         createdBy: 1,
         updatedBy: 1
       };
@@ -56,7 +56,7 @@ describe('<Unit Test>', function() {
           savedEntity.role.should.equal(data.role);
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.userId.should.equal(data.userId);
-          savedEntity.userHandle.should.equal(data.userHandle);
+          savedEntity.user_handle.should.equal(data.user_handle);
           savedEntity.createdBy.should.equal(data.createdBy);
           savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
