@@ -37,7 +37,7 @@ describe('<Unit Test>', function() {
       data = {
         challengeId: 111,
         submitterId: 222,
-        status:'VALID',
+        status:'VALID',        
         createdBy: 1,
         updatedBy: 1
       };

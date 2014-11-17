@@ -199,7 +199,7 @@ describe('ScorecardItems Controller', function() {
     it('should able to get the existing scorecard with fields parameter and expand functionality', function(done) {
       // send request
       request(url)
-        .get('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'?fields=id,scorecardItems(id,requirement),reviewer' )
+        .get('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'?fields=id,scorecardItems(id,requirement)' )
         .end(function(err, res) {
           // verify response
           res.status.should.equal(200);

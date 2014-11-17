@@ -34,6 +34,11 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('submitterId'));
       }
     },
+    submitterHandle: {
+        type: DataTypes.STRING(128),
+        field: 'submitter_handle'
+    },
+
     status: {
         type: DataTypes.ENUM,
         values: ['VALID','INVALID','LATE']
@@ -55,7 +60,6 @@ module.exports = function(sequelize, DataTypes) {
     associate : function(models) {
       Submission.hasMany(models.File);
       Submission.hasMany(models.Scorecard);
-      Submission.belongsTo(models.User, {foreignKey : 'submitterId'});
       Submission.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
     }
   });

@@ -35,6 +35,10 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('reviewerId'));
       }
     },
+    reviewerHandle:{
+        type: DataTypes.STRING(128),
+        field: 'reviewer_handle'
+    },
     submissionId: {
       type: DataTypes.BIGINT,
       get: function() {
@@ -61,6 +65,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     prize: DataTypes.FLOAT,
+
     createdBy: {
       type: DataTypes.BIGINT,
       get: function() {
@@ -79,7 +84,6 @@ module.exports = function(sequelize, DataTypes) {
       Scorecard.hasMany(models.ScorecardItem);
       Scorecard.belongsTo(models.Challenge, {foreignKey: 'challengeId'});
       Scorecard.belongsTo(models.Submission, {foreignKey: 'submissionId'});
-      Scorecard.belongsTo(models.User, {foreignKey: 'reviewerId'});
     }
   });
 

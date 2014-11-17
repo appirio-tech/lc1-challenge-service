@@ -28,6 +28,10 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('userId'));
       }
     },
+    userHandle: {
+        type: DataTypes.STRING(128),
+        field: 'user_handle'
+    },
     challengeId: {
       type: DataTypes.BIGINT, allowNull: false,
       get: function() {
@@ -40,6 +44,7 @@ module.exports = function(sequelize, DataTypes) {
       values: ['OWNER', 'SUBMITTER', 'WATCHER', 'REVIEWER'],
       allowNull: false
     },
+
     createdBy: {
       type: DataTypes.BIGINT,
       get: function() {
@@ -56,7 +61,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName : 'participants',
     associate : function(models) {
-      Participant.belongsTo(models.User, {foreignKey : 'userId'});
       Participant.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
     }
   });

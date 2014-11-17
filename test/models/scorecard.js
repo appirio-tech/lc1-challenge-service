@@ -41,7 +41,7 @@ describe('<Unit Test>', function() {
         status: 'NEW',
         pay: false,
         place: 1,
-        prize: 1500,
+        prize: 1500,        
         challengeId: 111,
         reviewerId: 222,
         submissionId: 333,
