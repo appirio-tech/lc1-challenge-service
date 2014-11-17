@@ -51,13 +51,14 @@ exports.up = function (db, callback) {
     db.runSql.bind(db,
       'CREATE TABLE participants ( ' +
         'id bigserial NOT NULL, ' +
-        'role enum_participants_role NOT NULL, ' +
+        'role enum_participants_role NOT NULL, ' +       
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
         '"updatedBy" bigint, ' +
         '"challengeId" bigint NOT NULL, ' +
-        '"userId" bigint NOT NULL ' +
+        '"userId" bigint NOT NULL, ' +
+        '"user_handle" character varying(128) ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY participants ADD CONSTRAINT participants_pkey PRIMARY KEY (id);'),
 
@@ -65,13 +66,14 @@ exports.up = function (db, callback) {
     db.runSql.bind(db,
       'CREATE TABLE submissions ( ' +
         'id bigserial NOT NULL, ' +
-        'status enum_submissions_status NOT NULL, ' +
+        'status enum_submissions_status NOT NULL, ' +        
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
         '"updatedBy" bigint, ' +
         '"challengeId" bigint NOT NULL, ' +
-        '"submitterId" bigint NOT NULL ' +
+        '"submitterId" bigint NOT NULL, ' +
+        '"submitter_handle" character varying(128) ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY submissions ADD CONSTRAINT submissions_pkey PRIMARY KEY (id);'),
 
@@ -85,12 +87,13 @@ exports.up = function (db, callback) {
         'status enum_scorecards_status, ' +
         'pay boolean, ' +
         'place integer, ' +
-        'prize double precision, ' +
+        'prize double precision, ' +        
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
         '"updatedBy" bigint, ' +
         '"reviewerId" bigint NOT NULL, ' +
+        '"reviewer_handle" character varying(128), ' +
         '"submissionId" bigint NOT NULL, ' +
         '"challengeId" bigint NOT NULL ' +
       ');'),

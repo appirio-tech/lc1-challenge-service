@@ -35,6 +35,7 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('reviewerId'));
       }
     },
+    reviewer_handle: DataTypes.STRING(128),
     submissionId: {
       type: DataTypes.BIGINT,
       get: function() {
@@ -61,6 +62,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     prize: DataTypes.FLOAT,
+
     createdBy: {
       type: DataTypes.BIGINT,
       get: function() {
