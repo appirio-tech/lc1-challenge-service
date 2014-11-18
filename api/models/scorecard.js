@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('reviewerId'));
       }
     },
-    reviewer_handle: {
+    reviewerHandle: {
       type: DataTypes.STRING(128)
     },
     submissionId: {

@@ -52,7 +52,7 @@ exports.up = function (db, callback) {
       'CREATE TABLE participants ( ' +
         'id bigserial NOT NULL, ' +
         'role enum_participants_role NOT NULL, ' +
-        '"user_handle" character varying(128), ' +
+        '"userHandle" character varying(128), ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
@@ -67,7 +67,7 @@ exports.up = function (db, callback) {
       'CREATE TABLE submissions ( ' +
         'id bigserial NOT NULL, ' +
         'status enum_submissions_status NOT NULL, ' +
-        '"submitter_handle" character varying(128), ' +
+        '"submitterHandle" character varying(128), ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
@@ -93,7 +93,7 @@ exports.up = function (db, callback) {
         '"createdBy" bigint, ' +
         '"updatedBy" bigint, ' +
         '"reviewerId" bigint NOT NULL, ' +
-        '"reviewer_handle" character varying(128), ' +
+        '"reviewerHandle" character varying(128), ' +
         '"submissionId" bigint NOT NULL, ' +
         '"challengeId" bigint NOT NULL ' +
       ');'),

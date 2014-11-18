@@ -1446,7 +1446,7 @@ definitions:
         type: integer
         format: int64
         description: "the user id of the reviewer"
-      reviewer_handle:
+      reviewerHandle:
         type: string
         description: "the user handle of the reviewer"
       submissionId:
@@ -1576,7 +1576,7 @@ definitions:
         type: integer
         format: int64
         description: The user id.
-      user_handle:
+      userHandle:
         type: string
         description: The user handle.
       role:
@@ -1614,7 +1614,7 @@ definitions:
         type: integer
         format: int64
         description: The user_id of the submitter
-      submitter_handle:
+      submitterHandle:
         type: string
         description: "the user handle of the submitter"
       status:

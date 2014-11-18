@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('submitterId'));
       }
     },
-    submitter_handle: {
+    submitterHandle: {
       type: DataTypes.STRING(128)
     },
     status: {
