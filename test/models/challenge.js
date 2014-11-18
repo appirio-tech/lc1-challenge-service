@@ -47,7 +47,9 @@ describe('<Unit Test>', function() {
         tags: ['tag1', 'tag2'],
         prizes: [500.00,150.00],
         createdBy: 1,
-        updatedBy: 1
+        updatedBy: 1,
+        projectId: "PROJECT1",
+        projectSource: "TOPCODER"
       };
       done();
     });
@@ -65,6 +67,8 @@ describe('<Unit Test>', function() {
           savedEntity.status.should.equal(data.status);
           savedEntity.createdBy.should.equal(data.createdBy);
           savedEntity.updatedBy.should.equal(data.updatedBy);
+          savedEntity.projectId.should.equal(data.projectId);
+          savedEntity.projectSource.should.equal(data.projectSource);
           done();
         })
         .error(function(err) {

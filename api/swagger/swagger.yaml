@@ -1375,12 +1375,6 @@ definitions:
         type: array
         items:
           type: number
-      account:
-        type: string
-        description: The Account to bill the challenge against
-      accountId:
-        type: string
-        description: The account id from salesforce
       source:
         type: string
         description: Used for integraiton with remote system
@@ -1399,6 +1393,16 @@ definitions:
       updatedBy:
         type: number
         description: The id of the user last updated the row
+      projectId:
+        type: string
+        description: The id of the project.
+        maxLength: 255
+      projectSource:
+        type: string
+        description: Source of the project
+        enum:
+          - TOPCODER
+
   ResultResource:
     required:
       - scorecardId

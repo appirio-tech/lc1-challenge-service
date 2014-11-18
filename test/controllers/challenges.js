@@ -43,10 +43,10 @@ describe('Challenges Controller', function() {
       reqData = {
         title: 'Serenity Challenge',
         status: 'SUBMISSION',
-        account: 'account',
-        accountId: '12ASD',
         prizes: [500.00, 250.00],
-        regStartAt: '2014-10-09'
+        regStartAt: '2014-10-09',
+        projectId: 'PROJECT1',
+        projectSource: 'TOPCODER'
       };
       done();
     });
@@ -85,7 +85,27 @@ describe('Challenges Controller', function() {
       });
     });
 
-    it('should able to get the all challenges', function(done) {
+      it('should able to create a challenge without projectID and projectSource', function(done) {
+          delete reqData.projectId;
+          delete reqData.projectSource;
+          // send request
+          request(url)
+              .post('/challenges')
+              .send(reqData)
+              .end(function(err, res) {
+                  // verify response
+                  // verify response
+                  should.not.exist(err);
+                  res.status.should.equal(200);
+                  res.body.id.should.be.a.Number;
+                  res.body.result.success.should.be.true;
+                  res.body.result.status.should.equal(200);
+                  challengeId = res.body.id;
+                  done();
+              });
+      });
+
+      it('should able to get the all challenges', function(done) {
       // send request
       request(url)
       .get('/challenges')

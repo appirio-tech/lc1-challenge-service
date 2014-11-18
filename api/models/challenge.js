@@ -38,8 +38,6 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     overview: DataTypes.STRING(140),
-    account: DataTypes.STRING(255),
-    accountId: DataTypes.STRING(255),
     description: DataTypes.TEXT,
     source: DataTypes.TEXT,
     sourceId: DataTypes.TEXT,
@@ -61,6 +59,11 @@ module.exports = function(sequelize, DataTypes) {
       get: function() {
         return parseInt(this.getDataValue('updatedBy'));
       }
+    },
+    projectId: DataTypes.STRING(255),
+    projectSource: {
+        type: DataTypes.ENUM,
+        values: ['TOPCODER']
     }
   }, {
     tableName : 'challenges',

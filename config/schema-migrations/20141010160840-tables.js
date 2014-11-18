@@ -16,15 +16,15 @@ exports.up = function (db, callback) {
         'description text, ' +
         'tags text[], ' +
         'prizes NUMERIC(11,2)[], ' +
-        'account character varying(255), ' +
-        '"accountId" character varying(255), ' +
         '"source" text, ' +
         '"sourceId" text, ' +
         'status enum_challenges_status NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
-        '"updatedBy" bigint ' +
+        '"updatedBy" bigint, ' +
+        '"projectId" character varying(255), ' +
+        '"projectSource" enum_challenges_projectSource ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD CONSTRAINT challenges_pkey PRIMARY KEY (id);'),
 
