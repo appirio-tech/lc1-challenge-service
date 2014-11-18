@@ -118,26 +118,26 @@ if [ $ADD_PARTICPANTS = "true" ]; then
   echo 'Adding owners to all four'
 
   RESOURCE="/1/participants"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1, "userHandle": "user_one" }' $URL$RESOURCE
 
   echo 'Adding reviews, submitters and watchers to 2,3,4'
 
   RESOURCE="/2/participants"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1, "userHandle":"user_one" }' $URL$RESOURCE
 
   RESOURCE="/3/participants"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "REVIEWER", "userId": 20 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 30 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 40 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1, "userHandle":"user_one" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "REVIEWER", "userId": 20, "userHandle":"user_twenty" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 30, "userHandle":"user_thirty" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 40, "userHandle":"user_forty" }' $URL$RESOURCE
 
   RESOURCE="/4/participants"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "REVIEWER", "userId": 20 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 30 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 40 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 50 }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 60 }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "OWNER", "userId": 1, "userHandle":"user_one" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "REVIEWER", "userId": 20, "userHandle":"user_twenty" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 30, "userHandle":"user_thirty" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 40, "userHandle":"user_forty" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "SUBMITTER", "userId": 50, "userHandle":"user_fifty" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "role": "WATCHER", "userId": 60, "userHandle":"user_sixty" }' $URL$RESOURCE
 
 fi
 
@@ -184,11 +184,11 @@ fi
 if [ $ADD_SUBMISSION = "true" ]; then
 
   RESOURCE="/3/submissions"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 30, "status": "VALID" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 30, "submitterHandle":"user_thirty", "status": "VALID" }' $URL$RESOURCE
 
   RESOURCE="/4/submissions"
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 30, "status": "VALID" }' $URL$RESOURCE
-  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 50, "status": "INVALID" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 30, "submitterHandle":"user_thirty", "status": "VALID" }' $URL$RESOURCE
+  curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{ "submitterId": 50, "submitterHandle":"user_fifty", "status": "INVALID" }' $URL$RESOURCE
 
 
 fi
@@ -341,6 +341,7 @@ if [ $ADD_SCORECARD = "true" ]; then
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
     "status": "SAVED",
     "reviewerId": 20,
+    "reviewerHandle": "user_twenty",
     "submissionId": 1
   }' $URL$RESOURCE
   echo '\n createing empty scorecards for challnge 4 on the floor, submmsion 2 and reviewer 20 \n'
@@ -348,6 +349,7 @@ if [ $ADD_SCORECARD = "true" ]; then
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
     "status": "NEW",
     "reviewerId": 20,
+    "reviewerHandle": "user_twenty",
     "submissionId": 2
   }' $URL$RESOURCE
   echo '\n createing empty scorecards for challnge 4 on the floor, submmsion 3 and reviewer 20 \n'
@@ -355,6 +357,7 @@ if [ $ADD_SCORECARD = "true" ]; then
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
     "status": "SUBMITTED",
     "reviewerId": 20,
+    "reviewerHandle": "user_twenty",
     "submissionId": 3
   }' $URL$RESOURCE
 

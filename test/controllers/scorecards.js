@@ -61,6 +61,7 @@ describe('Scorecards Controller', function() {
         place: 1,
         prize: 1500,
         reviewerId: 222,
+        reviewerHandle: 'reviewer_222',
         submissionId: 333
       };
       reqData2 = {
@@ -72,6 +73,7 @@ describe('Scorecards Controller', function() {
         place: 1,
         prize: 1500,
         reviewerId: 222,
+        reviewerHandle: 'reviewer_222',
         submissionId: 333
       };
       reqData3 = {
@@ -83,6 +85,7 @@ describe('Scorecards Controller', function() {
         place: 1,
         prize: 500,
         reviewerId: 222,
+        reviewerHandle: 'reviewer_222',
         submissionId: 333
       };
       reqData4 = {
@@ -94,6 +97,7 @@ describe('Scorecards Controller', function() {
         place: 1,
         prize: 1500,
         reviewerId: 222,
+        reviewerHandle: 'reviewer_222',
         submissionId: 333
       };
       request(url)
@@ -165,6 +169,7 @@ describe('Scorecards Controller', function() {
         res.body.metadata.totalCount.should.be.above(0);
         res.body.should.have.property('content');
         res.body.content.length.should.be.above(0);
+        res.body.content[0].reviewerHandle.should.equal('reviewer_222');
         done();
       });
     });
@@ -266,6 +271,7 @@ describe('Scorecards Controller', function() {
         res.body.content.challengeId.should.equal(challenge.id);
         res.body.content.scoreSum.should.equal(reqData.scoreSum);
         res.body.content.status.should.equal(reqData.status);
+        res.body.content.reviewerHandle.should.equal('reviewer_222');
         done();
       });
     });

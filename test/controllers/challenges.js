@@ -637,7 +637,8 @@ describe('Challenges Controller', function() {
       beforeEach(function(done) {
         reqData = {
           role: 'SUBMITTER',
-          userId: 222
+          userId: 222,
+          userHandle: 'user_222'
         };
         done();
       });
@@ -724,6 +725,7 @@ describe('Challenges Controller', function() {
           res.body.metadata.totalCount.should.be.above(0);
           res.body.should.have.property('content');
           res.body.content.length.should.be.above(0);
+          res.body.content[0].userHandle.should.equal('user_222');
           done();
         });
       });
@@ -760,6 +762,7 @@ describe('Challenges Controller', function() {
           res.body.content.id.should.equal(participantId);
           res.body.content.challengeId.should.equal(challenge.id);
           res.body.content.role.should.equal(reqData.role);
+          res.body.content.userHandle.should.equal('user_222');
           done();
         });
       });
@@ -851,6 +854,7 @@ describe('Challenges Controller', function() {
       beforeEach(function(done) {
         reqData = {
           submitterId: 222,
+          submitterHandle: 'submitter_222',
           status : 'VALID'
         };
         done();
@@ -955,6 +959,7 @@ describe('Challenges Controller', function() {
           res.body.metadata.totalCount.should.be.above(0);
           res.body.should.have.property('content');
           res.body.content.length.should.be.above(0);
+          res.body.content[0].submitterHandle.should.equal('submitter_222');
           done();
         });
       });
@@ -992,6 +997,7 @@ describe('Challenges Controller', function() {
           res.body.content.id.should.equal(submissionId);
           res.body.content.challengeId.should.equal(challenge.id);
           res.body.content.submitterId.should.equal(reqData.submitterId);
+          res.body.content.submitterHandle.should.equal('submitter_222');
           done();
         });
       });
