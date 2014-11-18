@@ -37,6 +37,7 @@ describe('<Unit Test>', function() {
       data = {
         challengeId: 111,
         submitterId: 222,
+        submitterHandle: 'submitter_handle',
         status:'VALID',
         createdBy: 1,
         updatedBy: 1
@@ -54,6 +55,7 @@ describe('<Unit Test>', function() {
           savedEntity.updatedAt.should.not.have.length(0);
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.submitterId.should.equal(data.submitterId);
+          savedEntity.submitterHandle.should.equal(data.submitterHandle);
           savedEntity.status.should.equal(data.status);
           savedEntity.createdBy.should.equal(data.createdBy);
           savedEntity.updatedBy.should.equal(data.updatedBy);
