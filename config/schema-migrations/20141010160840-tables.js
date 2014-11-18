@@ -17,7 +17,7 @@ exports.up = function (db, callback) {
         'tags text[], ' +
         'prizes NUMERIC(11,2)[], ' +
         '"projectId" character varying(255), ' +
-        'status enum_challenges_projectSource, ' +
+        'projectSource enum_challenges_projectSource, ' +
         '"source" text, ' +
         '"sourceId" text, ' +
         'status enum_challenges_status NOT NULL, ' +
