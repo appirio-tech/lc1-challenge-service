@@ -50,9 +50,8 @@ if [ $CREATE_CHALLENGES = "true" ]; then
     "description": "We are looking for a little more than just adding a pg module, this is a draft",
     "tags": ["mean", "postgresql", "jsonb"],
     "status": "DRAFT",
-    "account": "Singlilo",
-    "accountId": "100",
     "prizes": [1600.00, 1000.00, 500.50],
+    "projectId": "123456",
     "source": "lc"
   }' $URL
 
@@ -66,9 +65,8 @@ if [ $CREATE_CHALLENGES = "true" ]; then
     "description": "write a document to teach us to dance",
     "tags": ["postgresql", "jsonb"],
     "status": "SUBMISSION",
-    "account": "Twolio in",
-    "accountId": "200",
     "prizes": [1002, 502],
+    "projectId": "123456",
     "source": "lc"
   }' $URL
 
@@ -82,9 +80,8 @@ if [ $CREATE_CHALLENGES = "true" ]; then
     "description": "Write a doc about magic",
     "tags": ["postgresql"],
     "status": "REVIEW",
-    "account": "Three Guys Co",
-    "accountId": "300",
     "prizes": [3000],
+    "projectId": "123456",
     "source": "tc",
     "sourceId": "123xx456x789"
   }' $URL
@@ -99,9 +96,8 @@ if [ $CREATE_CHALLENGES = "true" ]; then
     "description": "Create an architecture to describe how a manual transmision automobile works",
     "tags": ["postgresql"],
     "status": "COMPLETE",
-    "account": "Fourpols",
-    "accountId": "400",
     "prizes": [4000, 400, 40, 4, 1],
+    "projectId": "123456",
     "source": "tc",
     "sourceId": "123xx456x789"
   }' $URL

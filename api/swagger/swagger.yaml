@@ -1375,12 +1375,14 @@ definitions:
         type: array
         items:
           type: number
-      account:
+      projectId:
         type: string
-        description: The Account to bill the challenge against
-      accountId:
+        description: project id
+      projectSource:
         type: string
-        description: The account id from salesforce
+        enum:
+          - TOPCODER
+        description: "Project Source, for now only one source ie.,TOPCODER "
       source:
         type: string
         description: Used for integraiton with remote system

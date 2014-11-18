@@ -43,8 +43,7 @@ describe('Challenges Controller', function() {
       reqData = {
         title: 'Serenity Challenge',
         status: 'SUBMISSION',
-        account: 'account',
-        accountId: '12ASD',
+        projectId: '123456',
         prizes: [500.00, 250.00],
         regStartAt: '2014-10-09'
       };
