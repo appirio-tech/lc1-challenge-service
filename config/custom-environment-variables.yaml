@@ -2,7 +2,7 @@ app:
   pgURL: DATABASE_URL
   pgURLWercker: WERCKER_POSTGRESQL_URL
   port: PORT
-  disabelAuth: TC_SKIP_AUTH
+  disableAuth: TC_SKIP_AUTH
 auth0:
   client: TC_AUTH0_CLIENT
   secret: TC_AUTH0_SECRET
