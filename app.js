@@ -15,12 +15,16 @@ var datasource = require('./datasource');
 var routeHelper = require('./lib/routeHelper');
 var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
+var tcAuth = require('./lib/tc-auth')(config.get('auth0'));
 
 var app = express();
 
-// uncomment the following if you need to parse incoming form data
 app.use(bodyParser.json());
 
+app.post('*', tcAuth);
+app.put('*', tcAuth);
+app.delete('*', tcAuth);
+app.patch('*', tcAuth);
 
 // Serve the Swagger documents and Swagger UI
 if (config.has('app.loadDoc') && config.get('app.loadDoc')) {

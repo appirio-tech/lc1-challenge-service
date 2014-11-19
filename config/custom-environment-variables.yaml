@@ -2,3 +2,6 @@ app:
   pgURL: DATABASE_URL
   pgURLWercker: WERCKER_POSTGRESQL_URL
   port: PORT
+auth0:
+  client: TC_AUTH0_CLIENT
+  secret: TC_AUTH0_SECRET
