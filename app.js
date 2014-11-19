@@ -21,10 +21,12 @@ var app = express();
 
 app.use(bodyParser.json());
 
-app.post('*', tcAuth);
-app.put('*', tcAuth);
-app.delete('*', tcAuth);
-app.patch('*', tcAuth);
+if (process.env.NODE_ENV !== 'test') {
+  app.post('*', tcAuth);
+  app.put('*', tcAuth);
+  app.delete('*', tcAuth);
+  app.patch('*', tcAuth);
+}
 
 // Serve the Swagger documents and Swagger UI
 if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
