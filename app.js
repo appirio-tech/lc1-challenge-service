@@ -15,7 +15,6 @@ var datasource = require('./datasource');
 var routeHelper = require('./lib/routeHelper');
 var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
-var tcAuth = require('./lib/tc-auth')(config.get('auth0'));
 var request = require('request');
 
 var app = express();
@@ -50,8 +49,7 @@ function getTcUser(req, res, next) {
 }
 
 if (!config.has('app.disableAuth') || !config.get('app.disableAuth')) {
-  console.log('*************************************');
-  console.log(config.get('app.disableAuth'));
+  var tcAuth = require('./lib/tc-auth')(config.get('auth0'));
   app.post('*', tcAuth);
   app.put('*', tcAuth);
   app.delete('*', tcAuth);
