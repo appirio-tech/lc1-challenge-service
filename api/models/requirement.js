@@ -29,7 +29,19 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('challengeId'));
       }
     },
-    requirementText : DataTypes.TEXT
+    requirementText : DataTypes.TEXT,
+    createdBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    },
   }, {
     tableName : 'requirements',
     associate : function(models) {
