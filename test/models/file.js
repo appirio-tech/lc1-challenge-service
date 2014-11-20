@@ -80,11 +80,20 @@ describe('<Unit Test>', function() {
         });
       });
 
-      it('should fail when try to save with an invalid storageLocation', function(done) {
+      it('should be able to save any storageLocation', function(done) {
         data.storageLocation = 'invalid-location';
         // create a entity
         File.create(data).success(function(savedEntity) {
-          should.not.exist(savedEntity);
+          savedEntity.id.should.be.a.Number;
+          savedEntity.id.should.not.have.length(0);
+          savedEntity.createdAt.should.not.have.length(0);
+          savedEntity.updatedAt.should.not.have.length(0);
+          savedEntity.title.should.equal(data.title);
+          savedEntity.fileUrl.should.equal(data.fileUrl);
+          savedEntity.size.should.equal(data.size);
+          savedEntity.storageLocation.should.equal(data.storageLocation);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {

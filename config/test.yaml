@@ -1,2 +1,3 @@
 app:
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
+  disableAuth: true

@@ -121,7 +121,9 @@ exports.up = function (db, callback) {
       '"requirementText" text, ' +
       '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL, ' +
       '"createdAt" timestamp with time zone NOT NULL, ' +
-      '"updatedAt" timestamp with time zone NOT NULL ' +
+      '"updatedAt" timestamp with time zone NOT NULL, ' +
+      '"createdBy" bigint, ' +
+      '"updatedBy" bigint ' +
       ');')
 
 
