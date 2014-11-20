@@ -1329,6 +1329,8 @@ definitions:
   ChallengeResource:
     required:
       - title
+      - status
+      - projectSource
     properties:
       id:
         type: integer
@@ -1442,6 +1444,7 @@ definitions:
     required:
       - reviewerId
       - submissionId
+      - status
     properties:
       id:
         type: integer
@@ -1609,6 +1612,7 @@ definitions:
   SubmissionResource:
     required:
       - submitterId
+      - status
     properties:
       id:
         type: integer
