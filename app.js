@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 /* jshint camelcase:false */
 function getTcUser(req, res, next) {
   if (req.user) {
-    request(config.get('app.tcApi') + '/user/tcid/' + req.user.user_id, function (error, response, body) {
+    request(config.get('app.tcApi') + '/user/tcid/' + req.user.sub, function (error, response, body) {
       if (!error && response.statusCode === 200) {
         body = JSON.parse(body);
 
