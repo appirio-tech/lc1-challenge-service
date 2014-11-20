@@ -91,7 +91,7 @@ describe('<Unit Test>', function() {
           savedEntity.title.should.equal(data.title);
           savedEntity.fileUrl.should.equal(data.fileUrl);
           savedEntity.size.should.equal(data.size);
-          savedEntity.sotrageLocation.should.equal(data.storageLocation);
+          savedEntity.storageLocation.should.equal(data.storageLocation);
           savedEntity.createdBy.should.equal(data.createdBy);
           savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
