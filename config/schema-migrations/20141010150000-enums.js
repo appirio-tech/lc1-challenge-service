@@ -9,8 +9,6 @@ exports.up = function (db, callback) {
     db.runSql.bind(db,
        "CREATE TYPE enum_challenges_projectSource AS ENUM ( 'TOPCODER');"),
     db.runSql.bind(db,
-        "CREATE TYPE \"enum_files_storageLocation\" AS ENUM ('LOCAL', 'S3');"),
-    db.runSql.bind(db,
         "CREATE TYPE enum_participants_role AS ENUM ('OWNER', 'SUBMITTER', 'WATCHER', 'REVIEWER');"),
     db.runSql.bind(db,
         "CREATE TYPE enum_scorecards_status AS ENUM ('NEW', 'SAVED', 'SUBMITTED');"),
@@ -22,7 +20,6 @@ exports.up = function (db, callback) {
 exports.down = function (db, callback) {
   async.series([
     db.runSql.bind(db, "DROP TYPE enum_challenges_status;"),
-    db.runSql.bind(db, "DROP TYPE \"enum_files_storageLocation\";"),
     db.runSql.bind(db, "DROP TYPE enum_participants_role;"),
     db.runSql.bind(db, "DROP TYPE enum_scorecards_status;"),
     db.runSql.bind(db, "DROP TYPE enum_submissions_status;")
