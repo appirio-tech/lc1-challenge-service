@@ -59,8 +59,8 @@ if [ $CREATE_CHALLENGES = "true" ]; then
   # 1.2 Create a full challenge Asctive challenge  (A2)
 
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
-    "regStartAt": "2014-10-2",
-    "subEndAt": "2014-10-22",
+    "regStartAt": "2014-11-2",
+    "subEndAt": "2014-12-22",
     "title": "Two to Tango",
     "overview": "teach us to dance",
     "description": "write a document to teach us to dance",
@@ -75,8 +75,8 @@ if [ $CREATE_CHALLENGES = "true" ]; then
   # 1.3 Create a full challenge Review challenge  (A3)
 
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
-    "regStartAt": "2014-08-29",
-    "subEndAt": "2014-09-13",
+    "regStartAt": "2014-11-29",
+    "subEndAt": "2014-11-13",
     "title": "Three is a magic number",
     "overview": "teach us to magic",
     "description": "Write a doc about magic",
