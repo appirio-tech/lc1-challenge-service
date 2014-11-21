@@ -195,8 +195,8 @@ paths:
       tags:
         - challenges
         - files
-      description: Get files assoicated to a challenge
-      summary: Get files assoicated to a challenge
+      description: Get files associated to a challenge
+      summary: Get files assocaited to a challenge
       x-swagger-router-controller: challenges
       operationId: getChallengeFiles
       parameters:
@@ -676,8 +676,8 @@ paths:
         - challenges
         - submissions
         - files
-      description: Get files assoicated to a challenge
-      summary: Get files assoicated to a challenge
+      description: Get files associated to a submission
+      summary: Get files associated to a submission
       x-swagger-router-controller: files
       operationId: getFiles
       parameters:
