@@ -39,7 +39,9 @@ exports.up = function (db, callback) {
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
-        '"updatedBy" bigint ' +
+        '"updatedBy" bigint, ' +
+        '"submissionId" bigint, ' +
+        '"challengeId" bigint NOT NULL ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY files ADD CONSTRAINT files_pkey PRIMARY KEY (id);'),
 
