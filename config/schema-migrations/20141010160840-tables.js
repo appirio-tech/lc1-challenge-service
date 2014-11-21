@@ -33,17 +33,13 @@ exports.up = function (db, callback) {
       'CREATE TABLE files ( ' +
         'id bigserial NOT NULL, ' +
         'title text, ' +
-        '"filePath" text, ' +
         'size bigint NOT NULL, ' +
-        '"fileName" text, ' +
         '"storageLocation" text NOT NULL, ' +
         '"fileUrl" text NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
-        '"updatedBy" bigint, ' +
-        '"submissionId" bigint, ' +
-        '"challengeId" bigint NOT NULL ' +
+        '"updatedBy" bigint ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY files ADD CONSTRAINT files_pkey PRIMARY KEY (id);'),
 
