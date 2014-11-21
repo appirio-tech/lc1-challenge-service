@@ -16,13 +16,10 @@ var routeHelper = require('./lib/routeHelper');
 var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
 var request = require('request');
-var morgan = require('morgan');
 
 var app = express();
 
 app.use(bodyParser.json());
-
-app.use(morgan(':req[Authorization]'));
 
 // Add tc user
 // @TODO Move this into it's own module
