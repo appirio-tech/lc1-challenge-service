@@ -22,13 +22,13 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     challengeId: {
-      type: DataTypes.BIGINT, allowNull: false,
+      type: DataTypes.BIGINT,
       get: function() {
         return parseInt(this.getDataValue('challengeId'));
       }
     },
     submissionId: {
-      type: DataTypes.BIGINT, allowNull: false,
+      type: DataTypes.BIGINT,
       get: function() {
         return parseInt(this.getDataValue('submissionId'));
       }

@@ -41,7 +41,7 @@ exports.up = function (db, callback) {
         '"createdBy" bigint, ' +
         '"updatedBy" bigint, ' +
         '"submissionId" bigint, ' +
-        '"challengeId" bigint NOT NULL ' +
+        '"challengeId" bigint ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY files ADD CONSTRAINT files_pkey PRIMARY KEY (id);'),
 
