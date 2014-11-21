@@ -13,7 +13,7 @@
 /**
  * Challenges controller test.
  */
-var should = require('should'); 
+var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
@@ -85,8 +85,7 @@ describe('Challenges Controller', function() {
       });
     });
 
-      it('should able to create a challenge without projectID and projectSource', function(done) {
-          delete reqData.projectId;
+      it('should not able to create a challenge without projectSource', function(done) {
           delete reqData.projectSource;
           // send request
           request(url)
@@ -94,14 +93,11 @@ describe('Challenges Controller', function() {
               .send(reqData)
               .end(function(err, res) {
                   // verify response
-                  // verify response
-                  should.not.exist(err);
-                  res.status.should.equal(200);
-                  res.body.id.should.be.a.Number;
-                  res.body.result.success.should.be.true;
-                  res.body.result.status.should.equal(200);
-                  challengeId = res.body.id;
-                  done();
+                res.status.should.equal(400);
+                res.body.result.success.should.be.false;
+                res.body.result.status.should.equal(400);
+                res.body.should.have.property('content');
+                done();
               });
       });
 
