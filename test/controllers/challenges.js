@@ -28,6 +28,7 @@ var Challenge = db.Challenge;
 var File = db.File;
 var Participant = db.Participant;
 var Submission = db.Submission;
+var _ = require('lodash');
 
 /**
  * Test Challenges controller APIs
@@ -867,13 +868,37 @@ describe('Challenges Controller', function() {
 
     describe('Submissions API', function() {
       var submissionId;
+      var fileReqData;
       beforeEach(function(done) {
         reqData = {
           submitterId: 222,
           submitterHandle: 'submitter_222',
           status : 'VALID'
         };
+        fileReqData = {
+          title: 'File Title',
+          size: 123,
+          fileUrl: '/uploads/my-submission.zip',
+          storageLocation: 'LOCAL'
+        };
         done();
+      });
+
+      it('should able to create a file with valid data for challenge ENDPOINT', function(done) {
+        // send request
+        request(url)
+        .post('/challenges/'+challenge.id+'/files')
+        .send(fileReqData)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.result.success.should.be.true;
+          res.body.result.status.should.equal(200);
+          done();
+        });
       });
 
       it('should able to create a submission with valid data', function(done) {
@@ -890,6 +915,45 @@ describe('Challenges Controller', function() {
           res.body.result.success.should.be.true;
           res.body.result.status.should.equal(200);
           submissionId = res.body.id;
+          done();
+        });
+      });
+
+      it('should able to create a file with valid data for submission ENDPOINT', function(done) {
+        // send request
+        request(url)
+        .post('/challenges/'+challenge.id+'/submissions/'+submissionId+'/files')
+        .send(fileReqData)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.result.success.should.be.true;
+          res.body.result.status.should.equal(200);
+          done();
+        });
+      });
+
+      it('should able to get the all files. submissionId should be null for every file', function(done) {
+        // send request
+        request(url)
+        .get('/challenges/'+challenge.id+'/files')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          // for each file entity, submissionId should be null
+          _.forEach(res.body.content, function(file) {
+            should.equal(file.submissionId, null);
+          });
           done();
         });
       });
