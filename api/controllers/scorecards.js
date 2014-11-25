@@ -17,7 +17,7 @@ var controllerHelper = require('./../../lib/controllerHelper');
 
 
 // build controller for the nested scorecards resource
-var scorecardController = controllerHelper.buildController(Scorecard, [Challenge], null, {filtering: false});
+var scorecardController = controllerHelper.buildController(Scorecard, [Challenge], null, {filtering: true});
 
 
 module.exports = {

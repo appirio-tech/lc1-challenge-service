@@ -13,7 +13,7 @@
 /**
  * Test ScorecardItems controller APIs.
  */
-var should = require('should'); 
+var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
@@ -32,6 +32,7 @@ var ScorecardItem = db.ScorecardItem;
 
 
 describe('ScorecardItems Controller', function() {
+  this.timeout(15000);
   var url = 'http://localhost:'+config.app.port;
   var reqData;
   var challenge;
@@ -49,7 +50,7 @@ describe('ScorecardItems Controller', function() {
       challenge = savedEntity;
       var scorecardData = {
         scoreSum: 97,
-        status: 'VALID',
+        status: 'NEW',
         pay: false,
         place: 1,
         challengeId: challenge.id,
@@ -88,8 +89,42 @@ describe('ScorecardItems Controller', function() {
       });
     });
 
+    it('should able to create a scorecard item without scorecardId in request body', function(done) {
+      // send request
+      request(url)
+      .post('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems')
+      .send(reqData)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        // verify response
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.id.should.be.a.Number;
+        res.body.result.success.should.be.true;
+        res.body.result.status.should.equal(200);
+        scorecardItemId = res.body.id;
+        done();
+      });
+    });
+
     it('should fail to create a scorecard item without requirementId', function(done) {
       delete reqData.requirementId;
+      // send request
+      request(url)
+      .post('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems')
+      .send(reqData)
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(400);
+        res.body.result.success.should.be.false;
+        res.body.result.status.should.equal(400);
+        res.body.should.have.property('content');
+        done();
+      });
+    });
+
+    it('should fail to create a scorecard item with scorecardId different in request body and path param', function(done) {
+      reqData.scorecardId = scorecard.id + 1334;
       // send request
       request(url)
       .post('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems')
@@ -122,6 +157,26 @@ describe('ScorecardItems Controller', function() {
       });
     });
 
+    it('should able to get the partial response of all scorecard items', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems?fields=id')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          res.body.content[0].should.have.property('id');
+          res.body.content[0].should.not.have.property('score');
+          done();
+        });
+    });
+
     it('should able to get the existing scorecard item', function(done) {
       // send request
       request(url)
@@ -139,6 +194,36 @@ describe('ScorecardItems Controller', function() {
       });
     });
 
+    it('should able to get the existing scorecard with fields parameter and expand functionality', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'?fields=id,scorecardItems(id,requirement)' )
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.content.scorecardItems.length.should.be.above(0);
+          done();
+        });
+    });
+
+    it('should able to get partial response of the existing scorecard item', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems/'+scorecardItemId+'?fields=id,requirementId,score')
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(scorecardItemId);
+          res.body.content.requirementId.should.equal(reqData.requirementId);
+          res.body.content.score.should.equal(reqData.score);
+          res.body.content.should.not.have.property('comment');
+          done();
+        });
+    });
+
     it('should able to update the existing scorecard item', function(done) {
       // send request
       reqData.comment = 'Updated comment';
@@ -152,6 +237,39 @@ describe('ScorecardItems Controller', function() {
         res.body.id.should.equal(scorecardItemId);
         res.body.result.success.should.equal(true);
         res.body.result.status.should.equal(200);
+        done();
+      });
+    });
+
+    it('should able to update the existing scorecard item without scorecardId in request body', function(done) {
+      // send request
+      reqData.comment = 'Updated comment again';
+      request(url)
+      .put('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems/'+scorecardItemId)
+      .send(reqData)
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(200);
+        res.body.id.should.be.a.Number;
+        res.body.id.should.equal(scorecardItemId);
+        res.body.result.success.should.equal(true);
+        res.body.result.status.should.equal(200);
+        done();
+      });
+    });
+
+    it('should fail to update a scorecard item with scorecardId different in request body and path param', function(done) {
+      reqData.scorecardId = scorecard.id + 1334;
+      // send request
+      request(url)
+      .put('/challenges/'+challenge.id+'/scorecards/'+scorecard.id+'/scorecardItems/' + scorecardItemId)
+      .send(reqData)
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(400);
+        res.body.result.success.should.be.false;
+        res.body.result.status.should.equal(400);
+        res.body.should.have.property('content');
         done();
       });
     });

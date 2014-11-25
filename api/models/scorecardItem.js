@@ -34,12 +34,23 @@ module.exports = function(sequelize, DataTypes) {
     score: DataTypes.FLOAT,
     // comment from reviewer
     comment : DataTypes.TEXT,
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'scorecard_items',
     associate : function(models) {
       ScorecardItem.belongsTo(models.Scorecard, {foreignKey: 'scorecardId'});
+      ScorecardItem.belongsTo(models.Requirement, {foreignKey: 'requirementId'});
     }
   });
 

@@ -34,14 +34,30 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('submitterId'));
       }
     },
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    submitterHandle: {
+      type: DataTypes.STRING(128)
+    },
+    status: {
+        type: DataTypes.ENUM,
+        values: ['VALID','INVALID','LATE']
+    },
+    createdBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'submissions',
     associate : function(models) {
       Submission.hasMany(models.SubmissionFile);
       Submission.hasMany(models.Scorecard);
-      Submission.belongsTo(models.User, {foreignKey : 'submitterId'});
       Submission.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
     }
   });

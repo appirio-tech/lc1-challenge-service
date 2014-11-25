@@ -36,7 +36,11 @@ describe('<Unit Test>', function() {
     beforeEach(function(done) {
       data = {
         challengeId: 111,
-        submitterId: 222
+        submitterId: 222,
+        submitterHandle: 'submitter_handle',
+        status:'VALID',
+        createdBy: 1,
+        updatedBy: 1
       };
       done();
     });
@@ -45,13 +49,16 @@ describe('<Unit Test>', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         Submission.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
           savedEntity.updatedAt.should.not.have.length(0);
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.submitterId.should.equal(data.submitterId);
+          savedEntity.submitterHandle.should.equal(data.submitterHandle);
+          savedEntity.status.should.equal(data.status);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -72,6 +79,33 @@ describe('<Unit Test>', function() {
           done();
         });
       });
+
+      it('should fail when try to save without a status', function(done) {
+        delete data.status;
+        // create a entity
+        Submission.create(data).success(function(savedEntity) {
+            should.not.exist(savedEntity);
+            done();
+          })
+        .error(function(err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should fail when try to save with an invalid status', function(done) {
+        data.status = 'invalid-status';
+        // create a entity
+        Submission.create(data).success(function(savedEntity) {
+            should.not.exist(savedEntity);
+            done();
+        })
+        .error(function(err) {
+            should.exist(err);
+            done();
+        });
+      });
+
     });
 
     describe('Method Find/Update/Delete', function() {
@@ -155,7 +189,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();

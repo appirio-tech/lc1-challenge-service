@@ -21,24 +21,40 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('id'));
       }
     },
+    challengeId: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('challengeId'));
+      }
+    },
+    submissionId: {
+      type: DataTypes.BIGINT, allowNull: false,
+      get: function() {
+        return parseInt(this.getDataValue('submissionId'));
+      }
+    },
     title : {type: DataTypes.TEXT},
-    filePath : {type: DataTypes.TEXT, allowNull: false},
     size : {
       type: DataTypes.BIGINT, allowNull: false,
       get: function() {
         return parseInt(this.getDataValue('size'));
       }
     },
-    fileName : {type: DataTypes.TEXT, allowNull: false},
     // file storage location
-    storageLocation : {
-      type: DataTypes.ENUM,
-      values: ['local', 's3'],
-      allowNull: false
+    storageLocation : {type: DataTypes.STRING(128), allowNull: false},
+    fileUrl : {type: DataTypes.TEXT, allowNull: false},
+    createdBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
     },
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
-
+    updatedBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'files',
     associate : function(models) {

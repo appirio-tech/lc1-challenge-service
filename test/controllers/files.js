@@ -13,7 +13,7 @@
 /**
  * Test Files controller APIs.
  */
-var should = require('should'); 
+var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
@@ -32,6 +32,7 @@ var Submission = db.Submission;
 
 
 describe('Files Controller', function() {
+  this.timeout(15000);
   var url = 'http://localhost:'+config.app.port;
   var reqData;
   var challenge;
@@ -49,7 +50,8 @@ describe('Files Controller', function() {
       challenge = savedEntity;
       var submissionData = {
         challengeId: challenge.id,
-        submitterId: 222
+        submitterId: 222,
+        status : 'VALID'
       };
       Submission.create(submissionData).success(function(savedSubmission) {
         submission = savedSubmission;
@@ -83,8 +85,8 @@ describe('Files Controller', function() {
       });
     });
 
-    it('should fail to create a file without fileName', function(done) {
-      delete reqData.fileName;
+    it('should fail to create a file without fileUrl', function(done) {
+      delete reqData.fileUrl;
       // send request
       request(url)
       .post('/challenges/'+challenge.id+'/submissions/'+submission.id+'/files')
@@ -117,6 +119,28 @@ describe('Files Controller', function() {
       });
     });
 
+    it('should able to get the partial response of all files', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/submissions/'+submission.id+'/files?fields=id')
+        .end(function(err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          res.body.content[0].should.have.property('id');
+          res.body.content[0].should.not.have.property('title');
+          res.body.content[0].should.not.have.property('fileUrl');
+          res.body.content[0].should.not.have.property('challengeId');
+          done();
+        });
+    });
+
     it('should able to get the existing file', function(done) {
       // send request
       request(url)
@@ -128,9 +152,26 @@ describe('Files Controller', function() {
         res.body.status.should.equal(200);
         res.body.content.id.should.equal(fileId);
         res.body.content.title.should.equal(reqData.title);
-        res.body.content.fileName.should.equal(reqData.fileName);
+        res.body.content.fileUrl.should.equal(reqData.fileUrl);
         done();
       });
+    });
+
+    it('should able to get partial response of the existing file', function(done) {
+      // send request
+      request(url)
+        .get('/challenges/'+challenge.id+'/submissions/'+submission.id+'/files/'+fileId+ '?fields=id')
+        .end(function(err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(fileId);
+          res.body.content.should.not.have.property('title');
+          res.body.content.should.not.have.property('fileUrl');
+          res.body.content.should.not.have.property('challengeId');
+          done();
+        });
     });
 
     it('should able to update the existing file', function(done) {
