@@ -31,9 +31,9 @@ var entity;
 /**
  * Test File model CRUD operations
  */
-describe('<Unit Test>', function() {
-  describe('Model File:', function() {
-    beforeEach(function(done) {
+describe('<Unit Test>', function () {
+  describe('Model File:', function () {
+    beforeEach(function (done) {
       data = {
         title: 'File Title',
         size: 123,
@@ -46,10 +46,10 @@ describe('<Unit Test>', function() {
       done();
     });
 
-    describe('Method Save', function() {
-      it('should able to save without problems', function(done) {
+    describe('Method Save', function () {
+      it('should able to save without problems', function (done) {
         // create a entity
-        File.create(data).success(function(savedEntity) {
+        File.create(data).success(function (savedEntity) {
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -61,29 +61,29 @@ describe('<Unit Test>', function() {
           savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should fail when try to save without fileUrl', function(done) {
+      it('should fail when try to save without fileUrl', function (done) {
         delete data.fileUrl;
         // create a entity
-        File.create(data).success(function(savedEntity) {
+        File.create(data).success(function (savedEntity) {
           should.not.exist(savedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
-      it('should be able to save any storageLocation', function(done) {
+      it('should be able to save any storageLocation', function (done) {
         data.storageLocation = 'invalid-location';
         // create a entity
-        File.create(data).success(function(savedEntity) {
+        File.create(data).success(function (savedEntity) {
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -96,98 +96,98 @@ describe('<Unit Test>', function() {
           savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
     });
 
-    describe('Method Find/Update/Delete', function() {
-      beforeEach(function(done) {
+    describe('Method Find/Update/Delete', function () {
+      beforeEach(function (done) {
         // create a entity
-        File.create(data).success(function(savedEntity) {
+        File.create(data).success(function (savedEntity) {
           entity = savedEntity;
           done();
         });
       });
 
-      it('should able to find all files', function(done) {
+      it('should able to find all files', function (done) {
         // find all entities
-        File.findAll().success(function(allEntities) {
+        File.findAll().success(function (allEntities) {
           allEntities.length.should.be.greaterThan(0);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should able to find a file with valid id', function(done) {
+      it('should able to find a file with valid id', function (done) {
         // get an entity
-        File.find(entity.id).success(function(retrievedEntity) {
+        File.find(entity.id).success(function (retrievedEntity) {
           retrievedEntity.id.should.equal(entity.id);
           retrievedEntity.title.should.equal(entity.title);
           retrievedEntity.fileUrl.should.equal(entity.fileUrl);
           retrievedEntity.size.should.equal(entity.size);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should not able to find a file with invalid id', function(done) {
+      it('should not able to find a file with invalid id', function (done) {
         // get an entity
-        File.find(999999).success(function(retrievedEntity) {
+        File.find(999999).success(function (retrievedEntity) {
           should.not.exist(retrievedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
-      it('should able to update a file with valid id', function(done) {
+      it('should able to update a file with valid id', function (done) {
         entity.title = 'File Modified';
         // update an entity
-        entity.save().success(function(updatedEntity) {
+        entity.save().success(function (updatedEntity) {
           updatedEntity.id.should.equal(entity.id);
           updatedEntity.title.should.equal(entity.title);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should able to delete a file', function(done) {
+      it('should able to delete a file', function (done) {
         // delete an entity
-        entity.destroy().success(function() {
+        entity.destroy().success(function () {
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
       if (entity) {
-        entity.destroy().success(function() {
+        entity.destroy().success(function () {
           entity = undefined;
           done();
         })
-        .error(function(err){
-          done(err);
-        });
+          .error(function (err) {
+            done(err);
+          });
       } else {
         done();
       }

@@ -128,7 +128,7 @@ var exports = module.exports = {};
  * @param done callback function
  */
 exports.validateGetRequests = function (url, swaggerFilePath, paramReplacementMap, done) {
-  var options = { dereferencePointers: false };
+  var options = {dereferencePointers: false};
   parser.parse(swaggerFilePath, options, function (err, swaggerObject) {
     assert.ifError(err);
     // swagger definitions that can be referenced by different endpoint definitions
@@ -150,7 +150,7 @@ exports.validateGetRequests = function (url, swaggerFilePath, paramReplacementMa
             if (!expectedResponseObject) {
               console.warn('No specific response status code found for status code: ' + res.status + ' for ' + finalPath + '. Trying with default response if any...');
               expectedResponseObject = method.responses.default;
-              assert(expectedResponseObject, 'A response definition should exist for response status code ' + res.status +  ' for ' + finalPath + '.');
+              assert(expectedResponseObject, 'A response definition should exist for response status code ' + res.status + ' for ' + finalPath + '.');
             }
             var expectedResponseDefinitionObject;
             if ('$ref' in expectedResponseObject.schema) {

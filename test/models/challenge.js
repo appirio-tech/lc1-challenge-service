@@ -33,9 +33,9 @@ var entity;
 /**
  * Test Challenge model CRUD operations
  */
-describe('<Unit Test>', function() {
-  describe('Model Challenge:', function() {
-    beforeEach(function(done) {
+describe('<Unit Test>', function () {
+  describe('Model Challenge:', function () {
+    beforeEach(function (done) {
       // challenge data
       data = {
         title: 'Challenge Title',
@@ -45,7 +45,7 @@ describe('<Unit Test>', function() {
         subEndAt: '2014-08-18',
         status: 'SUBMISSION',
         tags: ['tag1', 'tag2'],
-        prizes: [500.00,150.00],
+        prizes: [500.00, 150.00],
         createdBy: 1,
         updatedBy: 1,
         projectId: "PROJECT1",
@@ -54,10 +54,10 @@ describe('<Unit Test>', function() {
       done();
     });
 
-    describe('Method Save', function() {
-      it('should able to save without problems', function(done) {
+    describe('Method Save', function () {
+      it('should able to save without problems', function (done) {
         // create a entity
-        Challenge.create(data).success(function(savedEntity) {
+        Challenge.create(data).success(function (savedEntity) {
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -71,113 +71,113 @@ describe('<Unit Test>', function() {
           savedEntity.projectSource.should.equal(data.projectSource);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should fail when try to save a overview of more than 140 chars', function(done) {
-        for (var i=0; i<15; i+=1) {
+      it('should fail when try to save a overview of more than 140 chars', function (done) {
+        for (var i = 0; i < 15; i += 1) {
           data.overview += SAMPLE_TEXT_10;
         }
         // create an entity
-        Challenge.create(data).success(function(savedEntity) {
+        Challenge.create(data).success(function (savedEntity) {
           should.not.exist(savedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
     });
 
-    describe('Method Find/Update/Delete', function() {
-      beforeEach(function(done) {
+    describe('Method Find/Update/Delete', function () {
+      beforeEach(function (done) {
         // create a entity
-        Challenge.create(data).success(function(savedEntity) {
+        Challenge.create(data).success(function (savedEntity) {
           entity = savedEntity;
           done();
         });
       });
 
-      it('should able to find all challenges', function(done) {
+      it('should able to find all challenges', function (done) {
         // find all entities
-        Challenge.findAll().success(function(allEntities) {
+        Challenge.findAll().success(function (allEntities) {
           allEntities.length.should.be.greaterThan(0);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should able to find a challenge with valid id', function(done) {
+      it('should able to find a challenge with valid id', function (done) {
         // get an entity
-        Challenge.find(entity.id).success(function(retrievedEntity) {
+        Challenge.find(entity.id).success(function (retrievedEntity) {
           retrievedEntity.id.should.equal(entity.id);
           retrievedEntity.title.should.equal(entity.title);
           retrievedEntity.overview.should.equal(entity.overview);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
 
-      it('should not able to find a challenge with invalid id', function(done) {
+      it('should not able to find a challenge with invalid id', function (done) {
         // get an entity
-        Challenge.find(999999).success(function(retrievedEntity) {
+        Challenge.find(999999).success(function (retrievedEntity) {
           should.not.exist(retrievedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
-      it('should able to update a challenge with valid id', function(done) {
+      it('should able to update a challenge with valid id', function (done) {
         entity.title = 'Challenge Modified';
         // update an entity
-        entity.save().success(function(updatedEntity) {
+        entity.save().success(function (updatedEntity) {
           updatedEntity.id.should.equal(entity.id);
           updatedEntity.title.should.equal('Challenge Modified');
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should able to delete a challenge', function(done) {
+      it('should able to delete a challenge', function (done) {
         // delete an entity
-        entity.destroy().success(function() {
+        entity.destroy().success(function () {
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
       if (entity) {
-        entity.destroy().success(function() {
+        entity.destroy().success(function () {
           entity = undefined;
           done();
         })
-        .error(function(err){
-          done(err);
-        });
+          .error(function (err) {
+            done(err);
+          });
       } else {
         done();
       }

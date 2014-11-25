@@ -31,9 +31,9 @@ var entity;
 /**
  * Test Scorecard model CRUD operations
  */
-describe('<Unit Test>', function() {
-  describe('Model Scorecard:', function() {
-    beforeEach(function(done) {
+describe('<Unit Test>', function () {
+  describe('Model Scorecard:', function () {
+    beforeEach(function (done) {
       data = {
         scoreSum: 97,
         scorePercent: 96.5,
@@ -52,10 +52,10 @@ describe('<Unit Test>', function() {
       done();
     });
 
-    describe('Method Save', function() {
-      it('should able to save without problems', function(done) {
+    describe('Method Save', function () {
+      it('should able to save without problems', function (done) {
         // create a entity
-        Scorecard.create(data).success(function(savedEntity) {
+        Scorecard.create(data).success(function (savedEntity) {
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -68,123 +68,123 @@ describe('<Unit Test>', function() {
           savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should fail when try to save without submissionId', function(done) {
+      it('should fail when try to save without submissionId', function (done) {
         delete data.submissionId;
         // create a entity
-        Scorecard.create(data).success(function(savedEntity) {
+        Scorecard.create(data).success(function (savedEntity) {
           should.not.exist(savedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
-      it('should fail when try to save with an invalid status', function(done) {
+      it('should fail when try to save with an invalid status', function (done) {
         data.status = 'invalid-status';
         // create a entity
-        Scorecard.create(data).success(function(savedEntity) {
+        Scorecard.create(data).success(function (savedEntity) {
           should.not.exist(savedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
     });
 
-    describe('Method Find/Update/Delete', function() {
-      beforeEach(function(done) {
+    describe('Method Find/Update/Delete', function () {
+      beforeEach(function (done) {
         // create a entity
-        Scorecard.create(data).success(function(savedEntity) {
+        Scorecard.create(data).success(function (savedEntity) {
           entity = savedEntity;
           done();
         });
       });
 
-      it('should able to find all submissions', function(done) {
+      it('should able to find all submissions', function (done) {
         // find all entities
-        Scorecard.findAll().success(function(allEntities) {
+        Scorecard.findAll().success(function (allEntities) {
           allEntities.length.should.be.greaterThan(0);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should able to find a submission with valid id', function(done) {
+      it('should able to find a submission with valid id', function (done) {
         // get an entity
-        Scorecard.find(entity.id).success(function(retrievedEntity) {
+        Scorecard.find(entity.id).success(function (retrievedEntity) {
           retrievedEntity.id.should.equal(entity.id);
           retrievedEntity.submissionId.should.equal(entity.submissionId);
           retrievedEntity.status.should.equal(entity.status);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should not able to find a submission with invalid id', function(done) {
+      it('should not able to find a submission with invalid id', function (done) {
         // update an entity
-        Scorecard.find(999999).success(function(retrievedEntity) {
+        Scorecard.find(999999).success(function (retrievedEntity) {
           should.not.exist(retrievedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
-      it('should able to update a submission with valid id', function(done) {
+      it('should able to update a submission with valid id', function (done) {
         entity.status = 'SAVED';
         // update an entity
-        entity.save().success(function(updatedEntity) {
+        entity.save().success(function (updatedEntity) {
           updatedEntity.id.should.equal(entity.id);
           updatedEntity.status.should.equal(entity.status);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should able to delete a submission', function(done) {
+      it('should able to delete a submission', function (done) {
         // delete an entity
-        entity.destroy().success(function() {
+        entity.destroy().success(function () {
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
       if (entity) {
-        entity.destroy().success(function() {
+        entity.destroy().success(function () {
           entity = undefined;
           done();
         })
-        .error(function(err){
-          done(err);
-        });
+          .error(function (err) {
+            done(err);
+          });
       } else {
         done();
       }

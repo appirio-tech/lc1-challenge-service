@@ -34,90 +34,90 @@ var Submission = db.Submission;
 /**
  * Test Challenges controller APIs
  */
-describe('Challenges Controller', function() {
+describe('Challenges Controller', function () {
   this.timeout(15000);
-  var url = 'http://localhost:'+config.app.port;
+  var url = 'http://localhost:' + config.app.port;
   var reqData;
 
-  describe('Challenges API', function() {
+  describe('Challenges API', function () {
     var challengeId;
-    beforeEach(function(done) {
+    beforeEach(function (done) {
       reqData = _.clone(sampleData.challengeData, true);
       done();
     });
 
-    it('should able to create a challenge with valid data', function(done) {
+    it('should able to create a challenge with valid data', function (done) {
       // send request
       request(url)
-      .post('/challenges')
-      .send(reqData)
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        // verify response
-        should.not.exist(err);
-        res.status.should.equal(200);
-        res.body.id.should.be.a.Number;
-        res.body.result.success.should.be.true;
-        res.body.result.status.should.equal(200);
-        challengeId = res.body.id;
-        done();
-      });
+        .post('/challenges')
+        .send(reqData)
+        .expect('Content-Type', /json/)
+        .end(function (err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.result.success.should.be.true;
+          res.body.result.status.should.equal(200);
+          challengeId = res.body.id;
+          done();
+        });
     });
 
-    it('should fail to create a challenge without status', function(done) {
+    it('should fail to create a challenge without status', function (done) {
       delete reqData.status;
       // send request
       request(url)
-      .post('/challenges')
-      .send(reqData)
-      .end(function(err, res) {
-        // verify response
-        res.status.should.equal(400);
-        res.body.result.success.should.be.false;
-        res.body.result.status.should.equal(400);
-        res.body.should.have.property('content');
-        done();
-      });
+        .post('/challenges')
+        .send(reqData)
+        .end(function (err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          res.body.should.have.property('content');
+          done();
+        });
     });
 
-      it('should not able to create a challenge without projectSource', function(done) {
-          delete reqData.projectSource;
-          // send request
-          request(url)
-              .post('/challenges')
-              .send(reqData)
-              .end(function(err, res) {
-                  // verify response
-                res.status.should.equal(400);
-                res.body.result.success.should.be.false;
-                res.body.result.status.should.equal(400);
-                res.body.should.have.property('content');
-                done();
-              });
-      });
-
-      it('should able to get the all challenges', function(done) {
+    it('should not able to create a challenge without projectSource', function (done) {
+      delete reqData.projectSource;
       // send request
       request(url)
-      .get('/challenges')
-      .end(function(err, res) {
-        // verify response
-        should.not.exist(err);
-        res.status.should.equal(200);
-        res.body.success.should.be.true;
-        res.body.status.should.equal(200);
-        res.body.should.have.property('metadata');
-        res.body.metadata.totalCount.should.be.above(0);
-        res.body.should.have.property('content');
-        res.body.content.length.should.be.above(0);
-        done();
-      });
+        .post('/challenges')
+        .send(reqData)
+        .end(function (err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          res.body.should.have.property('content');
+          done();
+        });
     });
 
-    it('should able to get partial response of all challenges', function(done){
+    it('should able to get the all challenges', function (done) {
+      // send request
+      request(url)
+        .get('/challenges')
+        .end(function (err, res) {
+          // verify response
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.should.have.property('metadata');
+          res.body.metadata.totalCount.should.be.above(0);
+          res.body.should.have.property('content');
+          res.body.content.length.should.be.above(0);
+          done();
+        });
+    });
+
+    it('should able to get partial response of all challenges', function (done) {
       request(url)
         .get('/challenges?fields=id')
-        .end(function(err, res){
+        .end(function (err, res) {
           should.not.exist(err);
           res.status.should.equal(200);
           res.body.success.should.be.true;
@@ -131,27 +131,27 @@ describe('Challenges Controller', function() {
         });
     });
 
-    it('should able to get the existing challenge', function(done) {
+    it('should able to get the existing challenge', function (done) {
       // send request
       request(url)
-      .get('/challenges/'+challengeId)
-      .end(function(err, res) {
-        // verify response
-        res.status.should.equal(200);
-        res.body.success.should.be.true;
-        res.body.status.should.equal(200);
-        res.body.content.id.should.equal(challengeId);
-        res.body.content.title.should.equal(reqData.title);
-        res.body.content.status.should.equal(reqData.status);
-        done();
-      });
+        .get('/challenges/' + challengeId)
+        .end(function (err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.success.should.be.true;
+          res.body.status.should.equal(200);
+          res.body.content.id.should.equal(challengeId);
+          res.body.content.title.should.equal(reqData.title);
+          res.body.content.status.should.equal(reqData.status);
+          done();
+        });
     });
 
-    it('should able to get partial response of the existing challenge', function(done) {
+    it('should able to get partial response of the existing challenge', function (done) {
       // send request
       request(url)
-        .get('/challenges/'+challengeId+'?fields=id')
-        .end(function(err, res) {
+        .get('/challenges/' + challengeId + '?fields=id')
+        .end(function (err, res) {
           // verify response
           console.log(res.body);
           res.status.should.equal(200);
@@ -163,35 +163,35 @@ describe('Challenges Controller', function() {
         });
     });
 
-    it('should able to update the existing challenge', function(done) {
+    it('should able to update the existing challenge', function (done) {
       // send request
       reqData.title = 'Updated Challenge';
       request(url)
-      .put('/challenges/'+challengeId)
-      .send(reqData)
-      .end(function(err, res) {
-        // verify response
-        res.status.should.equal(200);
-        res.body.id.should.be.a.Number;
-        res.body.id.should.equal(challengeId);
-        res.body.result.success.should.equal(true);
-        res.body.result.status.should.equal(200);
-        done();
-      });
+        .put('/challenges/' + challengeId)
+        .send(reqData)
+        .end(function (err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.id.should.equal(challengeId);
+          res.body.result.success.should.equal(true);
+          res.body.result.status.should.equal(200);
+          done();
+        });
     });
 
-    it('should able to delete the existing challenge', function(done) {
+    it('should able to delete the existing challenge', function (done) {
       // send request
       request(url)
-      .delete('/challenges/'+challengeId)
-      .end(function(err, res) {
-        // verify response
-        res.status.should.equal(200);
-        res.body.id.should.be.a.Number;
-        res.body.result.success.should.equal(true);
-        res.body.result.status.should.equal(200);
-        done();
-      });
+        .delete('/challenges/' + challengeId)
+        .end(function (err, res) {
+          // verify response
+          res.status.should.equal(200);
+          res.body.id.should.be.a.Number;
+          res.body.result.success.should.equal(true);
+          res.body.result.status.should.equal(200);
+          done();
+        });
     });
 
     it('should return fields respecting the Swagger documentation file', function (done) {
@@ -208,7 +208,7 @@ describe('Challenges Controller', function() {
         request(url)
           .post('/challenges')
           .send(sampleData.challengeData)
-          .end(function(err, res) {
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             challengeId = res.body.id;
@@ -217,9 +217,9 @@ describe('Challenges Controller', function() {
       }, function (callback) {
         // add file to challenge
         request(url)
-          .post('/challenges/'+challengeId+'/files')
+          .post('/challenges/' + challengeId + '/files')
           .send(sampleData.challengeFileData)
-          .end(function(err, res) {
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             challengeFileId = res.body.id;
@@ -228,9 +228,9 @@ describe('Challenges Controller', function() {
       }, function (callback) {
         // add participant
         request(url)
-          .post('/challenges/'+challengeId+'/participants')
+          .post('/challenges/' + challengeId + '/participants')
           .send(sampleData.participantData)
-          .end(function(err, res) {
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             participantId = res.body.id;
@@ -239,9 +239,9 @@ describe('Challenges Controller', function() {
       }, function (callback) {
         // add requirement
         request(url)
-          .post('/challenges/'+challengeId+'/requirements')
+          .post('/challenges/' + challengeId + '/requirements')
           .send(sampleData.requirementData)
-          .end(function(err, res) {
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             requirementId = res.body.id;
@@ -250,9 +250,9 @@ describe('Challenges Controller', function() {
       }, function (callback) {
         // add scorecard
         request(url)
-          .post('/challenges/'+challengeId+'/scorecards/')
+          .post('/challenges/' + challengeId + '/scorecards/')
           .send(sampleData.scorecardData)
-          .end(function(err, res) {
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             scorecardId = res.body.id;
@@ -261,9 +261,9 @@ describe('Challenges Controller', function() {
       }, function (callback) {
         // add scorecard item
         request(url)
-          .post('/challenges/'+challengeId+'/scorecards/'+scorecardId+'/scorecardItems')
+          .post('/challenges/' + challengeId + '/scorecards/' + scorecardId + '/scorecardItems')
           .send(sampleData.scorecardItemData)
-          .end(function(err, res) {
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             scorecardItemId = res.body.id;
@@ -272,9 +272,9 @@ describe('Challenges Controller', function() {
       }, function (callback) {
         // add submission
         request(url)
-          .post('/challenges/'+challengeId+'/submissions')
+          .post('/challenges/' + challengeId + '/submissions')
           .send(sampleData.submissionData)
-          .end(function(err, res) {
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             submissionId = res.body.id;
@@ -283,9 +283,9 @@ describe('Challenges Controller', function() {
       }, function (callback) {
         // add file to submission
         request(url)
-          .post('/challenges/'+challengeId+'/submissions/'+submissionId+'/files')
+          .post('/challenges/' + challengeId + '/submissions/' + submissionId + '/files')
           .send(sampleData.challengeFileData)
-          .end(function(err, res) {
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             submissionFileId = res.body.id;
@@ -311,28 +311,28 @@ describe('Challenges Controller', function() {
   });
 
 
-  describe('Paging, orderBy and filtering in get all challenges API', function() {
+  describe('Paging, orderBy and filtering in get all challenges API', function () {
     var challenges = [];
-    before(function(done) {
+    before(function (done) {
       var statuses = ['SUBMISSION', 'REVIEW', 'COMPLETE'];
       // create 10 challenges
-      async.timesSeries(10, function(index, callback) {
+      async.timesSeries(10, function (index, callback) {
         var createdBy = index;
         if (index === 4) {
           createdBy = undefined;
         }
         // create a challenge
         var challengeData = {
-          title: 'Serenity Challenge '+index,
+          title: 'Serenity Challenge ' + index,
           status: statuses[index % 3],
-          regStartAt: '2014-10-0'+(index+1),  // index starts at 0
+          regStartAt: '2014-10-0' + (index + 1),  // index starts at 0
           createdBy: createdBy
         };
-        Challenge.create(challengeData).success(function(savedEntity) {
+        Challenge.create(challengeData).success(function (savedEntity) {
           challenges.push(savedEntity);
           callback();
         });
-      }, function(err) {
+      }, function (err) {
         should.not.exist(err);
         done();
       });
@@ -340,216 +340,216 @@ describe('Challenges Controller', function() {
 
     function sendGetAllChallengesRequest(params, callback) {
       request(url)
-      .get('/challenges?'+params)
-      .end(function(err, res) {
-        callback(err, res);
-      });
+        .get('/challenges?' + params)
+        .end(function (err, res) {
+          callback(err, res);
+        });
     };
 
-    it('should able to limit the number of challenges in the response', function(done) {
+    it('should able to limit the number of challenges in the response', function (done) {
       var limit = 3;
-      async.timesSeries(3, function(i, next) {
-        var params = 'limit='+limit;
+      async.timesSeries(3, function (i, next) {
+        var params = 'limit=' + limit;
         // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
+        sendGetAllChallengesRequest(params, function (err, res) {
           should.not.exist(err);
           res.status.should.equal(200);
           res.body.success.should.be.true;
           res.body.content.length.should.equal(limit);
           next(err);
         });
-      }, function(err) {
+      }, function (err) {
         done();
       });
     });
 
-    it('should failed to get the all challenges with non-digit limit', function(done) {
+    it('should failed to get the all challenges with non-digit limit', function (done) {
       // send request
       request(url)
-      .get('/challenges?limit=xxx')
-      .end(function(err, res) {
-        // verify response
-        res.status.should.equal(400);
-        res.body.result.success.should.be.false;
-        res.body.result.status.should.equal(400);
-        done();
-      });
+        .get('/challenges?limit=xxx')
+        .end(function (err, res) {
+          // verify response
+          res.status.should.equal(400);
+          res.body.result.success.should.be.false;
+          res.body.result.status.should.equal(400);
+          done();
+        });
     });
 
-    it('should able to get a page of challenges by offset', function(done) {
+    it('should able to get a page of challenges by offset', function (done) {
       var limit = 3;
       var challengeIds = {};
 
-      async.timesSeries(3, function(i, next) {
-        var params = 'limit='+limit+'&offset='+(i*3);
+      async.timesSeries(3, function (i, next) {
+        var params = 'limit=' + limit + '&offset=' + (i * 3);
         // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
+        sendGetAllChallengesRequest(params, function (err, res) {
           should.not.exist(err);
           res.status.should.equal(200);
           res.body.success.should.be.true;
-          async.eachSeries(res.body.content, function(challenge, innerNext) {
+          async.eachSeries(res.body.content, function (challenge, innerNext) {
             challengeIds.should.not.have.property(challenge.id);
             challengeIds[challenge.id] = challenge.id;
             innerNext();
-          }, function(err) {
+          }, function (err) {
             next(err);
           });
         });
-      }, function(err) {
+      }, function (err) {
         done();
       });
     });
 
-    it('should able to get the challenges in ascending order', function(done) {
+    it('should able to get the challenges in ascending order', function (done) {
       var limit = 3;
       var prevId = -1;
-      async.timesSeries(3, function(i, next) {
-        var params = 'limit='+limit+'&offset='+(i*3)+'&orderBy=id asc';
+      async.timesSeries(3, function (i, next) {
+        var params = 'limit=' + limit + '&offset=' + (i * 3) + '&orderBy=id asc';
         // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
+        sendGetAllChallengesRequest(params, function (err, res) {
           should.not.exist(err);
           res.status.should.equal(200);
           res.body.success.should.be.true;
-          async.eachSeries(res.body.content, function(challenge, innerNext) {
+          async.eachSeries(res.body.content, function (challenge, innerNext) {
             challenge.id.should.be.above(prevId);
             prevId = challenge.id;
             innerNext();
-          }, function(err) {
+          }, function (err) {
             next();
           });
         });
-      }, function(err) {
+      }, function (err) {
         done();
       });
     });
 
-    it('should able to get the challenges in descending order', function(done) {
+    it('should able to get the challenges in descending order', function (done) {
       var limit = 3;
       var prevId = 999999;
-      async.timesSeries(3, function(i, next) {
-        var params = 'limit='+limit+'&offset='+(i*3)+'&orderBy=id desc';
+      async.timesSeries(3, function (i, next) {
+        var params = 'limit=' + limit + '&offset=' + (i * 3) + '&orderBy=id desc';
         // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
+        sendGetAllChallengesRequest(params, function (err, res) {
           should.not.exist(err);
           res.status.should.equal(200);
           res.body.success.should.be.true;
-          async.eachSeries(res.body.content, function(challenge, innerNext) {
+          async.eachSeries(res.body.content, function (challenge, innerNext) {
             challenge.id.should.be.below(prevId);
             prevId = challenge.id;
             innerNext();
-          }, function(err) {
+          }, function (err) {
             next();
           });
         });
-      }, function(err) {
+      }, function (err) {
         done();
       });
     });
 
-    it('should able to get nulls first by nulls first in the challenges response', function(done) {
-        var params = 'orderBy=createdBy desc nulls first';
-        // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
+    it('should able to get nulls first by nulls first in the challenges response', function (done) {
+      var params = 'orderBy=createdBy desc nulls first';
+      // send request
+      sendGetAllChallengesRequest(params, function (err, res) {
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
 
-          var firstChallenge = res.body.content[0];
-          (firstChallenge.createdBy === null).should.be.true;
-          var lastChallenge = res.body.content[res.body.content.length-1];
-          lastChallenge.createdBy.should.be.equal(0);
-          done();
-        });
+        var firstChallenge = res.body.content[0];
+        (firstChallenge.createdBy === null).should.be.true;
+        var lastChallenge = res.body.content[res.body.content.length - 1];
+        lastChallenge.createdBy.should.be.equal(0);
+        done();
+      });
     });
 
-    it('should able to get nulls last by nulls last in the challenges response', function(done) {
-        var params = 'orderBy=createdBy desc nulls last';
-        // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
+    it('should able to get nulls last by nulls last in the challenges response', function (done) {
+      var params = 'orderBy=createdBy desc nulls last';
+      // send request
+      sendGetAllChallengesRequest(params, function (err, res) {
+        should.not.exist(err);
+        res.status.should.equal(200);
+        res.body.success.should.be.true;
 
-          var firstChallenge = res.body.content[0];
-          firstChallenge.createdBy.should.be.ok;
-          var lastChallenge = res.body.content[res.body.content.length-1];
-          (lastChallenge.createdBy === null).should.be.true;
-          done();
-        });
+        var firstChallenge = res.body.content[0];
+        firstChallenge.createdBy.should.be.ok;
+        var lastChallenge = res.body.content[res.body.content.length - 1];
+        (lastChallenge.createdBy === null).should.be.true;
+        done();
+      });
     });
 
-    it('should fail to get challenges without first or last in nulls filter', function(done) {
-        var params = 'orderBy=createdBy desc nulls';
-        // send request
-        sendGetAllChallengesRequest(params, function(err, res) {
-          should.not.exist(err);
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          done();
-        });
+    it('should fail to get challenges without first or last in nulls filter', function (done) {
+      var params = 'orderBy=createdBy desc nulls';
+      // send request
+      sendGetAllChallengesRequest(params, function (err, res) {
+        should.not.exist(err);
+        res.status.should.equal(400);
+        res.body.result.success.should.be.false;
+        done();
+      });
     });
 
-    it('should able to filter the challenges by field value', function(done) {
+    it('should able to filter the challenges by field value', function (done) {
       var params = "filter=status='SUBMISSION'";
       // send request
-      sendGetAllChallengesRequest(params, function(err, res) {
+      sendGetAllChallengesRequest(params, function (err, res) {
         should.not.exist(err);
         res.status.should.equal(200);
         res.body.success.should.be.true;
-        async.eachSeries(res.body.content, function(challenge, innerNext) {
+        async.eachSeries(res.body.content, function (challenge, innerNext) {
           challenge.status.should.equal('SUBMISSION');
           innerNext();
-        }, function(err) {
+        }, function (err) {
           done();
         });
       });
     });
 
-    it('should able to filter the challenges by in operator', function(done) {
+    it('should able to filter the challenges by in operator', function (done) {
       var params = "filter=status=in('SUBMISSION','REVIEW')";
       // send request
-      sendGetAllChallengesRequest(params, function(err, res) {
+      sendGetAllChallengesRequest(params, function (err, res) {
         should.not.exist(err);
         res.status.should.equal(200);
         res.body.success.should.be.true;
-        async.eachSeries(res.body.content, function(challenge, innerNext) {
+        async.eachSeries(res.body.content, function (challenge, innerNext) {
           challenge.status.should.not.equal('COMPLETE');
           innerNext();
-        }, function(err) {
+        }, function (err) {
           done();
         });
       });
     });
 
-    it('should able to filter the challenges by < operator in filtering', function(done) {
+    it('should able to filter the challenges by < operator in filtering', function (done) {
       var middleId = challenges[4].id;
-      var params = 'filter=id<'+middleId;
+      var params = 'filter=id<' + middleId;
       // send request
-      sendGetAllChallengesRequest(params, function(err, res) {
+      sendGetAllChallengesRequest(params, function (err, res) {
         should.not.exist(err);
         res.status.should.equal(200);
         res.body.success.should.be.true;
-        async.eachSeries(res.body.content, function(challenge, innerNext) {
+        async.eachSeries(res.body.content, function (challenge, innerNext) {
           challenge.id.should.below(middleId);
           innerNext();
-        }, function(err) {
+        }, function (err) {
           done();
         });
       });
     });
 
-    it('should able to filter the challenges by > operator in filtering', function(done) {
+    it('should able to filter the challenges by > operator in filtering', function (done) {
       var middleId = challenges[4].id;
-      var params = 'filter=id>'+middleId;
+      var params = 'filter=id>' + middleId;
       // send request
-      sendGetAllChallengesRequest(params, function(err, res) {
+      sendGetAllChallengesRequest(params, function (err, res) {
         should.not.exist(err);
         res.status.should.equal(200);
         res.body.success.should.be.true;
-        async.eachSeries(res.body.content, function(challenge, innerNext) {
+        async.eachSeries(res.body.content, function (challenge, innerNext) {
           challenge.id.should.above(middleId);
           innerNext();
-        }, function(err) {
+        }, function (err) {
           done();
         });
       });
@@ -558,85 +558,85 @@ describe('Challenges Controller', function() {
   });
 
 
-  describe('The Nested Resources', function() {
+  describe('The Nested Resources', function () {
     var challenge;
-    before(function(done) {
+    before(function (done) {
       // create a challenge
       var challengeData = {
         title: 'Serenity Challenge',
         status: 'SUBMISSION',
         regStartAt: '2014-10-09'
       };
-      Challenge.create(challengeData).success(function(savedEntity) {
+      Challenge.create(challengeData).success(function (savedEntity) {
         challenge = savedEntity;
         done();
       });
     });
 
-    describe('Files API', function() {
+    describe('Files API', function () {
       var fileId;
-      beforeEach(function(done) {
+      beforeEach(function (done) {
         reqData = _.clone(sampleData.challengeFileData, true);
         done();
       });
 
-      it('should able to create a file with valid data', function(done) {
+      it('should able to create a file with valid data', function (done) {
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/files')
-        .send(reqData)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.be.true;
-          res.body.result.status.should.equal(200);
-          fileId = res.body.id;
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/files')
+          .send(reqData)
+          .expect('Content-Type', /json/)
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.be.true;
+            res.body.result.status.should.equal(200);
+            fileId = res.body.id;
+            done();
+          });
       });
 
-      it('should fail to create a file without fileUrl', function(done) {
+      it('should fail to create a file without fileUrl', function (done) {
         delete reqData.fileUrl;
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/files')
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          res.body.result.status.should.equal(400);
-          res.body.should.have.property('content');
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/files')
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.be.false;
+            res.body.result.status.should.equal(400);
+            res.body.should.have.property('content');
+            done();
+          });
       });
 
-      it('should able to get the all files', function(done) {
+      it('should able to get the all files', function (done) {
         // send request
         request(url)
-        .get('/challenges/'+challenge.id+'/files')
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
-          res.body.status.should.equal(200);
-          res.body.should.have.property('metadata');
-          res.body.metadata.totalCount.should.be.above(0);
-          res.body.should.have.property('content');
-          res.body.content.length.should.be.above(0);
-          done();
-        });
+          .get('/challenges/' + challenge.id + '/files')
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            res.body.content.length.should.be.above(0);
+            done();
+          });
       });
 
-      it('should able to get partial response of the all files', function(done) {
+      it('should able to get partial response of the all files', function (done) {
         // send request
         request(url)
-          .get('/challenges/'+challenge.id+'/files?fields=id')
-          .end(function(err, res) {
+          .get('/challenges/' + challenge.id + '/files?fields=id')
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             res.status.should.equal(200);
@@ -651,10 +651,10 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to the get partial response and nested file objects of the exist challenge', function(done){
+      it('should able to the get partial response and nested file objects of the exist challenge', function (done) {
         request(url)
-          .get('/challenges/'+challenge.id+'?fields=id,title,files')
-          .end(function(err, res) {
+          .get('/challenges/' + challenge.id + '?fields=id,title,files')
+          .end(function (err, res) {
             //verify response
             should.not.exist(err);
             res.status.should.equal(200);
@@ -668,10 +668,10 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to get partial response of the exist challenge and its nested file object with partial fields', function(done){
+      it('should able to get partial response of the exist challenge and its nested file object with partial fields', function (done) {
         request(url)
-          .get('/challenges/'+challenge.id+'?fields=id,title,files(id,title)')
-          .end(function(err, res) {
+          .get('/challenges/' + challenge.id + '?fields=id,title,files(id,title)')
+          .end(function (err, res) {
             //verify response
             should.not.exist(err);
             res.status.should.equal(200);
@@ -686,27 +686,27 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to get the existing file', function(done) {
+      it('should able to get the existing file', function (done) {
         // send request
         request(url)
-        .get('/challenges/'+challenge.id+'/files/'+fileId)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
-          res.body.status.should.equal(200);
-          res.body.content.id.should.equal(fileId);
-          res.body.content.title.should.equal(reqData.title);
-          res.body.content.fileUrl.should.equal(reqData.fileUrl);
-          done();
-        });
+          .get('/challenges/' + challenge.id + '/files/' + fileId)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.content.id.should.equal(fileId);
+            res.body.content.title.should.equal(reqData.title);
+            res.body.content.fileUrl.should.equal(reqData.fileUrl);
+            done();
+          });
       });
 
-      it('should able to get partial response of the existing file', function(done) {
+      it('should able to get partial response of the existing file', function (done) {
         // send request
         request(url)
-          .get('/challenges/'+challenge.id+'/files/'+fileId+'?fields=id,title')
-          .end(function(err, res) {
+          .get('/challenges/' + challenge.id + '/files/' + fileId + '?fields=id,title')
+          .end(function (err, res) {
             // verify response
             res.status.should.equal(200);
             res.body.success.should.be.true;
@@ -718,138 +718,138 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to update the existing file', function(done) {
+      it('should able to update the existing file', function (done) {
         // send request
         reqData.title = 'Updated file';
         request(url)
-        .put('/challenges/'+challenge.id+'/files/'+fileId)
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.id.should.equal(fileId);
-          res.body.result.success.should.equal(true);
-          res.body.result.status.should.equal(200);
-          done();
-        });
+          .put('/challenges/' + challenge.id + '/files/' + fileId)
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.id.should.equal(fileId);
+            res.body.result.success.should.equal(true);
+            res.body.result.status.should.equal(200);
+            done();
+          });
       });
 
-      it('should able to delete the existing file', function(done) {
+      it('should able to delete the existing file', function (done) {
         // send request
         request(url)
-        .delete('/challenges/'+challenge.id+'/files/'+fileId)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.equal(true);
-          res.body.result.status.should.equal(200);
-          done();
-        });
+          .delete('/challenges/' + challenge.id + '/files/' + fileId)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.equal(true);
+            res.body.result.status.should.equal(200);
+            done();
+          });
       });
     });
 
-    describe('Participants API', function() {
+    describe('Participants API', function () {
       // updating the test cases challengeId is not required in post and put request
       var participantId;
-      beforeEach(function(done) {
+      beforeEach(function (done) {
         reqData = _.clone(sampleData.participantData, true);
         done();
       });
 
-      it('should able to create a participant with valid data', function(done) {
+      it('should able to create a participant with valid data', function (done) {
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/participants')
-        .send(reqData)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.be.true;
-          res.body.result.status.should.equal(200);
-          participantId = res.body.id;
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/participants')
+          .send(reqData)
+          .expect('Content-Type', /json/)
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.be.true;
+            res.body.result.status.should.equal(200);
+            participantId = res.body.id;
+            done();
+          });
       });
 
-      it('should fail to create a participant without role', function(done) {
+      it('should fail to create a participant without role', function (done) {
         delete reqData.role;
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/participants')
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          res.body.result.status.should.equal(400);
-          res.body.should.have.property('content');
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/participants')
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.be.false;
+            res.body.result.status.should.equal(400);
+            res.body.should.have.property('content');
+            done();
+          });
       });
 
-      it('should able to create a participant without challengeId in request body', function(done) {
+      it('should able to create a participant without challengeId in request body', function (done) {
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/participants')
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.be.true;
-          res.body.result.status.should.equal(200);
-          participantId = res.body.id;
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/participants')
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.be.true;
+            res.body.result.status.should.equal(200);
+            participantId = res.body.id;
+            done();
+          });
       });
 
-      it('should fail to create a participant with different challengeId in request body than path param', function(done) {
+      it('should fail to create a participant with different challengeId in request body than path param', function (done) {
         // adding some random number to path param challenge id to make it different
         reqData.challengeId = challenge.id + 120;
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/participants')
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          res.body.result.status.should.equal(400);
-          res.body.should.have.property('content');
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/participants')
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.be.false;
+            res.body.result.status.should.equal(400);
+            res.body.should.have.property('content');
+            done();
+          });
       });
 
-      it('should able to get the all participants', function(done) {
+      it('should able to get the all participants', function (done) {
         // send request
         request(url)
-        .get('/challenges/'+challenge.id+'/participants')
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
-          res.body.status.should.equal(200);
-          res.body.should.have.property('metadata');
-          res.body.metadata.totalCount.should.be.above(0);
-          res.body.should.have.property('content');
-          res.body.content.length.should.be.above(0);
-          res.body.content[0].userHandle.should.equal('user_222');
-          done();
-        });
+          .get('/challenges/' + challenge.id + '/participants')
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            res.body.content.length.should.be.above(0);
+            res.body.content[0].userHandle.should.equal('user_222');
+            done();
+          });
       });
 
-      it('should able to get the partial response of all participants', function(done) {
+      it('should able to get the partial response of all participants', function (done) {
         // send request
         request(url)
-          .get('/challenges/'+challenge.id+'/participants?fields=id')
-          .end(function(err, res) {
+          .get('/challenges/' + challenge.id + '/participants?fields=id')
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             res.status.should.equal(200);
@@ -865,28 +865,28 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to get the existing participant', function(done) {
+      it('should able to get the existing participant', function (done) {
         // send request
         request(url)
-        .get('/challenges/'+challenge.id+'/participants/'+participantId)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
-          res.body.status.should.equal(200);
-          res.body.content.id.should.equal(participantId);
-          res.body.content.challengeId.should.equal(challenge.id);
-          res.body.content.role.should.equal(reqData.role);
-          res.body.content.userHandle.should.equal('user_222');
-          done();
-        });
+          .get('/challenges/' + challenge.id + '/participants/' + participantId)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.content.id.should.equal(participantId);
+            res.body.content.challengeId.should.equal(challenge.id);
+            res.body.content.role.should.equal(reqData.role);
+            res.body.content.userHandle.should.equal('user_222');
+            done();
+          });
       });
 
-      it('should able to get partial response of the existing participant', function(done) {
+      it('should able to get partial response of the existing participant', function (done) {
         // send request
         request(url)
-          .get('/challenges/'+challenge.id+'/participants/'+participantId+'?fields=id')
-          .end(function(err, res) {
+          .get('/challenges/' + challenge.id + '/participants/' + participantId + '?fields=id')
+          .end(function (err, res) {
             // verify response
             res.status.should.equal(200);
             res.body.success.should.be.true;
@@ -897,189 +897,189 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to update the existing participant', function(done) {
+      it('should able to update the existing participant', function (done) {
         // send request
         reqData.role = 'REVIEWER';
         request(url)
-        .put('/challenges/'+challenge.id+'/participants/'+participantId)
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.id.should.equal(participantId);
-          res.body.result.success.should.equal(true);
-          res.body.result.status.should.equal(200);
-          done();
-        });
+          .put('/challenges/' + challenge.id + '/participants/' + participantId)
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.id.should.equal(participantId);
+            res.body.result.success.should.equal(true);
+            res.body.result.status.should.equal(200);
+            done();
+          });
       });
 
-      it('should able to update the existing participant without challengeId in request body', function(done) {
+      it('should able to update the existing participant without challengeId in request body', function (done) {
         reqData.role = 'SUBMITTER';
         // send request
         request(url)
-        .put('/challenges/'+challenge.id+'/participants/' + participantId)
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.be.true;
-          res.body.result.status.should.equal(200);
-          participantId = res.body.id;
-          done();
-        });
+          .put('/challenges/' + challenge.id + '/participants/' + participantId)
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.be.true;
+            res.body.result.status.should.equal(200);
+            participantId = res.body.id;
+            done();
+          });
       });
 
-      it('should fail to update the existing participant with different challengeId in request body than path param', function(done) {
+      it('should fail to update the existing participant with different challengeId in request body than path param', function (done) {
         // adding some random number to path param challenge id to make it different
         reqData.challengeId = challenge.id + 120;
         // send request
         request(url)
-        .put('/challenges/'+challenge.id+'/participants/' + participantId)
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          res.body.result.status.should.equal(400);
-          res.body.should.have.property('content');
-          done();
-        });
+          .put('/challenges/' + challenge.id + '/participants/' + participantId)
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.be.false;
+            res.body.result.status.should.equal(400);
+            res.body.should.have.property('content');
+            done();
+          });
       });
 
-      it('should able to delete the existing participant', function(done) {
+      it('should able to delete the existing participant', function (done) {
         // send request
         request(url)
-        .delete('/challenges/'+challenge.id+'/participants/'+participantId)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.equal(true);
-          res.body.result.status.should.equal(200);
-          done();
-        });
+          .delete('/challenges/' + challenge.id + '/participants/' + participantId)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.equal(true);
+            res.body.result.status.should.equal(200);
+            done();
+          });
       });
     });
 
-    describe('Submissions API', function() {
+    describe('Submissions API', function () {
       var submissionId;
-      beforeEach(function(done) {
+      beforeEach(function (done) {
         reqData = _.clone(sampleData.submissionData, true);
         done();
       });
 
-      it('should able to create a submission with valid data', function(done) {
+      it('should able to create a submission with valid data', function (done) {
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/submissions')
-        .send(reqData)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.be.true;
-          res.body.result.status.should.equal(200);
-          submissionId = res.body.id;
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/submissions')
+          .send(reqData)
+          .expect('Content-Type', /json/)
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.be.true;
+            res.body.result.status.should.equal(200);
+            submissionId = res.body.id;
+            done();
+          });
       });
 
-      it('should able to create a submission without challengeId in request body', function(done) {
+      it('should able to create a submission without challengeId in request body', function (done) {
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/submissions')
-        .send(reqData)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.be.true;
-          res.body.result.status.should.equal(200);
-          submissionId = res.body.id;
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/submissions')
+          .send(reqData)
+          .expect('Content-Type', /json/)
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.be.true;
+            res.body.result.status.should.equal(200);
+            submissionId = res.body.id;
+            done();
+          });
       });
 
-      it('should fail to create a submission with different challengeId in request body than path param', function(done) {
+      it('should fail to create a submission with different challengeId in request body than path param', function (done) {
         reqData.challengeId = challenge.id + 234;
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/submissions')
-        .send(reqData)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          res.body.result.status.should.equal(400);
-          res.body.should.have.property('content');
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/submissions')
+          .send(reqData)
+          .expect('Content-Type', /json/)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.be.false;
+            res.body.result.status.should.equal(400);
+            res.body.should.have.property('content');
+            done();
+          });
       });
 
-      it('should fail to create a submission without submitterId', function(done) {
+      it('should fail to create a submission without submitterId', function (done) {
         delete reqData.submitterId;
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/submissions')
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          res.body.result.status.should.equal(400);
-          res.body.should.have.property('content');
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/submissions')
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.be.false;
+            res.body.result.status.should.equal(400);
+            res.body.should.have.property('content');
+            done();
+          });
       });
 
-      it('should fail to create a submission without status', function(done) {
+      it('should fail to create a submission without status', function (done) {
         delete reqData.status;
         // send request
         request(url)
-        .post('/challenges/'+challenge.id+'/submissions')
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          res.body.result.status.should.equal(400);
-          res.body.should.have.property('content');
-          done();
-        });
+          .post('/challenges/' + challenge.id + '/submissions')
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.be.false;
+            res.body.result.status.should.equal(400);
+            res.body.should.have.property('content');
+            done();
+          });
       });
 
-      it('should able to get the all submissions', function(done) {
+      it('should able to get the all submissions', function (done) {
         // send request
         request(url)
-        .get('/challenges/'+challenge.id+'/submissions')
-        .end(function(err, res) {
-          // verify response
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
-          res.body.status.should.equal(200);
-          res.body.should.have.property('metadata');
-          res.body.metadata.totalCount.should.be.above(0);
-          res.body.should.have.property('content');
-          res.body.content.length.should.be.above(0);
-          res.body.content[0].submitterHandle.should.equal('submitter_222');
-          done();
-        });
+          .get('/challenges/' + challenge.id + '/submissions')
+          .end(function (err, res) {
+            // verify response
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.should.have.property('metadata');
+            res.body.metadata.totalCount.should.be.above(0);
+            res.body.should.have.property('content');
+            res.body.content.length.should.be.above(0);
+            res.body.content[0].submitterHandle.should.equal('submitter_222');
+            done();
+          });
       });
 
-      it('should able to get the partial response of all submissions', function(done) {
+      it('should able to get the partial response of all submissions', function (done) {
         // send request
         request(url)
-          .get('/challenges/'+challenge.id+'/submissions?fields=id')
-          .end(function(err, res) {
+          .get('/challenges/' + challenge.id + '/submissions?fields=id')
+          .end(function (err, res) {
             // verify response
             should.not.exist(err);
             res.status.should.equal(200);
@@ -1096,28 +1096,28 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to get the existing submission', function(done) {
+      it('should able to get the existing submission', function (done) {
         // send request
         request(url)
-        .get('/challenges/'+challenge.id+'/submissions/'+submissionId)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.success.should.be.true;
-          res.body.status.should.equal(200);
-          res.body.content.id.should.equal(submissionId);
-          res.body.content.challengeId.should.equal(challenge.id);
-          res.body.content.submitterId.should.equal(reqData.submitterId);
-          res.body.content.submitterHandle.should.equal('submitter_222');
-          done();
-        });
+          .get('/challenges/' + challenge.id + '/submissions/' + submissionId)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.success.should.be.true;
+            res.body.status.should.equal(200);
+            res.body.content.id.should.equal(submissionId);
+            res.body.content.challengeId.should.equal(challenge.id);
+            res.body.content.submitterId.should.equal(reqData.submitterId);
+            res.body.content.submitterHandle.should.equal('submitter_222');
+            done();
+          });
       });
 
-      it('should able to get partial response of the existing submission', function(done) {
+      it('should able to get partial response of the existing submission', function (done) {
         // send request
         request(url)
-          .get('/challenges/'+challenge.id+'/submissions/'+submissionId+'?fields=id,submitterId')
-          .end(function(err, res) {
+          .get('/challenges/' + challenge.id + '/submissions/' + submissionId + '?fields=id,submitterId')
+          .end(function (err, res) {
             // verify response
             res.status.should.equal(200);
             res.body.success.should.be.true;
@@ -1129,90 +1129,90 @@ describe('Challenges Controller', function() {
           });
       });
 
-      it('should able to update the existing submission', function(done) {
+      it('should able to update the existing submission', function (done) {
         // send request
         reqData.submitterId = 123;
         request(url)
-        .put('/challenges/'+challenge.id+'/submissions/'+submissionId)
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.id.should.equal(submissionId);
-          res.body.result.success.should.equal(true);
-          res.body.result.status.should.equal(200);
-          done();
-        });
+          .put('/challenges/' + challenge.id + '/submissions/' + submissionId)
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.id.should.equal(submissionId);
+            res.body.result.success.should.equal(true);
+            res.body.result.status.should.equal(200);
+            done();
+          });
       });
 
-      it('should able to update the existing submission without challengeId in request body', function(done) {
+      it('should able to update the existing submission without challengeId in request body', function (done) {
         // send request
         reqData.submitterId = 123;
         request(url)
-        .put('/challenges/'+challenge.id+'/submissions/'+submissionId)
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.id.should.equal(submissionId);
-          res.body.result.success.should.equal(true);
-          res.body.result.status.should.equal(200);
-          done();
-        });
+          .put('/challenges/' + challenge.id + '/submissions/' + submissionId)
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.id.should.equal(submissionId);
+            res.body.result.success.should.equal(true);
+            res.body.result.status.should.equal(200);
+            done();
+          });
       });
 
-      it('should fail to update the existing submission with challengeId different in request body and path param', function(done) {
+      it('should fail to update the existing submission with challengeId different in request body and path param', function (done) {
         // send request
         reqData.submitterId = 123;
         reqData.challengeId = challenge.id + 2324;
         request(url)
-        .put('/challenges/'+challenge.id+'/submissions/'+submissionId)
-        .send(reqData)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(400);
-          res.body.result.success.should.be.false;
-          res.body.result.status.should.equal(400);
-          res.body.should.have.property('content');
-          done();
-        });
+          .put('/challenges/' + challenge.id + '/submissions/' + submissionId)
+          .send(reqData)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.be.false;
+            res.body.result.status.should.equal(400);
+            res.body.should.have.property('content');
+            done();
+          });
       });
 
-      it('should able to delete the existing submission', function(done) {
+      it('should able to delete the existing submission', function (done) {
         // send request
         request(url)
-        .delete('/challenges/'+challenge.id+'/submissions/'+submissionId)
-        .end(function(err, res) {
-          // verify response
-          res.status.should.equal(200);
-          res.body.id.should.be.a.Number;
-          res.body.result.success.should.equal(true);
-          res.body.result.status.should.equal(200);
-          done();
-        });
+          .delete('/challenges/' + challenge.id + '/submissions/' + submissionId)
+          .end(function (err, res) {
+            // verify response
+            res.status.should.equal(200);
+            res.body.id.should.be.a.Number;
+            res.body.result.success.should.equal(true);
+            res.body.result.status.should.equal(200);
+            done();
+          });
       });
     });
 
   });
 
-  after(function(done) {
+  after(function (done) {
     // delete data created during test.
-    async.eachSeries([Submission, Participant, File, Challenge], function(model, callback) {
-      model.findAll().success(function(entities) {
-        async.each(entities, function(entity, cb) {
-          entity.destroy().success(function() {
+    async.eachSeries([Submission, Participant, File, Challenge], function (model, callback) {
+      model.findAll().success(function (entities) {
+        async.each(entities, function (entity, cb) {
+          entity.destroy().success(function () {
             cb();
           })
-          .error(function(err) {
-            cb();
-          });
-        }, function(err) {
+            .error(function (err) {
+              cb();
+            });
+        }, function (err) {
           callback();
         });
       });
-    }, function(err) {
+    }, function (err) {
       done();
     });
 

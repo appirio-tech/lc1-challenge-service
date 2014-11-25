@@ -33,7 +33,7 @@ var challenge;
 /**
  * Test Requirement model CRUD operations
  */
-describe('<Unit Test>', function() {
+describe('<Unit Test>', function () {
   // create a challenge.
   var challengeData = {
     title: 'Challenge Title',
@@ -43,13 +43,13 @@ describe('<Unit Test>', function() {
     subEndAt: '2014-08-18',
     status: 'SUBMISSION',
     tags: ['tag1', 'tag2'],
-    prizes: [500.00,150.00],
+    prizes: [500.00, 150.00],
     createdBy: 1,
     updatedBy: 1
   };
-  
-  before(function(done) {
-    Challenge.create(challengeData).success(function(savedEntity) {
+
+  before(function (done) {
+    Challenge.create(challengeData).success(function (savedEntity) {
       challenge = savedEntity;
       savedEntity.id.should.be.a.Number;
       savedEntity.id.should.not.have.length(0);
@@ -62,8 +62,8 @@ describe('<Unit Test>', function() {
     });
   });
 
-  describe('Model Requirement:', function() {
-    beforeEach(function(done) {
+  describe('Model Requirement:', function () {
+    beforeEach(function (done) {
       // requirement data
       data = {
         challengeId: challenge.id,
@@ -72,10 +72,10 @@ describe('<Unit Test>', function() {
       done();
     });
 
-    describe('Method Save', function() {
-      it('should able to save without problems', function(done) {
+    describe('Method Save', function () {
+      it('should able to save without problems', function (done) {
         // create a entity
-        Requirement.create(data).success(function(savedEntity) {
+        Requirement.create(data).success(function (savedEntity) {
           entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
@@ -86,109 +86,109 @@ describe('<Unit Test>', function() {
           savedEntity.requirementText.should.equal(data.requirementText);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should fail when try to save without challengeId', function(done) {
+      it('should fail when try to save without challengeId', function (done) {
         var data = _.omit(data, 'challengeId');
         // create an entity
-        Requirement.create(data).success(function(savedEntity) {
+        Requirement.create(data).success(function (savedEntity) {
           should.not.exist(savedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
     });
 
-    describe('Method Find/Update/Delete', function() {
-      beforeEach(function(done) {
+    describe('Method Find/Update/Delete', function () {
+      beforeEach(function (done) {
         // create a entity
-        Requirement.create(data).success(function(savedEntity) {
+        Requirement.create(data).success(function (savedEntity) {
           entity = savedEntity;
           done();
         });
       });
 
-      it('should able to find all requirements', function(done) {
+      it('should able to find all requirements', function (done) {
         // find all entities
-        Requirement.findAll().success(function(allEntities) {
+        Requirement.findAll().success(function (allEntities) {
           allEntities.length.should.be.greaterThan(0);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should able to find a requirement with valid id', function(done) {
+      it('should able to find a requirement with valid id', function (done) {
         // get an entity
-        Requirement.find(entity.id).success(function(retrievedEntity) {
+        Requirement.find(entity.id).success(function (retrievedEntity) {
           retrievedEntity.id.should.equal(entity.id);
           retrievedEntity.requirementText.should.equal(entity.requirementText);
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
 
-      it('should not able to find a requirement with invalid id', function(done) {
+      it('should not able to find a requirement with invalid id', function (done) {
         // get an entity
-        Requirement.find(999999).success(function(retrievedEntity) {
+        Requirement.find(999999).success(function (retrievedEntity) {
           should.not.exist(retrievedEntity);
           done();
         })
-        .error(function(err) {
-          should.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.exist(err);
+            done();
+          });
       });
 
-      it('should able to update a requirement with valid id', function(done) {
+      it('should able to update a requirement with valid id', function (done) {
         entity.requirementText = 'Requirement Modified';
         // update an entity
-        entity.save().success(function(updatedEntity) {
+        entity.save().success(function (updatedEntity) {
           updatedEntity.id.should.equal(entity.id);
           updatedEntity.requirementText.should.equal('Requirement Modified');
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
-      it('should able to delete a requirement', function(done) {
+      it('should able to delete a requirement', function (done) {
         // delete an entity
-        entity.destroy().success(function() {
+        entity.destroy().success(function () {
           done();
         })
-        .error(function(err) {
-          should.not.exist(err);
-          done();
-        });
+          .error(function (err) {
+            should.not.exist(err);
+            done();
+          });
       });
 
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
       if (entity) {
-        entity.destroy().success(function() {
+        entity.destroy().success(function () {
           entity = undefined;
           done();
         })
-        .error(function(err){
-          done(err);
-        });
+          .error(function (err) {
+            done(err);
+          });
       } else {
         done();
       }
