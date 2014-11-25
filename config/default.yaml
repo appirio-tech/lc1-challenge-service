@@ -5,7 +5,7 @@ app:
   query:
     pageSize: 1000
   tcApi: http://qa.topcoder.com/v2
-  disableAuth: true
+  disableAuth: false
 auth0:
   client: ''
   secret: ''
