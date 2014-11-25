@@ -49,7 +49,9 @@ describe('<Unit Test>', function() {
         createdBy: 1,
         updatedBy: 1,
         projectId: "PROJECT1",
-        projectSource: "TOPCODER"
+        projectSource: "TOPCODER",
+        creatorHandle: "CREATOR",
+        creatorId: "111"
       };
       done();
     });
@@ -69,6 +71,8 @@ describe('<Unit Test>', function() {
           savedEntity.updatedBy.should.equal(data.updatedBy);
           savedEntity.projectId.should.equal(data.projectId);
           savedEntity.projectSource.should.equal(data.projectSource);
+          savedEntity.creatorHandle.should.equal(data.creatorHandle);
+          savedEntity.creatorId.should.equal(data.creatorId);
           done();
         })
         .error(function(err) {
