@@ -1383,6 +1383,12 @@ definitions:
       sourceId:
         type: string
         description: Used for integratino with remote systems
+      creatorHandle:
+        type: string
+        description: challenge creator's handle
+      creatorId:
+        type: number
+        description: challenge creator's id
       createdAt:
         type: string
         format: date-time

@@ -53,7 +53,9 @@ if [ $CREATE_CHALLENGES = "true" ]; then
     "prizes": [1600.00, 1000.00, 500.50],
     "source": "lc",
     "projectId": "PROJECT1",
-    "projectSource": "TOPCODER"
+    "projectSource": "TOPCODER",
+    "creatorHandle": "CREATOR1",
+    "creatorId": 111
   }' $URL
 
   # 1.2 Create a full challenge Asctive challenge  (A2)
@@ -69,7 +71,9 @@ if [ $CREATE_CHALLENGES = "true" ]; then
     "prizes": [1002, 502],
     "source": "lc",
     "projectId": "PROJECT3",
-    "projectSource": "TOPCODER"
+    "projectSource": "TOPCODER",
+    "creatorHandle": "CREATOR2",
+    "creatorId": 222
   }' $URL
 
   # 1.3 Create a full challenge Review challenge  (A3)
@@ -86,7 +90,9 @@ if [ $CREATE_CHALLENGES = "true" ]; then
     "source": "tc",
     "sourceId": "123xx456x789",
     "projectId": "PROJECT2",
-    "projectSource": "TOPCODER"
+    "projectSource": "TOPCODER",
+    "creatorHandle": "CREATOR3",
+    "creatorId": 333
   }' $URL
 
   #1.4 Create a full challenge complete challenge  (A3)
@@ -103,7 +109,9 @@ if [ $CREATE_CHALLENGES = "true" ]; then
     "source": "tc",
     "sourceId": "123xx456x789",
     "projectId": "PROJECT4",
-    "projectSource": "TOPCODER"
+    "projectSource": "TOPCODER",
+    "creatorHandle": "CREATOR4",
+    "creatorId": 444
   }' $URL
 
 

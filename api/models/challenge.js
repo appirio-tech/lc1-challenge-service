@@ -41,6 +41,8 @@ module.exports = function(sequelize, DataTypes) {
     description: DataTypes.TEXT,
     source: DataTypes.TEXT,
     sourceId: DataTypes.TEXT,
+    creatorHandle: DataTypes.STRING(128),
+    creatorId: DataTypes.BIGINT,
     tags: DataTypes.ARRAY(DataTypes.TEXT),
     prizes: DataTypes.ARRAY(DataTypes.DOUBLE),
     // the phase status of challenge
