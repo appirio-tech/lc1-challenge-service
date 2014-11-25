@@ -26,9 +26,17 @@ var challengeController = controllerHelper.buildController(Challenge, null, {fil
 var filteringOff = {
   filtering: false
 };
+var fileControllerOptions = {
+  customFilters : {
+    where : {
+      submissionId: null
+    }
+  },
+  filtering: false
+};
 
 // build controller for the nested files resource
-var fileController = controllerHelper.buildController(File, [Challenge], filteringOff);
+var fileController = controllerHelper.buildController(File, [Challenge], fileControllerOptions);
 
 // build controller for the nested participants resource
 var participantController = controllerHelper.buildController(Participant, [Challenge], {filtering: true});
