@@ -1573,6 +1573,13 @@ definitions:
       - fileUrl
       - size
       - storageLocation
+  FileActionResource:
+    properties:
+      url:
+        type: string
+        description: The URL to preform the action against
+    required:
+      - url
   ParticipantResource:
     properties:
       id:
