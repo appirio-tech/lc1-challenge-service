@@ -40,7 +40,7 @@ function getTcUser(req, res, next) {
       }
       else {
         //TODO: handle error response from tc api
-        res.status(503).send('TC API Unavailable');
+        routeHelper.addErrorMessage(req, 503, 'TC API Unavailable');
       }
     });
   } else {
