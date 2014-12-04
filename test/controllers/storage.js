@@ -27,11 +27,26 @@ var Submission = db.Submission;
 var Participant = db.Participant;
 var File = db.File;
 
+/**
+ * Utility function to create an entity with given data on give Sequelize model
+ * @param  {Model}      Model     Sequelize Model
+ * @param  {Object}     data      entity data
+ * @param  {Function}   callback callback function
+ */
+var createEntity = function(Model, data, callback) {
+  Model.create(data).success(function(savedEntity) {
+    callback(null, savedEntity);
+  }).error(function(err) {
+    callback(err);
+  });
+};
+
 describe('Storage Controller', function() {
   var url = 'http://localhost:'+config.app.port;
   var file, challenge, submission, participant;
   // create a challenge
   before(function(done) {
+    this.timeout(0);
     // create a challenge
     var challengeData = {
       title: 'Storage Test Challenge',
@@ -39,16 +54,23 @@ describe('Storage Controller', function() {
       regStartAt: '2014-10-09'
     };
 
-    Challenge.create(challengeData).success(function(savedEntity) {
-      challenge = savedEntity;
-      // create a participant to the challenge
-      var participantData = {
-        userId: 1,
-        userHandle: '_indy',
-        challengeId: challenge.id,
-        role: 'SUBMITTER'
-      };
-      Participant.create(participantData).success(function(savedEntity) {
+    async.waterfall([
+      function(cb) {
+        createEntity(Challenge, challengeData, cb);
+      },
+      function(savedEntity, cb) {
+        challenge = savedEntity;
+        var participantData = {
+          userId: 1,
+          userHandle: '_indy',
+          challengeId: challenge.id,
+          role: 'SUBMITTER'
+        };
+        createEntity(Participant, participantData, function(err, participant) {
+          cb(err, challenge, participant)
+        });
+      },
+      function(challenge, savedEntity, cb) {
         participant = savedEntity;
         // create a submission to the challenge
         var submissionData = {
@@ -57,29 +79,30 @@ describe('Storage Controller', function() {
           submitterHandle: '_indy',
           status: 'VALID'
         };
-
-        Submission.create(submissionData).success(function(savedEntity) {
-          submission = savedEntity;
-          // add a new file to the challenge
-          var fileData = {
-            title: 'Storage Controller Test File Title',
-            size: 123,
-            fileUrl: '/uploads/my-submission.zip',
-            storageLocation: 'LOCAL',
-            challengeId: challenge.id,
-            submissionId: submission.id
-          };
-
-          File.create(fileData).success(function(savedEntity) {
-            file = savedEntity;
-            done();
-          });
-
+        createEntity(Submission, submissionData, function(err, submission) {
+          cb(err, challenge, participant, submission);
         });
-      });
-
+      },
+      function(challenge, participant, savedEntity, cb) {
+        submission = savedEntity;
+        // add a new file to the challenge
+        var fileData = {
+          title: 'Storage Controller Test File Title',
+          size: 123,
+          fileUrl: '/uploads/my-submission.zip',
+          storageLocation: 'LOCAL',
+          challengeId: challenge.id,
+          submissionId: submission.id
+        };
+        createEntity(File, fileData, cb);
+      }
+    ], function(err, result) {
+      if(err) {
+        throw err;
+      }
+      file = result;
+      done();
     });
-
   });
   /**
    * Storage controller tests

@@ -158,7 +158,6 @@ describe('Challenges Controller', function() {
         .get('/challenges/'+challengeId+'?fields=id')
         .end(function(err, res) {
           // verify response
-          console.log(res.body);
           res.status.should.equal(200);
           res.body.success.should.be.true;
           res.body.status.should.equal(200);
