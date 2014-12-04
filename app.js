@@ -16,10 +16,37 @@ var routeHelper = require('./lib/routeHelper');
 var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
 var request = require('request');
+var _ = require('lodash');
 
 var app = express();
 
 app.use(bodyParser.json());
+
+/**
+ * Authenticated paths for the application.
+ * Configure authPaths in configuration settings
+ * authPaths is an array of object. Each object has following structure
+ *   {
+ *     httpVerb: '<GET/POST/PUT/DELETE/PATCH>',
+ *     path: '<SECURED ENDPOINT>'
+ *   }
+ *   For ex:
+ *   {
+ *     httpVerb: 'GET',
+ *     path: '/challenges/:challengeId/files/:fileId/download'
+ *   }
+ *
+ * @type {Array}
+ */
+var authPaths = config.app.authPaths;
+var routingMethods = {
+  GET: 'get',
+  POST: 'post',
+  PUT: 'put',
+  DELETE: 'delete',
+  HEAD: 'head',
+  OPTIONS: 'options'
+};
 
 // Add tc user
 // @TODO Move this into it's own module
@@ -55,6 +82,15 @@ if (!config.has('app.disableAuth') || !config.get('app.disableAuth')) {
   app.delete('*', tcAuth);
   app.patch('*', tcAuth);
   app.use(getTcUser);
+  // adding auth handler for file download and upload ENDPOINTS defined in configuration settings
+  if(_.isArray(authPaths)) {
+    _.forEach(authPaths, function(authPath) {
+      var verb = routingMethods[authPath.httpVerb];
+      if(verb)
+        app[verb](authPath.path, routeHelper.requireAuth);
+      }
+    });
+  }
 }
 
 // Serve the Swagger documents and Swagger UI
