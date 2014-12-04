@@ -81,16 +81,16 @@ if (!config.has('app.disableAuth') || !config.get('app.disableAuth')) {
   app.put('*', tcAuth);
   app.delete('*', tcAuth);
   app.patch('*', tcAuth);
-  app.use(getTcUser);
   // adding auth handler for file download and upload ENDPOINTS defined in configuration settings
   if(_.isArray(authPaths)) {
     _.forEach(authPaths, function(authPath) {
       var verb = routingMethods[authPath.httpVerb];
-      if(verb)
+      if(verb) {
         app[verb](authPath.path, routeHelper.requireAuth);
       }
     });
   }
+  app.use(getTcUser);
 }
 
 // Serve the Swagger documents and Swagger UI
