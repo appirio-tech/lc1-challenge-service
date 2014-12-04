@@ -1350,7 +1350,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: FileActionResource
+            $ref: FileActionResponse
         default:
           description: Error
           schema:
@@ -1381,7 +1381,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: FileActionResource
+            $ref: FileActionResponse
         default:
           description: Error
           schema:
@@ -1419,7 +1419,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: FileActionResource
+            $ref: FileActionResponse
         default:
           description: Error
           schema:
@@ -1457,7 +1457,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: FileActionResource
+            $ref: FileActionResponse
         default:
           description: Error
           schema:
@@ -1836,6 +1836,23 @@ definitions:
         $ref: MetadataListResponse
       content:
         $ref: ChallengeResource
+  FileActionResponse:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        $ref: FileActionResource
   FileResponse:
     required:
       - success
