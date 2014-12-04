@@ -6,7 +6,7 @@ app:
     pageSize: 1000
   tcApi: http://qa.topcoder.com/v2
   disableAuth: false
-  storageProvider: S3
+  storageProvider: s3
 auth0:
   client: ''
   secret: ''
