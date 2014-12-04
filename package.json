@@ -44,13 +44,12 @@
     "request-json": "~0.5.0",
     "sequelize": "^1.7.10",
     "swagger-tools": ">=0.6.11",
-    "time-grunt": "^0.3.1",
-    "q": "^1.1.2"
+    "time-grunt": "^0.3.1"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",
     "should": "^4.0.4",
-    "mocha": "1.21.4",
+    "mocha": "2.0.1",
     "supertest": "^0.13.0",
     "grunt-mocha-test": "^0.12.0"
   },
