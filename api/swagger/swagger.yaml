@@ -1324,6 +1324,144 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+  /challenges/{challengeId}/files/{fileId}/download:
+    get:
+      tags:
+        - challenges
+        - files
+      x-swagger-router-controller: storage
+      description: Get the download URL for a challenge file
+      summary: Get challenge file download URL
+      operationId: getChallengeFileDownloadURL
+      parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: fileId
+          type: integer
+          format: int64
+          description: "id of file"
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: FileActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}/files/{fileId}/upload:
+    get:
+      tags:
+        - challenges
+        - files
+      x-swagger-router-controller: storage
+      description: Get the upload URL to  upload a file for a challenge
+      summary: Get challenge file upload URL
+      operationId: getChallengeFileUploadURL
+      parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: fileId
+          type: integer
+          format: int64
+          description: "id of file"
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: FileActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}/submissions/{submissionId}/files/{fileId}/download:
+    get:
+      tags:
+        - challenges
+        - submissions
+        - files
+      x-swagger-router-controller: storage
+      description: Get the download URL for a submitted file
+      summary: Get submitted file download URL
+      operationId: getSubmissionFileDownloadURL
+      parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: submissionId
+          type: integer
+          format: int64
+          description: "id of submission"
+          in: path
+          required: true
+        - name: fileId
+          type: integer
+          format: int64
+          description: "id of file"
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: FileActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}/submissions/{submissionId}/files/{fileId}/upload:
+    get:
+      tags:
+        - challenges
+        - submissions
+        - files
+      x-swagger-router-controller: storage
+      description: Get the upload URL to  upload a file for a submission
+      summary: Get submission file upload URL
+      operationId: getSubmissionFileUploadURL
+      parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: submissionId
+          type: integer
+          format: int64
+          description: "id of submission"
+          in: path
+          required: true
+        - name: fileId
+          type: integer
+          format: int64
+          description: "id of file"
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: FileActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
 # Custom Responses
 definitions:
   ChallengeResource:
@@ -1579,6 +1717,13 @@ definitions:
       - fileUrl
       - size
       - storageLocation
+  FileActionResource:
+    properties:
+      url:
+        type: string
+        description: The URL to preform the action against
+    required:
+      - url
   ParticipantResource:
     properties:
       id:
@@ -1697,6 +1842,23 @@ definitions:
         $ref: MetadataListResponse
       content:
         $ref: ChallengeResource
+  FileActionResponse:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        $ref: FileActionResource
   FileResponse:
     required:
       - success

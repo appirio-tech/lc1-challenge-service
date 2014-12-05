@@ -7,3 +7,8 @@ app:
 auth0:
   client: TC_AUTH0_CLIENT
   secret: TC_AUTH0_SECRET
+aws:
+  key: AWS_KEY
+  secret: AWS_SECRET
+  bucket: AWS_BUCKET
+  region: AWS_REGION
