@@ -12,3 +12,8 @@ aws:
   secret: AWS_SECRET
   bucket: AWS_BUCKET
   region: AWS_REGION
+auth:
+  enabled: TC_AUTH_ENABLED
+  whitelist:
+    enabled: TC_WHITELEST_ENABLED
+    users: TC_WHITELIST_USERS

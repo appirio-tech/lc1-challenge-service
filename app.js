@@ -15,83 +15,14 @@ var datasource = require('./datasource');
 var routeHelper = require('./lib/routeHelper');
 var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
-var request = require('request');
-var _ = require('lodash');
+var auth = require('./lib/tc-auth');
 
 var app = express();
 
 app.use(bodyParser.json());
 
-/**
- * Authenticated paths for the application.
- * Configure authPaths in configuration settings
- * authPaths is an array of object. Each object has following structure
- *   {
- *     httpVerb: '<GET/POST/PUT/DELETE/PATCH>',
- *     path: '<SECURED ENDPOINT>'
- *   }
- *   For ex:
- *   {
- *     httpVerb: 'GET',
- *     path: '/challenges/:challengeId/files/:fileId/download'
- *   }
- *
- * @type {Array}
- */
-var authPaths = config.app.authPaths;
-var routingMethods = {
-  GET: 'get',
-  POST: 'post',
-  PUT: 'put',
-  DELETE: 'delete',
-  HEAD: 'head',
-  OPTIONS: 'options'
-};
-
-// Add tc user
-// @TODO Move this into it's own module
-/* jshint camelcase:false */
-function getTcUser(req, res, next) {
-  if (req.user) {
-    request(config.get('app.tcApi') + '/user/tcid/' + req.user.sub, function (error, response, body) {
-      if (!error && response.statusCode === 200) {
-        body = JSON.parse(body);
-
-        req.user.tcUser = {
-          id: body.uid,
-          name: req.user.name,
-          handle: body.handle,
-          picture: req.user.picture
-        };
-        next();
-      }
-      else {
-        //TODO: handle error response from tc api
-        routeHelper.addErrorMessage(req, 503, 'TC API Unavailable');
-      }
-    });
-  } else {
-    next();
-  }
-}
-
-if (!config.has('app.disableAuth') || !config.get('app.disableAuth')) {
-  var tcAuth = require('./lib/tc-auth')(config.get('auth0'));
-  app.post('*', tcAuth);
-  app.put('*', tcAuth);
-  app.delete('*', tcAuth);
-  app.patch('*', tcAuth);
-  // adding auth handler for file download and upload ENDPOINTS defined in configuration settings
-  if(_.isArray(authPaths)) {
-    _.forEach(authPaths, function(authPath) {
-      var verb = routingMethods[authPath.httpVerb];
-      if(verb) {
-        app[verb](authPath.path, routeHelper.requireAuth);
-      }
-    });
-  }
-  app.use(getTcUser);
-}
+// central point for all authentication
+auth.auth(app);
 
 // Serve the Swagger documents and Swagger UI
 if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
