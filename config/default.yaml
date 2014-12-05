@@ -10,9 +10,9 @@ auth0:
   client: ''
   secret: ''
 auth:
-  enabled: true
+  enabled: false
   whitelist:
-    enabled: true
+    enabled: false
     users:
       - dayal
       - rockabilly
