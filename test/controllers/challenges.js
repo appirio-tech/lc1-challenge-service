@@ -168,9 +168,23 @@ describe('Challenges Controller', function() {
         });
     });
 
+    it('should failed to delete the existing challenge whose status is not DRAFT', function(done) {
+      // send request
+      request(url)
+      .delete('/challenges/'+challengeId)
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(404);
+        res.body.result.success.should.equal(false);
+        res.body.result.status.should.equal(404);
+        done();
+      });
+    });
+
     it('should able to update the existing challenge', function(done) {
       // send request
       reqData.title = 'Updated Challenge';
+      reqData.status = 'DRAFT';
       request(url)
       .put('/challenges/'+challengeId)
       .send(reqData)
@@ -185,7 +199,7 @@ describe('Challenges Controller', function() {
       });
     });
 
-    it('should able to delete the existing challenge', function(done) {
+    it('should able to delete the existing challenge whose status is DRAFT', function(done) {
       // send request
       request(url)
       .delete('/challenges/'+challengeId)
@@ -1187,4 +1201,3 @@ describe('Challenges Controller', function() {
   });
 
 });
-

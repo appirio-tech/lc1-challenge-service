@@ -32,6 +32,7 @@ var entity;
  * Test Submission model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model Submission:', function() {
     beforeEach(function(done) {
       data = {

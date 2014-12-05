@@ -20,6 +20,7 @@ var db = datasource.getDataSource();
 var sequelize = db.sequelize;
 sequelize.options.logging = false;   // turn of sequelize logging.
 var File = db.File;
+var Challenge = db.Challenge;
 
 
 /**
@@ -27,11 +28,14 @@ var File = db.File;
  */
 var data;
 var entity;
+var challengeData;
+var savedChallenge;
 
 /**
  * Test File model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model File:', function() {
     beforeEach(function(done) {
       data = {
@@ -39,11 +43,31 @@ describe('<Unit Test>', function() {
         size: 123,
         storageLocation: 'LOCAL',
         fileUrl: '/uploads/my-submission.zip',
-        challengeId: 111,
         createdBy: 1,
         updatedBy: 1
       };
-      done();
+      challengeData = {
+        title: 'Challenge Title',
+        overview: '<p>Challenge Overview</p>',
+        description: 'long description',
+        regStartAt: '2014-08-13',
+        subEndAt: '2014-08-18',
+        status: 'DRAFT',
+        tags: ['tag1', 'tag2'],
+        prizes: [500.00,150.00],
+        createdBy: 1,
+        updatedBy: 1,
+        projectId: "PROJECT1",
+        projectSource: "TOPCODER",
+        creatorHandle: "CREATOR",
+        creatorId: "111"
+      };
+
+      Challenge.create(challengeData).success(function(savedEntity) {
+        data.challengeId = savedEntity.id;
+        savedChallenge = savedEntity;
+        done();
+      });
     });
 
     describe('Method Save', function() {
@@ -170,6 +194,30 @@ describe('<Unit Test>', function() {
         // delete an entity
         entity.destroy().success(function() {
           done();
+        })
+        .error(function(err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+
+      it('should failed to get the nested file after the draft challenge deleted', function(done){
+        File.create(data).success(function(savedEntity) {
+          entity = savedEntity;
+          savedChallenge.destroy().success(function(){
+            File.find(entity.id).success(function(retrievedEntity) {
+              should.not.exist(retrievedEntity);
+              done();
+            })
+            .error(function(err) {
+              should.exist(err);
+              done();
+            });
+          })
+          .error(function(err){
+            should.not.exist(err);
+            done();
+          });
         })
         .error(function(err) {
           should.not.exist(err);

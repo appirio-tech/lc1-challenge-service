@@ -142,7 +142,7 @@ paths:
       tags:
         - challenges
       x-swagger-router-controller: challenges
-      description: Delete a challenge
+      description: Delete a challenge. Only DRAFT challenges can be deleted.
       summary: Delete a challenge
       operationId: delete
       parameters:

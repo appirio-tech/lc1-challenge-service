@@ -34,6 +34,7 @@ var entity;
  * Test Challenge model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model Challenge:', function() {
     beforeEach(function(done) {
       // challenge data
