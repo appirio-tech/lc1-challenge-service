@@ -464,7 +464,7 @@ describe('Challenges Controller', function() {
 
 
   describe('The Nested Resources', function() {
-    var challenge, draftChallenge;
+    var challenge;
     before(function(done) {
       // create a challenge
       var challengeData = {
@@ -473,11 +473,6 @@ describe('Challenges Controller', function() {
         regStartAt: '2014-10-09'
       };
 
-      var draftChallenge = {
-        title: 'Serenity Challenge',
-        status: 'DRAFT',
-        regStartAt: '2014-10-09'
-      };
       Challenge.create(challengeData).success(function(savedEntity) {
         challenge = savedEntity;
         done();
