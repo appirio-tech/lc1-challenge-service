@@ -12,6 +12,8 @@ var File = datasource.File;
 var routeHelper = require('./../../lib/routeHelper');
 var storageLib = require('./../../lib/storage');
 var async = require('async');
+var safeList = require('../../lib/tc-auth/safelist');
+
 
 /**
  * Helper method to find an entity by entity id property
@@ -50,16 +52,24 @@ var getChallengeFileURL = function(method, req, res, next) {
       if(!challenge) {
         return cb({message: 'Cannot find a challenge for challengeId ' + challengeId, code: routeHelper.HTTP_NOT_FOUND});
       }
-      challenge.getParticipants({where: {userId: user.id}}).success(function(participants) {
-        cb(null, participants);
-      }).error(function(err) {
-        cb(err);
-      });
+
+      if (!safeList.currentUserIsSafe(req)) {
+        challenge.getParticipants({where: {userId: user.id}}).success(function(participants) {
+          cb(null, participants);
+        }).error(function(err) {
+          cb(err);
+        });
+      } else {
+        cb(null, null);
+      }
+
     },
     function(participants, cb) {
-      // participant will be an array, should not be empty array
-      if(!participants || participants.length === 0) {
-        return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
+      if (!safeList.currentUserIsSafe(req)) {
+        // participant will be an array, should not be empty array
+        if (!participants || participants.length === 0) {
+          return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
+        }
       }
       findById(File, {where: {id:fileId, challengeId: challengeId}}, cb);
     },
@@ -102,15 +112,22 @@ var getSubmissionFileURL = function(method, req, res, next) {
       if(!challenge) {
         return cb({message: 'Cannot find a challenge for challengeId ' + challengeId, code: routeHelper.HTTP_NOT_FOUND});
       }
-      challenge.getSubmissions({where: {submitterId: user.id}}).success(function(submissions) {
-        cb(null, submissions);
-      }).error(function(err) {
-        cb(err);
-      });
+
+      if (!safeList.currentUserIsSafe(req)) {
+        challenge.getSubmissions({where: {submitterId: user.id}}).success(function (submissions) {
+          cb(null, submissions);
+        }).error(function (err) {
+          cb(err);
+        });
+      } else {
+        cb(null, null);
+      }
     },
     function(submissions, cb) {
-      if(!submissions || submissions.length === 0) {
-        return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
+      if (!safeList.currentUserIsSafe(req)) {
+        if (!submissions || submissions.length === 0) {
+          return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
+        }
       }
       findById(File, {where: {id:fileId, submissionId: submissionId}}, cb);
     },

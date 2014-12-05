@@ -10,7 +10,7 @@ auth0:
   secret: ''
 auth:
   enabled: false
-  whitelist:
+  safeList:
     enabled: false
     users:
       - dayal

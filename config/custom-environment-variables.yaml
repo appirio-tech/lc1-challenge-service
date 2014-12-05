@@ -15,5 +15,5 @@ aws:
 auth:
   enabled: TC_AUTH_ENABLED
   whitelist:
-    enabled: TC_WHITELEST_ENABLED
-    users: TC_WHITELIST_USERS
+    enabled: TC_SAFELIST_ENABLED
+    users: TC_SAFELIST_USERS
