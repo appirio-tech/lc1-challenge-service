@@ -168,9 +168,23 @@ describe('Challenges Controller', function() {
         });
     });
 
+    it('should failed to delete the existing challenge whose status is not DRAFT', function(done) {
+      // send request
+      request(url)
+      .delete('/challenges/'+challengeId)
+      .end(function(err, res) {
+        // verify response
+        res.status.should.equal(404);
+        res.body.result.success.should.equal(false);
+        res.body.result.status.should.equal(404);
+        done();
+      });
+    });
+
     it('should able to update the existing challenge', function(done) {
       // send request
       reqData.title = 'Updated Challenge';
+      reqData.status = 'DRAFT';
       request(url)
       .put('/challenges/'+challengeId)
       .send(reqData)
@@ -185,19 +199,19 @@ describe('Challenges Controller', function() {
       });
     });
 
-    it('should able to delete the existing challenge', function(done) {
+    it('should able to delete the existing challenge whose status is DRAFT', function(done) {
       // send request
       request(url)
       .delete('/challenges/'+challengeId)
       .end(function(err, res) {
         // verify response
         res.status.should.equal(200);
-        res.body.id.should.be.a.Number;
         res.body.result.success.should.equal(true);
         res.body.result.status.should.equal(200);
         done();
       });
     });
+
 
   });
 
@@ -450,12 +464,18 @@ describe('Challenges Controller', function() {
 
 
   describe('The Nested Resources', function() {
-    var challenge;
+    var challenge, draftChallenge;
     before(function(done) {
       // create a challenge
       var challengeData = {
         title: 'Serenity Challenge',
         status: 'SUBMISSION',
+        regStartAt: '2014-10-09'
+      };
+
+      var draftChallenge = {
+        title: 'Serenity Challenge',
+        status: 'DRAFT',
         regStartAt: '2014-10-09'
       };
       Challenge.create(challengeData).success(function(savedEntity) {
@@ -1187,4 +1207,3 @@ describe('Challenges Controller', function() {
   });
 
 });
-

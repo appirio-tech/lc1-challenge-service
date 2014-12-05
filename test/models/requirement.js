@@ -34,6 +34,7 @@ var challenge;
  * Test Requirement model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   // create a challenge.
   var challengeData = {
     title: 'Challenge Title',
@@ -47,7 +48,7 @@ describe('<Unit Test>', function() {
     createdBy: 1,
     updatedBy: 1
   };
-  
+
   before(function(done) {
     Challenge.create(challengeData).success(function(savedEntity) {
       challenge = savedEntity;
@@ -171,6 +172,30 @@ describe('<Unit Test>', function() {
         // delete an entity
         entity.destroy().success(function() {
           done();
+        })
+        .error(function(err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+
+      it('should failed to get the nested participant after the draft challenge deleted', function(done){
+        Requirement.create(data).success(function(savedEntity) {
+          entity = savedEntity;
+          challenge.destroy().success(function(){
+            Requirement.find(entity.id).success(function(retrievedEntity) {
+              should.not.exist(retrievedEntity);
+              done();
+            })
+            .error(function(err) {
+              should.exist(err);
+              done();
+            });
+          })
+          .error(function(err){
+            should.not.exist(err);
+            done();
+          });
         })
         .error(function(err) {
           should.not.exist(err);

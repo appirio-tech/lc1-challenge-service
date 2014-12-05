@@ -41,7 +41,7 @@ exports.up = function (db, callback) {
         '"createdBy" bigint, ' +
         '"updatedBy" bigint, ' +
         '"submissionId" bigint, ' +
-        '"challengeId" bigint ' +
+        '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE CASCADE' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY files ADD CONSTRAINT files_pkey PRIMARY KEY (id);'),
 
@@ -55,7 +55,7 @@ exports.up = function (db, callback) {
         '"updatedAt" timestamp with time zone NOT NULL, ' +
         '"createdBy" bigint, ' +
         '"updatedBy" bigint, ' +
-        '"challengeId" bigint NOT NULL, ' +
+        '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE CASCADE, ' +
         '"userId" bigint NOT NULL ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY participants ADD CONSTRAINT participants_pkey PRIMARY KEY (id);'),
@@ -117,7 +117,7 @@ exports.up = function (db, callback) {
       'CREATE TABLE requirements ( ' +
       'id bigserial NOT NULL, ' +
       '"requirementText" text, ' +
-      '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL, ' +
+      '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE CASCADE, ' +
       '"createdAt" timestamp with time zone NOT NULL, ' +
       '"updatedAt" timestamp with time zone NOT NULL, ' +
       '"createdBy" bigint, ' +

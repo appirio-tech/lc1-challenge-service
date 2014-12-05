@@ -20,29 +20,52 @@ var db = datasource.getDataSource();
 var sequelize = db.sequelize;
 sequelize.options.logging = false;   // turn of sequelize logging.
 var Participant = db.Participant;
-
+var Challenge = db.Challenge;
 
 /**
  * Globals
  */
 var data;
 var entity;
+var challengeData;
+var savedChallenge;
 
 /**
  * Test Participant model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model Participant:', function() {
     beforeEach(function(done) {
       data = {
         role: 'SUBMITTER',
-        challengeId: 111,
         userId: 222,
         userHandle: 'user_handle',
         createdBy: 1,
         updatedBy: 1
       };
-      done();
+      challengeData = {
+        title: 'Challenge Title',
+        overview: '<p>Challenge Overview</p>',
+        description: 'long description',
+        regStartAt: '2014-08-13',
+        subEndAt: '2014-08-18',
+        status: 'DRAFT',
+        tags: ['tag1', 'tag2'],
+        prizes: [500.00,150.00],
+        createdBy: 1,
+        updatedBy: 1,
+        projectId: "PROJECT1",
+        projectSource: "TOPCODER",
+        creatorHandle: "CREATOR",
+        creatorId: "111"
+      };
+
+      Challenge.create(challengeData).success(function(savedEntity) {
+        data.challengeId = savedEntity.id;
+        savedChallenge = savedEntity;
+        done();
+      });
     });
 
     describe('Method Save', function() {
@@ -160,6 +183,30 @@ describe('<Unit Test>', function() {
         // delete an entity
         entity.destroy().success(function() {
           done();
+        })
+        .error(function(err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+
+      it('should failed to get the nested participant after the draft challenge deleted', function(done){
+        Participant.create(data).success(function(savedEntity) {
+          entity = savedEntity;
+          savedChallenge.destroy().success(function(){
+            Participant.find(entity.id).success(function(retrievedEntity) {
+              should.not.exist(retrievedEntity);
+              done();
+            })
+            .error(function(err) {
+              should.exist(err);
+              done();
+            });
+          })
+          .error(function(err){
+            should.not.exist(err);
+            done();
+          });
         })
         .error(function(err) {
           should.not.exist(err);
