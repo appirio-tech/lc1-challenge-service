@@ -206,12 +206,12 @@ describe('Challenges Controller', function() {
       .end(function(err, res) {
         // verify response
         res.status.should.equal(200);
+        res.body.id.should.be.a.Number;
         res.body.result.success.should.equal(true);
         res.body.result.status.should.equal(200);
         done();
       });
     });
-
 
   });
 
@@ -472,7 +472,6 @@ describe('Challenges Controller', function() {
         status: 'SUBMISSION',
         regStartAt: '2014-10-09'
       };
-
       Challenge.create(challengeData).success(function(savedEntity) {
         challenge = savedEntity;
         done();
