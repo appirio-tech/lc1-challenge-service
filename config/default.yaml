@@ -5,7 +5,6 @@ app:
   query:
     pageSize: 1000
   tcApi: http://qa.topcoder.com/v2
-  storageProvider: s3
 auth0:
   client: ''
   secret: ''
