@@ -2,3 +2,5 @@ app:
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
 auth:
   enabled: false
+  safeList:
+    enabled: false
