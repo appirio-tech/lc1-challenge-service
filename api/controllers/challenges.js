@@ -19,8 +19,17 @@ var controllerHelper = require('./../../lib/controllerHelper');
 
 
 
+var challengeControllerOptions = {
+  filtering: true,
+  deletionRestrictions: {
+    where: {
+      status: 'DRAFT'
+    }
+  }
+};
+
 // build controller for challenge resource
-var challengeController = controllerHelper.buildController(Challenge, null, {filtering: true});
+var challengeController = controllerHelper.buildController(Challenge, null, challengeControllerOptions);
 
 
 var filteringOff = {

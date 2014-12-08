@@ -32,6 +32,7 @@ var entity;
  * Test Scorecard model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model Scorecard:', function() {
     beforeEach(function(done) {
       data = {
