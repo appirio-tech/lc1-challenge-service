@@ -83,15 +83,13 @@ var getChallengeFileURL = function(method, req, res, next) {
     if(err) {
       routeHelper.addError(req, err, err.code);
     } else {
-      var content = [];
-      content.push({url: result});
       req.data = {
         success: true,
         status: routeHelper.HTTP_OK,
         metadata: {
           totalCount: 1
         },
-        content: content
+        content: {url: result}
       };
     }
     next();
@@ -141,15 +139,13 @@ var getSubmissionFileURL = function(method, req, res, next) {
     if(err) {
       routeHelper.addError(req, err, err.code);
     } else {
-      var content = [];
-      content.push({url: result});
       req.data = {
         success: true,
         status: routeHelper.HTTP_OK,
         metadata: {
           totalCount: 1
         },
-        content: content
+        content: {url: result}
       };
     }
     next();
