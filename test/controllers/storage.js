@@ -10,7 +10,7 @@
 /**
  * Test Scorecards controller APIs.
  */
-var should = require('should'); 
+var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
@@ -120,8 +120,7 @@ describe('Storage Controller', function() {
         res.body.should.have.property('metadata');
         res.body.metadata.totalCount.should.be.above(0);
         res.body.should.have.property('content');
-        res.body.content.length.should.be.above(0);
-        res.body.content[0].should.have.property('url');
+        res.body.content.should.have.property('url');
         done();
       });
     });
@@ -167,8 +166,7 @@ describe('Storage Controller', function() {
         res.body.should.have.property('metadata');
         res.body.metadata.totalCount.should.be.above(0);
         res.body.should.have.property('content');
-        res.body.content.length.should.be.above(0);
-        res.body.content[0].should.have.property('url');
+        res.body.content.should.have.property('url');
         done();
       });
     });
@@ -213,8 +211,7 @@ describe('Storage Controller', function() {
         res.body.should.have.property('metadata');
         res.body.metadata.totalCount.should.be.above(0);
         res.body.should.have.property('content');
-        res.body.content.length.should.be.above(0);
-        res.body.content[0].should.have.property('url');
+        res.body.content.should.have.property('url');
         done();
       });
     });
@@ -260,8 +257,7 @@ describe('Storage Controller', function() {
         res.body.should.have.property('metadata');
         res.body.metadata.totalCount.should.be.above(0);
         res.body.should.have.property('content');
-        res.body.content.length.should.be.above(0);
-        res.body.content[0].should.have.property('url');
+        res.body.content.should.have.property('url');
         done();
       });
     });
