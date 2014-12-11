@@ -31,7 +31,7 @@
     "grunt-env": "^0.4.1",
     "grunt-nodemon": "0.2.1",
     "grunt-swagger-js-codegen": ">0.2.9",
-    "grunt-swagger-tools": ">=0.1.1",
+    "appirio-grunt-swagger-tools": "^0.1.0",
     "inflection": "1.5.1",
     "js-yaml": "",
     "jshint": "^2.5.5",
@@ -43,7 +43,7 @@
     "request": "^2.47.0",
     "request-json": "~0.5.0",
     "sequelize": "^1.7.10",
-    "swagger-tools": ">=0.6.11",
+    "swagger-tools": "^0.6.13",
     "time-grunt": "^0.3.1"
   },
   "devDependencies": {
