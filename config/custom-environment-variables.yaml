@@ -4,6 +4,7 @@ app:
   port: PORT
   disableAuth: TC_SKIP_AUTH
   tcApi: TC_API_URL
+  tcUser: LC_USER_SERVICE
 auth0:
   client: TC_AUTH0_CLIENT
   secret: TC_AUTH0_SECRET

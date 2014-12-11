@@ -10,30 +10,21 @@ auth0:
   client: ''
   secret: ''
 auth:
-  enabled: false
-  default:
-    perms:
-      - challengeApp
-    enabled: false
-  pathOverrides:
+  enabled: true
+  perms:
+    - challengeApp
+  paths:
     - httpVerb: DELETE
       path: '*'
-      enabled: true
     - httpVerb: PUT
       path: '*'
-      enabled: true
     - httpVerb: POST
       path: '*'
-      enabled: true
     - httpVerb: GET
       path: '/challenges/:challengeId/files/:fileId/download'
-      enabled: true
     - httpVerb: GET
       path: '/challenges/:challengeId/files/:fileId/upload'
-      enabled: true
     - httpVerb: GET
       path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/upload'
-      enabled: true
     - httpVerb: GET
       path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/download'
-      enabled: true
