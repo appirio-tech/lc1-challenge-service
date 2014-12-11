@@ -5,31 +5,35 @@ app:
   query:
     pageSize: 1000
   tcApi: http://qa.topcoder.com/v2
+  tcUser: http://lc1-user-service.herokuapp.com/user
 auth0:
   client: ''
   secret: ''
 auth:
   enabled: false
-  safeList:
+  default:
+    perms:
+      - challengeApp
     enabled: false
-    users:
-      - dayal
-      - rockabilly
-      - kbowerma
-      - _indy
-      - appiriowes
-  paths:
+  pathOverrides:
     - httpVerb: DELETE
       path: '*'
+      enabled: true
     - httpVerb: PUT
       path: '*'
+      enabled: true
     - httpVerb: POST
       path: '*'
+      enabled: true
     - httpVerb: GET
       path: '/challenges/:challengeId/files/:fileId/download'
+      enabled: true
     - httpVerb: GET
       path: '/challenges/:challengeId/files/:fileId/upload'
+      enabled: true
     - httpVerb: GET
       path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/upload'
+      enabled: true
     - httpVerb: GET
       path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/download'
+      enabled: true
