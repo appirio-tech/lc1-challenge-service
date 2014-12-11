@@ -5,7 +5,7 @@ app:
   query:
     pageSize: 1000
   tcApi: http://qa.topcoder.com/v2
-  tcUser: http://lc1-user-service.herokuapp.com/user
+  tcUser: http://dev-lc1-user-service.herokuapp.com
 auth0:
   client: ''
   secret: ''
