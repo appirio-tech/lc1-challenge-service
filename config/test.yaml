@@ -1,5 +1,11 @@
 app:
-  pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
+  port: 10010
+  loadDoc: true
+  pgURL: 'postgres://postgres:postgres@cainhuang.com:5432/lc1challengeservice'
+  query:
+    pageSize: 1000
+  tcApi: http://qa.topcoder.com/v2
+  tcUser: http://lc1-user-service.herokuapp.com/user
 auth:
   enabled: false
   default:

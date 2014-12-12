@@ -64,7 +64,7 @@ describe('Auth library', function() {
     it('have permission to execute a delete request: delete a challenge', function(done) {
       // send request
       request(url)
-        .delete('/challenges/' + challenge.id)
+        .delete('/challenges/' + challenge)
         .end(function(err, res) {
           // verify response
           res.status.should.equal(403);
