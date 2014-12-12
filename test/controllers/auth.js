@@ -67,9 +67,9 @@ describe('Auth library', function() {
         .delete('/challenges/' + challenge)
         .end(function(err, res) {
           // verify response
-          res.status.should.equal(403);
-          res.body.result.success.should.equal(false);
-          res.body.result.status.should.equal(403);
+          res.status.should.equal(200);
+          res.body.result.success.should.equal(true);
+          res.body.result.status.should.equal(200);
           done();
         });
     });
