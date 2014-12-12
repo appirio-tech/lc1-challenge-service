@@ -2,5 +2,31 @@ app:
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
 auth:
   enabled: false
-  safeList:
-    enabled: false
+  default:
+    perms:
+      - challengeApp
+    enabled: true
+  pathOverrides:
+    - httpVerb: DELETE
+      path: '*'
+      enabled: true
+      perms:
+        - challengeApp
+    - httpVerb: PUT
+      path: '*'
+      enabled: true
+    - httpVerb: POST
+      path: '*'
+      enabled: true
+    - httpVerb: GET
+      path: '/challenges/:challengeId/files/:fileId/download'
+      enabled: true
+    - httpVerb: GET
+      path: '/challenges/:challengeId/files/:fileId/upload'
+      enabled: true
+    - httpVerb: GET
+      path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/upload'
+      enabled: true
+    - httpVerb: GET
+      path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/download'
+      enabled: true
