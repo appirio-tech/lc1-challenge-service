@@ -10,7 +10,7 @@ auth0:
   client: ''
   secret: ''
 auth:
-  enabled: true
+  enabled: false
   perms:
     - challengeApp
   paths:
