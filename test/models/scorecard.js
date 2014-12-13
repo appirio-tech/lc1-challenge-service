@@ -32,19 +32,23 @@ var entity;
  * Test Scorecard model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model Scorecard:', function() {
     beforeEach(function(done) {
       data = {
         scoreSum: 97,
         scorePercent: 96.5,
         scoreMax: 99.9,
-        status: 'VALID',
+        status: 'NEW',
         pay: false,
         place: 1,
         prize: 1500,
         challengeId: 111,
         reviewerId: 222,
-        submissionId: 333
+        reviewerHandle: 'reviewer_handle',
+        submissionId: 333,
+        createdBy: 1,
+        updatedBy: 1
       };
       done();
     });
@@ -53,14 +57,16 @@ describe('<Unit Test>', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         Scorecard.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
           savedEntity.updatedAt.should.not.have.length(0);
           savedEntity.scoreSum.should.equal(data.scoreSum);
+          savedEntity.reviewerHandle.should.equal(data.reviewerHandle);
           savedEntity.status.should.equal(data.status);
           savedEntity.submissionId.should.equal(data.submissionId);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -145,7 +151,7 @@ describe('<Unit Test>', function() {
       });
 
       it('should able to update a submission with valid id', function(done) {
-        entity.status = 'LATE';
+        entity.status = 'SAVED';
         // update an entity
         entity.save().success(function(updatedEntity) {
           updatedEntity.id.should.equal(entity.id);
@@ -178,7 +184,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();

@@ -20,6 +20,7 @@ var db = datasource.getDataSource();
 var sequelize = db.sequelize;
 sequelize.options.logging = false;   // turn of sequelize logging.
 var File = db.File;
+var Challenge = db.Challenge;
 
 
 /**
@@ -27,36 +28,61 @@ var File = db.File;
  */
 var data;
 var entity;
+var challengeData;
+var savedChallenge;
 
 /**
  * Test File model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model File:', function() {
     beforeEach(function(done) {
       data = {
         title: 'File Title',
-        filePath: '/uploads',
         size: 123,
-        fileName: 'my-submission.zip',
-        storageLocation: 'local',
-        challengeId: 111
+        storageLocation: 'LOCAL',
+        fileUrl: '/uploads/my-submission.zip',
+        createdBy: 1,
+        updatedBy: 1
       };
-      done();
+      challengeData = {
+        title: 'Challenge Title',
+        overview: '<p>Challenge Overview</p>',
+        description: 'long description',
+        regStartAt: '2014-08-13',
+        subEndAt: '2014-08-18',
+        status: 'DRAFT',
+        tags: ['tag1', 'tag2'],
+        prizes: [500.00,150.00],
+        createdBy: 1,
+        updatedBy: 1,
+        projectId: "PROJECT1",
+        projectSource: "TOPCODER",
+        creatorHandle: "CREATOR",
+        creatorId: "111"
+      };
+
+      Challenge.create(challengeData).success(function(savedEntity) {
+        data.challengeId = savedEntity.id;
+        savedChallenge = savedEntity;
+        done();
+      });
     });
 
     describe('Method Save', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         File.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
           savedEntity.updatedAt.should.not.have.length(0);
           savedEntity.title.should.equal(data.title);
-          savedEntity.fileName.should.equal(data.fileName);
+          savedEntity.fileUrl.should.equal(data.fileUrl);
           savedEntity.size.should.equal(data.size);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -65,8 +91,8 @@ describe('<Unit Test>', function() {
         });
       });
 
-      it('should fail when try to save without fileName', function(done) {
-        delete data.fileName;
+      it('should fail when try to save without fileUrl', function(done) {
+        delete data.fileUrl;
         // create a entity
         File.create(data).success(function(savedEntity) {
           should.not.exist(savedEntity);
@@ -78,11 +104,20 @@ describe('<Unit Test>', function() {
         });
       });
 
-      it('should fail when try to save with an invalid storageLocation', function(done) {
+      it('should be able to save any storageLocation', function(done) {
         data.storageLocation = 'invalid-location';
         // create a entity
         File.create(data).success(function(savedEntity) {
-          should.not.exist(savedEntity);
+          savedEntity.id.should.be.a.Number;
+          savedEntity.id.should.not.have.length(0);
+          savedEntity.createdAt.should.not.have.length(0);
+          savedEntity.updatedAt.should.not.have.length(0);
+          savedEntity.title.should.equal(data.title);
+          savedEntity.fileUrl.should.equal(data.fileUrl);
+          savedEntity.size.should.equal(data.size);
+          savedEntity.storageLocation.should.equal(data.storageLocation);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -119,8 +154,7 @@ describe('<Unit Test>', function() {
         File.find(entity.id).success(function(retrievedEntity) {
           retrievedEntity.id.should.equal(entity.id);
           retrievedEntity.title.should.equal(entity.title);
-          retrievedEntity.filePath.should.equal(entity.filePath);
-          retrievedEntity.fileName.should.equal(entity.fileName);
+          retrievedEntity.fileUrl.should.equal(entity.fileUrl);
           retrievedEntity.size.should.equal(entity.size);
           done();
         })
@@ -167,6 +201,30 @@ describe('<Unit Test>', function() {
         });
       });
 
+      it('should failed to get the nested file after the draft challenge deleted', function(done){
+        File.create(data).success(function(savedEntity) {
+          entity = savedEntity;
+          savedChallenge.destroy().success(function(){
+            File.find(entity.id).success(function(retrievedEntity) {
+              should.not.exist(retrievedEntity);
+              done();
+            })
+            .error(function(err) {
+              should.exist(err);
+              done();
+            });
+          })
+          .error(function(err){
+            should.not.exist(err);
+            done();
+          });
+        })
+        .error(function(err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+
     });
 
     afterEach(function(done) {
@@ -176,7 +234,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();

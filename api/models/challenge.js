@@ -38,11 +38,11 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     overview: DataTypes.STRING(140),
-    account: DataTypes.STRING(255),
-    accountId: DataTypes.STRING(255),
     description: DataTypes.TEXT,
     source: DataTypes.TEXT,
     sourceId: DataTypes.TEXT,
+    creatorHandle: DataTypes.STRING(128),
+    creatorId: DataTypes.BIGINT,
     tags: DataTypes.ARRAY(DataTypes.TEXT),
     prizes: DataTypes.ARRAY(DataTypes.DOUBLE),
     // the phase status of challenge
@@ -50,8 +50,23 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.ENUM,
       values: ['DRAFT', 'SUBMISSION', 'REVIEW', 'COMPLETE']
     },
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    },
+    projectId: DataTypes.STRING(255),
+    projectSource: {
+        type: DataTypes.ENUM,
+        values: ['TOPCODER']
+    }
   }, {
     tableName : 'challenges',
     associate : function(models) {
@@ -59,6 +74,7 @@ module.exports = function(sequelize, DataTypes) {
       Challenge.hasMany(models.Participant);
       Challenge.hasMany(models.Submission);
       Challenge.hasMany(models.Scorecard);
+      Challenge.hasMany(models.Requirement);
     }
   });
 

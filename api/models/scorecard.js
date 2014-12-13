@@ -35,6 +35,9 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('reviewerId'));
       }
     },
+    reviewerHandle: {
+      type: DataTypes.STRING(128)
+    },
     submissionId: {
       type: DataTypes.BIGINT,
       get: function() {
@@ -49,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
     scoreMax: DataTypes.FLOAT,
     status : {
       type: DataTypes.ENUM,
-      values: ['VALID', 'INVALID', 'LATE']
+      values: ['NEW', 'SAVED', 'SUBMITTED']
     },
     // determines if scorecard merits awarding place and cash prize
     pay: DataTypes.BOOLEAN,
@@ -61,15 +64,24 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     prize: DataTypes.FLOAT,
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
   }, {
     tableName : 'scorecards',
     associate : function(models) {
       Scorecard.hasMany(models.ScorecardItem);
       Scorecard.belongsTo(models.Challenge, {foreignKey: 'challengeId'});
       Scorecard.belongsTo(models.Submission, {foreignKey: 'submissionId'});
-      Scorecard.belongsTo(models.User, {foreignKey: 'reviewerId'});
     }
   });
 

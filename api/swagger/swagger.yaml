@@ -1,4 +1,4 @@
-swagger: 2.0
+swagger: "2.0"
 info:
   version: "0.2.1"
   title: Serenity Challenge API
@@ -49,6 +49,10 @@ paths:
           in: query
           type: string
           description: field name to sort {asc [nulls {first | last} ] | desc  [nulls {first | last} }
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a list of all challenge resources
@@ -94,6 +98,10 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: A full challenge resource
@@ -134,7 +142,7 @@ paths:
       tags:
         - challenges
       x-swagger-router-controller: challenges
-      description: Delete a challenge
+      description: Delete a challenge. Only DRAFT challenges can be deleted.
       summary: Delete a challenge
       operationId: delete
       parameters:
@@ -187,8 +195,8 @@ paths:
       tags:
         - challenges
         - files
-      description: Get files assoicated to a challenge
-      summary: Get files assoicated to a challenge
+      description: Get files associated to a challenge
+      summary: Get files assocaited to a challenge
       x-swagger-router-controller: challenges
       operationId: getChallengeFiles
       parameters:
@@ -198,6 +206,10 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Success
@@ -229,6 +241,10 @@ paths:
           format: int64
           required: true
           description: The Id of the file
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a file resource
@@ -353,6 +369,10 @@ paths:
           in: query
           description: The role to filter the results by
           type: string
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Success
@@ -384,6 +404,10 @@ paths:
           format: int64
           required: true
           description: The Id of the participant
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a participant resource
@@ -500,6 +524,10 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Success
@@ -531,6 +559,10 @@ paths:
           format: int64
           required: true
           description: The Id of the submission
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a submission resource
@@ -644,8 +676,8 @@ paths:
         - challenges
         - submissions
         - files
-      description: Get files assoicated to a challenge
-      summary: Get files assoicated to a challenge
+      description: Get files associated to a submission
+      summary: Get files associated to a submission
       x-swagger-router-controller: files
       operationId: getFiles
       parameters:
@@ -661,6 +693,10 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Success
@@ -699,6 +735,10 @@ paths:
           format: int64
           required: true
           description: The Id of the file
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a file resource
@@ -832,6 +872,10 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Array of requirement resources
@@ -863,6 +907,10 @@ paths:
           format: int64
           required: true
           description: The Id of the requirement
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Returns a requirements resource
@@ -982,6 +1030,14 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
+        - name: filter
+          in: query
+          type: string
+          description: "{fieldName1}={fieldValue1}&...{fieldNameN}>{fieldValueN}. String value needs to be surrounded by single quotation(‘). fieldValue can contain multiple values using in() format {fieldName}=in({fieldValue1},{fieldValue1}). Operations can be =, > or <.  < and > operations are only for number, integers and dates"
       responses:
         "200":
           description: Array of scorecard resources
@@ -1011,6 +1067,10 @@ paths:
           format: int64
           in: path
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: A scorecard
@@ -1102,6 +1162,10 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: Array of ScorecardItem resources
@@ -1172,6 +1236,10 @@ paths:
           description: "id of scorecardItem"
           in: path
           required: true
+        - name: fields
+          in: query
+          type: string
+          description: partial fields that need to be response. Support (1) comma-separated field list and (2) a/b nested selection.
       responses:
         "200":
           description: "Success"
@@ -1256,11 +1324,151 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+  /challenges/{challengeId}/files/{fileId}/download:
+    get:
+      tags:
+        - challenges
+        - files
+      x-swagger-router-controller: storage
+      description: Get the download URL for a challenge file
+      summary: Get challenge file download URL
+      operationId: getChallengeFileDownloadURL
+      parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: fileId
+          type: integer
+          format: int64
+          description: "id of file"
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: FileActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}/files/{fileId}/upload:
+    get:
+      tags:
+        - challenges
+        - files
+      x-swagger-router-controller: storage
+      description: Get the upload URL to  upload a file for a challenge
+      summary: Get challenge file upload URL
+      operationId: getChallengeFileUploadURL
+      parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: fileId
+          type: integer
+          format: int64
+          description: "id of file"
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: FileActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}/submissions/{submissionId}/files/{fileId}/download:
+    get:
+      tags:
+        - challenges
+        - submissions
+        - files
+      x-swagger-router-controller: storage
+      description: Get the download URL for a submitted file
+      summary: Get submitted file download URL
+      operationId: getSubmissionFileDownloadURL
+      parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: submissionId
+          type: integer
+          format: int64
+          description: "id of submission"
+          in: path
+          required: true
+        - name: fileId
+          type: integer
+          format: int64
+          description: "id of file"
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: FileActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}/submissions/{submissionId}/files/{fileId}/upload:
+    get:
+      tags:
+        - challenges
+        - submissions
+        - files
+      x-swagger-router-controller: storage
+      description: Get the upload URL to  upload a file for a submission
+      summary: Get submission file upload URL
+      operationId: getSubmissionFileUploadURL
+      parameters:
+        - name: challengeId
+          type: integer
+          format: int64
+          description: "id of challenge"
+          in: path
+          required: true
+        - name: submissionId
+          type: integer
+          format: int64
+          description: "id of submission"
+          in: path
+          required: true
+        - name: fileId
+          type: integer
+          format: int64
+          description: "id of file"
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: FileActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
 # Custom Responses
 definitions:
   ChallengeResource:
     required:
       - title
+      - status
+      - projectSource
     properties:
       id:
         type: integer
@@ -1307,18 +1515,18 @@ definitions:
         type: array
         items:
           type: number
-      account:
-        type: string
-        description: The Account to bill the challenge against
-      accountId:
-        type: string
-        description: The account id from salesforce
       source:
         type: string
         description: Used for integraiton with remote system
       sourceId:
         type: string
         description: Used for integratino with remote systems
+      creatorHandle:
+        type: string
+        description: challenge creator's handle
+      creatorId:
+        type: number
+        description: challenge creator's id
       createdAt:
         type: string
         format: date-time
@@ -1326,11 +1534,21 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
+        type: number
+        description: The id of the user last updated the row
+      projectId:
         type: string
-        description: The handle of the user last updated the row
+        description: The id of the project.
+        maxLength: 255
+      projectSource:
+        type: string
+        description: Source of the project
+        enum:
+          - TOPCODER
+
   ResultResource:
     required:
       - scorecardId
@@ -1361,15 +1579,16 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
   ScorecardResource:
     required:
       - reviewerId
       - submissionId
+      - status
     properties:
       id:
         type: integer
@@ -1378,6 +1597,9 @@ definitions:
         type: integer
         format: int64
         description: "the user id of the reviewer"
+      reviewerHandle:
+        type: string
+        description: "the user handle of the reviewer"
       submissionId:
         type: integer
         format: int64
@@ -1396,10 +1618,10 @@ definitions:
       status:
         type: string
         enum:
-          - VALID
-          - INVALID
-          - LATE
-        description: "show if this scorecard is valid ENUM:valid,invalid,late"
+          - NEW
+          - SAVED
+          - SUBMITTED
+        description: "show if this scorecard is valid ENUM:NEW,SAVED,SUBMITTED"
       # TODO: should next three be here or should we do a result object
       pay:
         type: boolean
@@ -1418,23 +1640,19 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user
+        type: number
+        description: The id of the user
       updatedBy:
-        type: string
-        description: The handle of the user
+        type: number
+        description: The id of the user
   ScorecardItemResource:
     required:
       - requirementId
-      - scorecardId
     properties:
       id:
         type: integer
         format: int64
         description: postgres primary key
-      scorecardId:
-        type: integer
-        format: int64
       requirementId:
         type: integer
         format: int64
@@ -1453,11 +1671,11 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user
+        type: number
+        description: The id of the user
       updatedBy:
-        type: string
-        description: The handle fo the user
+        type: number
+        description: The id of the user
   FileResource:
     properties:
       id:
@@ -1480,6 +1698,9 @@ definitions:
       storageLocation:
         description: How the file is stored.  How the app loads the file.
         type: string
+      fileUrl:
+        description: Url of file.
+        type: string
       createdAt:
         type: string
         format: date-time
@@ -1487,38 +1708,43 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
     required:
-      - fileName
-      - filePath
+      - fileUrl
       - size
       - storageLocation
+  FileActionResource:
+    properties:
+      url:
+        type: string
+        description: The URL to preform the action against
+    required:
+      - url
   ParticipantResource:
     properties:
       id:
         type: integer
         format: int64
         description: postgres primary key
-      challengeId:
-        type: integer
-        format: int64
-        description: The Challenge id for the participation
       userId:
         type: integer
         format: int64
         description: The user id.
+      userHandle:
+        type: string
+        description: The user handle.
       role:
         type: string
         description: The role the participant has on the challenge
         enum:
-          - owner
-          - submitter
-          - watcher
-          - reviewer
+          - OWNER
+          - SUBMITTER
+          - WATCHER
+          - REVIEWER
       createdAt:
         type: string
         format: date-time
@@ -1526,30 +1752,37 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
     required:
       - userId
       - role
   SubmissionResource:
     required:
       - submitterId
+      - status
     properties:
       id:
         type: integer
         format: int64
         description: postgres primary key
-      challengeId:
-        type: integer
-        format: int64
-        description: The Challenge id for the participation
       submitterId:
         type: integer
         format: int64
         description: The user_id of the submitter
+      submitterHandle:
+        type: string
+        description: "the user handle of the submitter"
+      status:
+        type: string
+        description: The current status of the submission
+        enum:
+          - VALID
+          - INVALID
+          - LATE
       createdAt:
         type: string
         format: date-time
@@ -1557,14 +1790,12 @@ definitions:
         type: string
         format: date-time
       createdBy:
-        type: string
-        description: The handle of the user who created the row
+        type: number
+        description: The id of the user who created the row
       updatedBy:
-        type: string
-        description: The handle of the user last updated the row
+        type: number
+        description: The id of the user last updated the row
   RequirementResource:
-    required:
-      - challengeId
     properties:
       Id:
         type: integer
@@ -1573,10 +1804,6 @@ definitions:
       requirementText:
         type: string
         description: The requirement
-      challengeId:
-        type: integer
-        format: int64
-        description: The id of the challenge
   ChallengesResponse:
     required:
       - success
@@ -1615,6 +1842,23 @@ definitions:
         $ref: MetadataListResponse
       content:
         $ref: ChallengeResource
+  FileActionResponse:
+    required:
+      - success
+      - status
+      - content
+    properties:
+      success:
+        type: boolean
+        description: Was the request a success
+      status:
+        type: integer
+        format: int32
+        description: The http status code
+      metadata:
+        $ref: MetadataListResponse
+      content:
+        $ref: FileActionResource
   FileResponse:
     required:
       - success

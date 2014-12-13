@@ -16,15 +16,15 @@ exports.up = function (db, callback) {
         'description text, ' +
         'tags text[], ' +
         'prizes NUMERIC(11,2)[], ' +
-        'account character varying(255), ' +
-        '"accountId" character varying(255), ' +
         '"source" text, ' +
         '"sourceId" text, ' +
         'status enum_challenges_status NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128) ' +
+        '"createdBy" bigint, ' +
+        '"updatedBy" bigint, ' +
+        '"projectId" character varying(255), ' +
+        '"projectSource" enum_challenges_projectSource ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY challenges ADD CONSTRAINT challenges_pkey PRIMARY KEY (id);'),
 
@@ -33,16 +33,15 @@ exports.up = function (db, callback) {
       'CREATE TABLE files ( ' +
         'id bigserial NOT NULL, ' +
         'title text, ' +
-        '"filePath" text NOT NULL, ' +
         'size bigint NOT NULL, ' +
-        '"fileName" text NOT NULL, ' +
-        '"storageLocation" "enum_files_storageLocation" NOT NULL, ' +
+        '"storageLocation" text NOT NULL, ' +
+        '"fileUrl" text NOT NULL, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
+        '"createdBy" bigint, ' +
+        '"updatedBy" bigint, ' +
         '"submissionId" bigint, ' +
-        '"challengeId" bigint NOT NULL ' +
+        '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE CASCADE' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY files ADD CONSTRAINT files_pkey PRIMARY KEY (id);'),
 
@@ -51,11 +50,12 @@ exports.up = function (db, callback) {
       'CREATE TABLE participants ( ' +
         'id bigserial NOT NULL, ' +
         'role enum_participants_role NOT NULL, ' +
+        '"userHandle" character varying(128), ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
-        '"challengeId" bigint NOT NULL, ' +
+        '"createdBy" bigint, ' +
+        '"updatedBy" bigint, ' +
+        '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE CASCADE, ' +
         '"userId" bigint NOT NULL ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY participants ADD CONSTRAINT participants_pkey PRIMARY KEY (id);'),
@@ -64,10 +64,12 @@ exports.up = function (db, callback) {
     db.runSql.bind(db,
       'CREATE TABLE submissions ( ' +
         'id bigserial NOT NULL, ' +
+        'status enum_submissions_status NOT NULL, ' +
+        '"submitterHandle" character varying(128), ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
+        '"createdBy" bigint, ' +
+        '"updatedBy" bigint, ' +
         '"challengeId" bigint NOT NULL, ' +
         '"submitterId" bigint NOT NULL ' +
       ');'),
@@ -86,9 +88,10 @@ exports.up = function (db, callback) {
         'prize double precision, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
+        '"createdBy" bigint, ' +
+        '"updatedBy" bigint, ' +
         '"reviewerId" bigint NOT NULL, ' +
+        '"reviewerHandle" character varying(128), ' +
         '"submissionId" bigint NOT NULL, ' +
         '"challengeId" bigint NOT NULL ' +
       ');'),
@@ -103,8 +106,8 @@ exports.up = function (db, callback) {
         'comment text, ' +
         '"createdAt" timestamp with time zone NOT NULL, ' +
         '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128), ' +
+        '"createdBy" bigint, ' +
+        '"updatedBy" bigint, ' +
         '"scorecardId" bigint NOT NULL ' +
       ');'),
     db.runSql.bind(db, 'ALTER TABLE ONLY scorecard_items ADD CONSTRAINT scorecard_items_pkey PRIMARY KEY (id);'),
@@ -114,30 +117,19 @@ exports.up = function (db, callback) {
       'CREATE TABLE requirements ( ' +
       'id bigserial NOT NULL, ' +
       '"requirementText" text, ' +
-      '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE SET NULL, ' +
+      '"challengeId" bigint NOT NULL REFERENCES challenges("id") ON UPDATE CASCADE ON DELETE CASCADE, ' +
       '"createdAt" timestamp with time zone NOT NULL, ' +
-      '"updatedAt" timestamp with time zone NOT NULL ' +
-      ');'),
+      '"updatedAt" timestamp with time zone NOT NULL, ' +
+      '"createdBy" bigint, ' +
+      '"updatedBy" bigint ' +
+      ');')
 
-    // users table
-    db.runSql.bind(db,
-      'CREATE TABLE users ( ' +
-        'id bigserial NOT NULL, ' +
-        'name text, ' +
-        'email text, ' +
-        '"createdAt" timestamp with time zone NOT NULL, ' +
-        '"updatedAt" timestamp with time zone NOT NULL, ' +
-        '"createdBy" character varying(128), ' +
-        '"updatedBy" character varying(128) ' +
-      ');'),
-    db.runSql.bind(db, 'ALTER TABLE ONLY users ADD CONSTRAINT users_pkey PRIMARY KEY (id);')
 
   ], callback);
 };
 
 exports.down = function (db, callback) {
   async.series([
-    db.dropTable.bind(db, 'users'),
     db.dropTable.bind(db, 'requirements'),
     db.dropTable.bind(db, 'scorecard_items'),
     db.dropTable.bind(db, 'scorecards'),

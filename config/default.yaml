@@ -4,3 +4,27 @@ app:
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
   query:
     pageSize: 1000
+  tcApi: http://qa.topcoder.com/v2
+  tcUser: http://dev-lc1-user-service.herokuapp.com
+auth0:
+  client: ''
+  secret: ''
+auth:
+  enabled: false
+  perms:
+    - challengeApp
+  paths:
+    - httpVerb: DELETE
+      path: '*'
+    - httpVerb: PUT
+      path: '*'
+    - httpVerb: POST
+      path: '*'
+    - httpVerb: GET
+      path: '/challenges/:challengeId/files/:fileId/download'
+    - httpVerb: GET
+      path: '/challenges/:challengeId/files/:fileId/upload'
+    - httpVerb: GET
+      path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/upload'
+    - httpVerb: GET
+      path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/download'

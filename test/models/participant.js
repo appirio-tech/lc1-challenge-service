@@ -20,33 +20,58 @@ var db = datasource.getDataSource();
 var sequelize = db.sequelize;
 sequelize.options.logging = false;   // turn of sequelize logging.
 var Participant = db.Participant;
-
+var Challenge = db.Challenge;
 
 /**
  * Globals
  */
 var data;
 var entity;
+var challengeData;
+var savedChallenge;
 
 /**
  * Test Participant model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model Participant:', function() {
     beforeEach(function(done) {
       data = {
-        role: 'submitter',
-        challengeId: 111,
-        userId: 222
+        role: 'SUBMITTER',
+        userId: 222,
+        userHandle: 'user_handle',
+        createdBy: 1,
+        updatedBy: 1
       };
-      done();
+      challengeData = {
+        title: 'Challenge Title',
+        overview: '<p>Challenge Overview</p>',
+        description: 'long description',
+        regStartAt: '2014-08-13',
+        subEndAt: '2014-08-18',
+        status: 'DRAFT',
+        tags: ['tag1', 'tag2'],
+        prizes: [500.00,150.00],
+        createdBy: 1,
+        updatedBy: 1,
+        projectId: "PROJECT1",
+        projectSource: "TOPCODER",
+        creatorHandle: "CREATOR",
+        creatorId: "111"
+      };
+
+      Challenge.create(challengeData).success(function(savedEntity) {
+        data.challengeId = savedEntity.id;
+        savedChallenge = savedEntity;
+        done();
+      });
     });
 
     describe('Method Save', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         Participant.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -54,6 +79,9 @@ describe('<Unit Test>', function() {
           savedEntity.role.should.equal(data.role);
           savedEntity.challengeId.should.equal(data.challengeId);
           savedEntity.userId.should.equal(data.userId);
+          savedEntity.userHandle.should.equal(data.userHandle);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -138,7 +166,7 @@ describe('<Unit Test>', function() {
       });
 
       it('should able to update a participant with valid id', function(done) {
-        entity.role = 'reviewer';
+        entity.role = 'REVIEWER';
         // update an entity
         entity.save().success(function(updatedEntity) {
           updatedEntity.id.should.equal(entity.id);
@@ -162,6 +190,30 @@ describe('<Unit Test>', function() {
         });
       });
 
+      it('should failed to get the nested participant after the draft challenge deleted', function(done){
+        Participant.create(data).success(function(savedEntity) {
+          entity = savedEntity;
+          savedChallenge.destroy().success(function(){
+            Participant.find(entity.id).success(function(retrievedEntity) {
+              should.not.exist(retrievedEntity);
+              done();
+            })
+            .error(function(err) {
+              should.exist(err);
+              done();
+            });
+          })
+          .error(function(err){
+            should.not.exist(err);
+            done();
+          });
+        })
+        .error(function(err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+
     });
 
     afterEach(function(done) {
@@ -171,7 +223,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();

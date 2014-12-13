@@ -13,13 +13,16 @@ var express = require('express');
 var config = require('config');
 var datasource = require('./datasource');
 var routeHelper = require('./lib/routeHelper');
+var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
+var auth = require('./lib/tc-auth');
 
 var app = express();
 
-// uncomment the following if you need to parse incoming form data
 app.use(bodyParser.json());
 
+// central point for all authentication
+auth.auth(app);
 
 // Serve the Swagger documents and Swagger UI
 if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
@@ -42,6 +45,8 @@ if (config.has('app.port')) {
 } else {
   port = 10010;
 }
+
+app.use(partialResponseHelper.parseFields);
 
 // a127 middlewares
 app.use(a127.middleware());

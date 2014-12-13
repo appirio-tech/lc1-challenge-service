@@ -28,6 +28,9 @@ module.exports = function(sequelize, DataTypes) {
         return parseInt(this.getDataValue('userId'));
       }
     },
+    userHandle: {
+      type: DataTypes.STRING(128)
+    },
     challengeId: {
       type: DataTypes.BIGINT, allowNull: false,
       get: function() {
@@ -37,16 +40,25 @@ module.exports = function(sequelize, DataTypes) {
     // role of participant
     role : {
       type: DataTypes.ENUM,
-      values: ['owner', 'submitter', 'watcher', 'reviewer'],
+      values: ['OWNER', 'SUBMITTER', 'WATCHER', 'REVIEWER'],
       allowNull: false
     },
-    createdBy: DataTypes.STRING(128),
-    updatedBy: DataTypes.STRING(128)
+    createdBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('createdBy'));
+      }
+    },
+    updatedBy: {
+      type: DataTypes.BIGINT,
+      get: function() {
+        return parseInt(this.getDataValue('updatedBy'));
+      }
+    }
 
   }, {
     tableName : 'participants',
     associate : function(models) {
-      Participant.belongsTo(models.User, {foreignKey : 'userId'});
       Participant.belongsTo(models.Challenge, {foreignKey : 'challengeId'});
     }
   });

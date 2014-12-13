@@ -17,7 +17,11 @@ Werker
 1. start postgres
 2. create database travis_ci_test `psql -c 'create database  travis_ci_test;' -U postgres`
 3. run db-migrate to create schema `grunt dbmigrate`
-4. run the curl script in the docs dir to create some records.  Set INIT=true to create the DROP/CREATE the db and run the migration script
+4. edit config/default.yaml and set `disableAuth: true`
+5. start the service with `grunt` in terminal
+6. uncomment `HOST="http://localhost:10010"` in docs/curl.sh and comment the following line `#HOST="http://lc1-challenge-service.herokuapp.com"`
+7. run the curl script in the docs dir ` sh docs/curl.sh` in a second console to create 4 test records.  (Set INIT=true to create the DROP/CREATE the db and run the migration script -- optional if you skip `dbmigrate` step 2 )
+8. hit `http://localhost:10010/challenges`  you should now see four records
 
 ** also there is a POSTMAN file supplied to add records by hand,   You must use the standalone postman app and need to create the enivorment for the url
 
@@ -92,5 +96,8 @@ You can run the server using ```grunt``` which will use the local config.
 
 ## Tests
 
-Tests are built using mocha tests.   They can be run with ```grunt test```.  
+Tests are built using mocha tests.   They can be run with ```grunt test```.
 There is an example postman configuration file at test/postman.json.  This can be imported into Postman for testing.
+
+## Auth setup
+

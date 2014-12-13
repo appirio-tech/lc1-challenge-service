@@ -34,6 +34,7 @@ var entity;
  * Test ScorecardItem model CRUD operations
  */
 describe('<Unit Test>', function() {
+  this.timeout(15000);
   describe('Model ScorecardItem:', function() {
     beforeEach(function(done) {
       data = {
@@ -41,7 +42,9 @@ describe('<Unit Test>', function() {
         scorecardId: 111,
         requirementId: 222,
         requirementText: 'video is required',
-        comment: 'excellent job'
+        comment: 'excellent job',
+        createdBy: 1,
+        updatedBy: 1
       };
       done();
     });
@@ -50,7 +53,6 @@ describe('<Unit Test>', function() {
       it('should able to save without problems', function(done) {
         // create a entity
         ScorecardItem.create(data).success(function(savedEntity) {
-          entity = savedEntity;
           savedEntity.id.should.be.a.Number;
           savedEntity.id.should.not.have.length(0);
           savedEntity.createdAt.should.not.have.length(0);
@@ -58,6 +60,8 @@ describe('<Unit Test>', function() {
           savedEntity.score.should.equal(data.score);
           savedEntity.requirementId.should.equal(data.requirementId);
           savedEntity.comment.should.equal(data.comment);
+          savedEntity.createdBy.should.equal(data.createdBy);
+          savedEntity.updatedBy.should.equal(data.updatedBy);
           done();
         })
         .error(function(err) {
@@ -78,6 +82,7 @@ describe('<Unit Test>', function() {
           done();
         });
       });
+
     });
 
     describe('Method Find/Update/Delete', function() {
@@ -161,7 +166,7 @@ describe('<Unit Test>', function() {
           done();
         })
         .error(function(err){
-          done();
+          done(err);
         });
       } else {
         done();

@@ -19,16 +19,33 @@ var controllerHelper = require('./../../lib/controllerHelper');
 
 
 
+var challengeControllerOptions = {
+  filtering: true,
+  deletionRestrictions: {
+    where: {
+      status: 'DRAFT'
+    }
+  }
+};
+
 // build controller for challenge resource
-var challengeController = controllerHelper.buildController(Challenge, null, {filtering: true});
+var challengeController = controllerHelper.buildController(Challenge, null, challengeControllerOptions);
 
 
 var filteringOff = {
   filtering: false
 };
+var fileControllerOptions = {
+  customFilters : {
+    where : {
+      submissionId: null
+    }
+  },
+  filtering: false
+};
 
 // build controller for the nested files resource
-var fileController = controllerHelper.buildController(File, [Challenge], filteringOff);
+var fileController = controllerHelper.buildController(File, [Challenge], fileControllerOptions);
 
 // build controller for the nested participants resource
 var participantController = controllerHelper.buildController(Participant, [Challenge], {filtering: true});
