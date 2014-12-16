@@ -25,7 +25,12 @@ module.exports = function(config) {
     '/' + config.get('app.pg.database');
   }
 
-  var sequelize = new Sequelize(postgresurl);
+  var dbOptions = {};
+  if (config.has('app.dbOptions')) {
+    dbOptions = config.get('app.dbOptions');
+  }
+
+  var sequelize = new Sequelize(postgresurl, dbOptions);
   var db = {};
 
   // Add JSON and JSONB data type to Sequelize
