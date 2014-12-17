@@ -16,8 +16,7 @@ var File = datasource.File;
 var Participant = datasource.Participant;
 var Submission = datasource.Submission;
 var controllerHelper = require('./../../lib/controllerHelper');
-
-
+var routeHelper = require('./../../lib/routeHelper');
 
 var challengeControllerOptions = {
   filtering: true,
@@ -53,8 +52,6 @@ var participantController = controllerHelper.buildController(Participant, [Chall
 // build controller for the nested submissions resource
 var submissionController = controllerHelper.buildController(Submission, [Challenge], filteringOff);
 
-
-
 module.exports = {
   getAll: challengeController.all,
   create: challengeController.create,
@@ -78,5 +75,27 @@ module.exports = {
   submit: submissionController.create,
   getSubmission: submissionController.get,
   updateSubmission: submissionController.update,
-  removeSubmission: submissionController.delete
+  removeSubmission: submissionController.delete,
+
+  register: function(req, res, next) {
+    Participant.create({
+        userId: routeHelper.getSigninUser(req).id,
+        userHandle: routeHelper.getSigninUser(req).handle,
+        role: 'SUBMITTER'
+      })
+      .success(function(participant) {
+        req.data = {
+          id: participant.id,
+          result: {
+            success: true,
+            status: 200
+          }
+        };
+        next();
+      })
+      .error(function(err) {
+        routeHelper.addError(req, err);
+        next();
+      });
+  }
 };

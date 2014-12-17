@@ -17,9 +17,18 @@ var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
 var auth = require('./lib/tc-auth');
 
+// Remove this later for auth stuff
+var jwtCheck = require('./lib/tc-auth/jwtCheck');
+var tcUser = require('./lib/tc-auth/tcUser');
+
 var app = express();
 
 app.use(bodyParser.json());
+
+// Add auth for register
+// @TODO remove this later
+app.use('/challenge/:challengeId/register',
+  jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth);
 
 // central point for all authentication
 auth.auth(app);
