@@ -118,6 +118,7 @@ module.exports = {
           fileUrl: req.param('fileUrl'),
           size: req.param('fileSize'),
           title: req.param('fileTitle'),
+          storageLocation: 'S3',
           createdBy: routeHelper.getSigninUser(req).id,
           updatedBy: routeHelper.getSigninUser(req).id
         };
