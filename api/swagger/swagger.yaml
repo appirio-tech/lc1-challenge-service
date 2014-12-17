@@ -160,14 +160,38 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
-  /challenges/{challengeId}/get:
-    post:
+  /challenges/{challengeId}/register:
+    get:
       tags:
         - challenges
       x-swagger-router-controller: challenges
       description: Register for a challenge
       summary: Register for a challenge
       operationId: register
+      parameters:
+        - name: challengeId
+          in: path
+          description: the id of the challenge
+          type: integer
+          format: int64
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: ActionResponse
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+  /challenges/{challengeId}/submit:
+    get:
+      tags:
+        - challenges
+      x-swagger-router-controller: challenges
+      description: Submit to a challenge
+      summary: Submit to a challenge
+      operationId: submit
       parameters:
         - name: challengeId
           in: path
@@ -510,7 +534,7 @@ paths:
       description: Submit to a challenge
       summary: Submit to a challenge
       x-swagger-router-controller: challenges
-      operationId: submit
+      operationId: createSubmission
       parameters:
         - name: challengeId
           in: path

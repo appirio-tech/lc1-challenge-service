@@ -72,7 +72,7 @@ module.exports = {
   removeParticipant: participantController.delete,
 
   getSubmissions: submissionController.all,
-  submit: submissionController.create,
+  createSubmission: submissionController.create,
   getSubmission: submissionController.get,
   updateSubmission: submissionController.update,
   removeSubmission: submissionController.delete,
@@ -97,5 +97,27 @@ module.exports = {
         routeHelper.addError(req, err);
         next();
       });
+  },
+
+  submit: function(req, res, next) {
+    Submission.create({
+      submitterId: routeHelper.getSigninUser(req).id,
+      submitterHandle: routeHelper.getSigninUser(req).handle,
+      status: 'VALID'
+    })
+      .success(function(submission) {
+        req.data = {
+          id: submission.id,
+          result: {
+            success: true,
+            status: 200
+          }
+        };
+        next();
+      })
+      .error(function(err) {
+        routeHelper.addError(req, err);
+        next();
+      })
   }
 };
