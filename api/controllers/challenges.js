@@ -17,6 +17,7 @@ var Participant = datasource.Participant;
 var Submission = datasource.Submission;
 var controllerHelper = require('./../../lib/controllerHelper');
 var routeHelper = require('./../../lib/routeHelper');
+var File = datasource.File;
 
 var challengeControllerOptions = {
   filtering: true,
@@ -81,7 +82,9 @@ module.exports = {
     Participant.create({
         userId: routeHelper.getSigninUser(req).id,
         userHandle: routeHelper.getSigninUser(req).handle,
-        role: 'SUBMITTER'
+        role: 'SUBMITTER',
+        createdBy: routeHelper.getSigninUser(req).id,
+        updatedBy: routeHelper.getSigninUser(req).id
       })
       .success(function(participant) {
         req.data = {
@@ -100,20 +103,41 @@ module.exports = {
   },
 
   submit: function(req, res, next) {
+
     Submission.create({
+      challengeId: req.param('challengeId'),
       submitterId: routeHelper.getSigninUser(req).id,
       submitterHandle: routeHelper.getSigninUser(req).handle,
-      status: 'VALID'
+      status: 'VALID',
+      createdBy: routeHelper.getSigninUser(req).id,
+      updatedBy: routeHelper.getSigninUser(req).id
     })
       .success(function(submission) {
-        req.data = {
-          id: submission.id,
-          result: {
-            success: true,
-            status: 200
-          }
+        var file = {
+          submissionId: submission.id,
+          fileUrl: req.param('fileUrl'),
+          size: req.param('fileSize'),
+          title: req.param('fileTitle'),
+          createdBy: routeHelper.getSigninUser(req).id,
+          updatedBy: routeHelper.getSigninUser(req).id
         };
-        next();
+
+        File.create(file)
+          .success(function(file) {
+            req.data = {
+              id: file.id,
+              result: {
+                success: true,
+                status: 200
+              }
+            };
+            next();
+          })
+          .error(function(err) {
+            routeHelper.addError(req, err);
+            next();
+          });
+
       })
       .error(function(err) {
         routeHelper.addError(req, err);

@@ -199,6 +199,18 @@ paths:
           type: integer
           format: int64
           required: true
+        - name: fileTitle
+          in: query
+          description: The file title
+          required: true
+        - name: fileUrl
+          in: query
+          description: The file url
+          required: true
+        - name: fileSize
+          in: query
+          description: The file size
+          required: true
       responses:
         "200":
           description: Success
