@@ -25,16 +25,16 @@ var app = express();
 
 app.use(bodyParser.json());
 
+// central point for all authentication
+auth.auth(app);
+
 // Add auth for register
 // @TODO remove this later
 app.use('/challenge/:challengeId/register',
   jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth);
 
-app.use('/challenge/:challengeId/submit',
-  jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth);
-
-// central point for all authentication
-auth.auth(app);
+app.route('/challenges/:challengeId/submissions')
+  .post(jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth);
 
 // Serve the Swagger documents and Swagger UI
 if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
