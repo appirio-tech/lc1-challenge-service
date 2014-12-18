@@ -27,14 +27,9 @@ app.use(bodyParser.json());
 
 // central point for all authentication
 auth.auth(app);
+app.get('/challenges/:challengeId/register',
+  [jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth]);
 
-// Add auth for register
-// @TODO remove this later
-app.use('/challenge/:challengeId/register',
-  jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth);
-
-app.route('/challenges/:challengeId/submissions')
-  .post(jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth);
 
 // Serve the Swagger documents and Swagger UI
 if (config.has('app.loadDoc') && config.get('app.loadDoc')) {

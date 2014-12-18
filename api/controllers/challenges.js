@@ -17,7 +17,6 @@ var Participant = datasource.Participant;
 var Submission = datasource.Submission;
 var controllerHelper = require('./../../lib/controllerHelper');
 var routeHelper = require('./../../lib/routeHelper');
-var File = datasource.File;
 
 var challengeControllerOptions = {
   filtering: true,
@@ -79,12 +78,14 @@ module.exports = {
   removeSubmission: submissionController.delete,
 
   register: function(req, res, next) {
+
     Participant.create({
         userId: routeHelper.getSigninUser(req).id,
         userHandle: routeHelper.getSigninUser(req).handle,
         role: 'SUBMITTER',
         createdBy: routeHelper.getSigninUser(req).id,
-        updatedBy: routeHelper.getSigninUser(req).id
+        updatedBy: routeHelper.getSigninUser(req).id,
+        challengeId: req.swagger.params.challengeId.value
       })
       .success(function(participant) {
         req.data = {
