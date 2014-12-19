@@ -4,7 +4,7 @@ app:
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
   query:
     pageSize: 1000
-  tcApi: http://api.topcoder.com/v2
+  tcApi: http://qa.topcoder.com/v2
   tcUser: http://dev-lc1-user-service.herokuapp.com
 auth0:
   client: ''
