@@ -52,7 +52,7 @@ describe('<Unit Test>', function() {
         projectId: "PROJECT1",
         projectSource: "TOPCODER",
         creatorHandle: "CREATOR",
-        creatorId: "111"
+        creatorId: 111
       };
       done();
     });
