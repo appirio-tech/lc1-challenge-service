@@ -56,7 +56,9 @@ if (config.has('app.port')) {
 app.use(partialResponseHelper.parseFields);
 
 // a127 middlewares
-app.use(a127.middleware());
+a127.init(function(config) {
+  app.use(a127.middleware(config));
+});
 // generic error handler
 app.use(routeHelper.errorHandler);
 // render response data as JSON
