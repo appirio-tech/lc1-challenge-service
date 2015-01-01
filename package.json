@@ -11,7 +11,7 @@
     "node": "0.10.x"
   },
   "dependencies": {
-    "a127-magic": "^0.6.x",
+    "a127-magic": "^0.7.x",
     "async": "^0.9.0",
     "aws-sdk": "^2.0.29",
     "body-parser": "^1.9.0",

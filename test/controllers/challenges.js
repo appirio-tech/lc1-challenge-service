@@ -45,7 +45,7 @@ describe('Challenges Controller', function() {
         title: 'Serenity Challenge',
         status: 'SUBMISSION',
         prizes: [500.00, 250.00],
-        regStartAt: '2014-10-09',
+        regStartAt: '2014-10-09T10:00:00-05:00',
         projectId: 'PROJECT1',
         projectSource: 'TOPCODER'
       };
