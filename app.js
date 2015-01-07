@@ -23,45 +23,48 @@ var tcUser = require('./lib/tc-auth/tcUser');
 
 var app = express();
 
-app.use(bodyParser.json());
+a127.init(function (swaggerConfig) {
+  app.use(bodyParser.json());
 
 // central point for all authentication
-auth.auth(app);
-app.get('/challenges/:challengeId/register',
-  [jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth]);
+  auth.auth(app);
+  app.get('/challenges/:challengeId/register',
+      [jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth]);
 
 
 // Serve the Swagger documents and Swagger UI
-if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
-  var swaggerTools = require('swagger-tools');
-  var swaggerUi = swaggerTools.middleware.v2.swaggerUi;
-  var yaml = require('js-yaml');
-  var fs = require('fs');
+  if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
+    var swaggerTools = require('swagger-tools');
+    var swaggerUi = swaggerTools.middleware.v2.swaggerUi;
+    var yaml = require('js-yaml');
+    var fs = require('fs');
 
-  var swaggerDoc = yaml.safeLoad(fs.readFileSync('./api/swagger/swagger.yaml', 'utf8'));
-  app.use(swaggerUi(swaggerDoc));
-}
+    var swaggerDoc = yaml.safeLoad(fs.readFileSync('./api/swagger/swagger.yaml', 'utf8'));
+    app.use(swaggerUi(swaggerDoc));
+  }
 
 
 // @TODO add try/catch logic
-datasource.init(config);
+  datasource.init(config);
 
-var port;
-if (config.has('app.port')) {
-  port = config.get('app.port');
-} else {
-  port = 10010;
-}
+  var port;
+  if (config.has('app.port')) {
+    port = config.get('app.port');
+  } else {
+    port = 10010;
+  }
 
-app.use(partialResponseHelper.parseFields);
+  app.use(partialResponseHelper.parseFields);
 
 // a127 middlewares
-app.use(a127.middleware());
+  app.use(a127.middleware(swaggerConfig));
 // generic error handler
-app.use(routeHelper.errorHandler);
+  app.use(routeHelper.errorHandler);
 // render response data as JSON
-app.use(routeHelper.renderJson);
+  app.use(routeHelper.renderJson);
 
-app.listen(port);
+  app.listen(port);
 
-console.log('app started at ' + port);
+  console.log('app started at ' + port);
+});
+

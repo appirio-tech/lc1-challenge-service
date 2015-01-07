@@ -78,8 +78,7 @@ module.exports = {
   removeSubmission: submissionController.delete,
 
   register: function(req, res, next) {
-
-    Participant.create({
+    Participant.findOrCreate({
         userId: routeHelper.getSigninUser(req).id,
         userHandle: routeHelper.getSigninUser(req).handle,
         role: 'SUBMITTER',
@@ -87,14 +86,18 @@ module.exports = {
         updatedBy: routeHelper.getSigninUser(req).id,
         challengeId: req.swagger.params.challengeId.value
       })
-      .success(function(participant) {
-        req.data = {
-          id: participant.id,
-          result: {
-            success: true,
-            status: 200
-          }
-        };
+      .success(function(participant, created) {
+        if(created){
+          req.data = {
+            id: participant.id,
+            result: {
+              success: true,
+              status: 200
+            }
+          };
+        }else{
+          routeHelper.addValidationError(req, 'User is already registered for the challenge.');
+        }
         next();
       })
       .error(function(err) {

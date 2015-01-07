@@ -45,7 +45,7 @@ describe('Challenges Controller', function() {
         title: 'Serenity Challenge',
         status: 'SUBMISSION',
         prizes: [500.00, 250.00],
-        regStartAt: '2014-10-09',
+        regStartAt: '2014-10-09T10:00:00-05:00',
         projectId: 'PROJECT1',
         projectSource: 'TOPCODER'
       };
@@ -197,6 +197,30 @@ describe('Challenges Controller', function() {
         res.body.result.status.should.equal(200);
         done();
       });
+    });
+
+    it('should able to register the existing challenge', function(done) {
+      // send request
+      request(url)
+          .get('/challenges/'+challengeId+'/register')
+          .end(function(err, res) {
+            // verify response
+            res.status.should.equal(200);
+            done();
+          });
+    });
+
+    it('should failed to register the existing challenge again', function(done) {
+      // send request
+      request(url)
+          .get('/challenges/'+challengeId+'/register')
+          .end(function(err, res) {
+            // verify response
+            res.status.should.equal(400);
+            res.body.result.success.should.equal(false);
+            res.body.content.should.equal('User is already registered for the challenge.');
+            done();
+          });
     });
 
     it('should able to delete the existing challenge whose status is DRAFT', function(done) {
