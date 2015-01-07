@@ -29,7 +29,6 @@ a127.init(function (swaggerConfig) {
 // central point for all authentication
   auth.auth(app);
   app.get('/challenges/:challengeId/register',
-      //[/*jwtCheck.jwtCheck(config.get('auth0')), */tcUser.tcUser/*, routeHelper.requireAuth*/]);
       [jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth]);
 
 
