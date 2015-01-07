@@ -17,10 +17,6 @@ var partialResponseHelper = require('./lib/partialResponseHelper');
 var bodyParser = require('body-parser');
 var auth = require('./lib/tc-auth');
 
-// Remove this later for auth stuff
-var jwtCheck = require('./lib/tc-auth/jwtCheck');
-var tcUser = require('./lib/tc-auth/tcUser');
-
 var app = express();
 
 a127.init(function (swaggerConfig) {
@@ -28,9 +24,6 @@ a127.init(function (swaggerConfig) {
 
 // central point for all authentication
   auth.auth(app);
-  app.get('/challenges/:challengeId/register',
-      [jwtCheck.jwtCheck(config.get('auth0')), tcUser.tcUser, routeHelper.requireAuth]);
-
 
 // Serve the Swagger documents and Swagger UI
   if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
