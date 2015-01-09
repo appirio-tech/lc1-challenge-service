@@ -87,7 +87,7 @@ module.exports = {
         challengeId: req.swagger.params.challengeId.value
       })
       .success(function(participant, created) {
-        if(created){
+        if (created) {
           req.data = {
             id: participant.id,
             result: {
@@ -95,7 +95,9 @@ module.exports = {
               status: 200
             }
           };
-        }else{
+        } else {
+          console.log(participant);
+          console.log(created);
           routeHelper.addValidationError(req, 'User is already registered for the challenge.');
         }
         next();
