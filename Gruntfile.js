@@ -145,7 +145,7 @@ module.exports = function(grunt) {
   // load the grunt-swagger-tools
   try {
     // https://www.npmjs.org/package/grunt-swagger-tools
-    swagger = require('grunt-swagger-tools')();
+    swagger = require('appirio-grunt-swagger-tools')();
 
     // // Setup 2.0 Swagger spec compliant using YAML format
     swagger.validator.set('fileext', '.yaml');
