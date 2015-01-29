@@ -9,11 +9,11 @@
 var datasource = require('./../../datasource').getDataSource();
 var Challenge = datasource.Challenge;
 var File = datasource.File;
-var routeHelper = require('./../../lib/routeHelper');
-var storageLib = require('./../../lib/storage');
+var routeHelper = require('serenity-route-helper');
 var async = require('async');
-var safeList = require('../../lib/tc-auth/safelist');
-
+var auth = require('serenity-auth');
+var config = require('config');
+var storageLib = require('serenity-storage')(config);
 
 /**
  * Helper method to find an entity by entity id property
@@ -42,7 +42,7 @@ var getChallengeFileURL = function(method, req, res, next) {
   // check authorization
   var challengeId = req.swagger.params.challengeId.value,
     fileId = req.swagger.params.fileId.value,
-    user = routeHelper.getSigninUser(req);
+    user = auth.getSigninUser(req);
 
   async.waterfall([
     function(cb) {
@@ -53,7 +53,7 @@ var getChallengeFileURL = function(method, req, res, next) {
         return cb({message: 'Cannot find a challenge for challengeId ' + challengeId, code: routeHelper.HTTP_NOT_FOUND});
       }
 
-      if (!safeList.currentUserIsSafe(req)) {
+      if (!auth.currentUserIsSafe(req)) {
         challenge.getParticipants({where: {userId: user.id}}).success(function(participants) {
           cb(null, participants);
         }).error(function(err) {
@@ -65,7 +65,7 @@ var getChallengeFileURL = function(method, req, res, next) {
 
     },
     function(participants, cb) {
-      if (!safeList.currentUserIsSafe(req)) {
+      if (!auth.currentUserIsSafe(req)) {
         // participant will be an array, should not be empty array
         if (!participants || participants.length === 0) {
           return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
@@ -99,7 +99,7 @@ var getChallengeFileURL = function(method, req, res, next) {
 var getSubmissionFileURL = function(method, req, res, next) {
   var challengeId = req.swagger.params.challengeId.value,
     submissionId = req.swagger.params.submissionId.value,
-    user = routeHelper.getSigninUser(req),
+    user = auth.getSigninUser(req),
     fileId = req.swagger.params.fileId.value;
 
   async.waterfall([
@@ -111,7 +111,7 @@ var getSubmissionFileURL = function(method, req, res, next) {
         return cb({message: 'Cannot find a challenge for challengeId ' + challengeId, code: routeHelper.HTTP_NOT_FOUND});
       }
 
-      if (!safeList.currentUserIsSafe(req)) {
+      if (!auth.currentUserIsSafe(req)) {
         challenge.getSubmissions({where: {submitterId: user.id}}).success(function (submissions) {
           cb(null, submissions);
         }).error(function (err) {
@@ -122,7 +122,7 @@ var getSubmissionFileURL = function(method, req, res, next) {
       }
     },
     function(submissions, cb) {
-      if (!safeList.currentUserIsSafe(req)) {
+      if (!auth.currentUserIsSafe(req)) {
         if (!submissions || submissions.length === 0) {
           return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
         }
@@ -154,7 +154,7 @@ var getSubmissionFileURL = function(method, req, res, next) {
 
 /**
  * This method return the file download URL for a challenge file.
- * It uses lib/storage to get the download URL based on the storage provider configuration
+ * It uses serenity-storage module to get the download URL based on the storage provider configuration
  * Only participants can download the files
  *
  * @param  {Object}     req       Express request instance
@@ -179,7 +179,7 @@ exports.getChallengeFileUploadURL = function(req, res, next) {
 
 /**
  * This method return the file download URL for a submission file.
- * It uses lib/storage to get the download URL based on the storage provider configuration
+ * It uses serenity-storage module to get the download URL based on the storage provider configuration
  * Only the person who submitted the file can download the file
  *
  * @param  {Object}     req       Express request instance

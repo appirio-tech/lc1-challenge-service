@@ -14,7 +14,9 @@ var datasource = require('./../../datasource').getDataSource();
 var Challenge = datasource.Challenge;
 var Scorecard = datasource.Scorecard;
 var ScorecardItem = datasource.ScorecardItem;
-var controllerHelper = require('./../../lib/controllerHelper');
+var serenityControllerHelper = require('serenity-controller-helper');
+var config = require('config');
+var controllerHelper = new serenityControllerHelper(config);
 
 
 var options = {

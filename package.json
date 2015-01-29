@@ -44,7 +44,14 @@
     "request-json": "~0.5.0",
     "sequelize": "^1.7.10",
     "swagger-tools": "^0.6.13",
-    "time-grunt": "^0.3.1"
+    "time-grunt": "^0.3.1",
+    "serenity-datasource": "git+https://github.com/riteshsangwan/serenity-datasource.git",
+    "serenity-route-helper": "git+https://github.com/riteshsangwan/serenity-route-helper.git",
+    "serenity-storage": "git+https://github.com/riteshsangwan/serenity-storage.git",
+    "serenity-param-helper": "git+https://github.com/riteshsangwan/serenity-param-helper.git",
+    "serenity-partial-response-helper": "git+https://github.com/riteshsangwan/serenity-partial-response-helper.git",
+    "serenity-controller-helper": "git+https://github.com/riteshsangwan/serenity-controller-helper.git",
+    "serenity-auth": "git+https://github.com/riteshsangwan/serenity-auth.git"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",

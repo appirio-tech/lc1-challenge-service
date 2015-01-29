@@ -3,15 +3,15 @@
  */
 'use strict';
 var datasource = {};
+var serenityDatasource = require('serenity-datasource');
 
 /**
  * This function will initializes datasource with all the models present in models directory
  * @param {Object} config Global configuration object
- * @param {Function} callback Callback function
  */
 datasource.init = function(config) {
-  if (!this.db) {
-    this.db = require('./api/models')(config);
+  if (!this.dbInstance) {
+    this.dbInstance = new serenityDatasource(config);
   }
 };
 
@@ -20,7 +20,7 @@ datasource.init = function(config) {
  * @return {Object} Datasource Object
  */
 datasource.getDataSource = function() {
-  return this.db;
+  return this.dbInstance;
 };
 
 /**

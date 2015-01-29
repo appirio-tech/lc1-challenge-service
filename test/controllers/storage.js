@@ -90,7 +90,7 @@ describe('Storage Controller', function() {
           title: 'Storage Controller Test File Title',
           size: 123,
           fileUrl: '/uploads/my-submission.zip',
-          storageLocation: 'LOCAL',
+          storageLocation: 'local',
           challengeId: challenge.id,
           submissionId: submission.id
         };
