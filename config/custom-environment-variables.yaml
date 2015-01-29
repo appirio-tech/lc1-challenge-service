@@ -1,17 +1,19 @@
 app:
-  pgURL: DATABASE_URL
-  pgURLWercker: WERCKER_POSTGRESQL_URL
   port: PORT
   disableAuth: TC_SKIP_AUTH
   tcApi: TC_API_URL
   tcUser: LC_USER_SERVICE
+datasource:
+  pgURL: DATABASE_URL
+  pgURLWercker: WERCKER_POSTGRESQL_URL
 auth0:
   client: TC_AUTH0_CLIENT
   secret: TC_AUTH0_SECRET
-aws:
-  key: AWS_KEY
-  secret: AWS_SECRET
-  bucket: AWS_BUCKET
-  region: AWS_REGION
+storage:
+  aws:
+    key: AWS_KEY
+    secret: AWS_SECRET
+    bucket: AWS_BUCKET
+    region: AWS_REGION
 auth:
   enabled: TC_AUTH_ENABLED

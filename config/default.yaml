@@ -1,11 +1,15 @@
 app:
   port: 10010
   loadDoc: true
-  pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
-  query:
-    pageSize: 1000
   tcApi: http://qa.topcoder.com/v2
   tcUser: http://dev-lc1-user-service.herokuapp.com
+  query:
+    pageSize: 1000
+datasource:
+  pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
+  modelsDirectory: './api/models'
+  dbOptions:
+    native: true
 auth0:
   client: ''
   secret: ''
