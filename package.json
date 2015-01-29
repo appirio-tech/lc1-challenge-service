@@ -47,9 +47,9 @@
     "time-grunt": "^0.3.1",
     "serenity-datasource": "git+https://github.com/appirio-tech/lc1-node-datasource.git",
     "serenity-route-helper": "git+https://github.com/appirio-tech/lc1-node-route-helper.git",
-    "serenity-storage": "git+https://github.com/appirio-tech/lc1-node.git",
+    "serenity-storage": "git+https://github.com/appirio-tech/lc1-node-storage.git",
     "serenity-param-helper": "git+https://github.com/appirio-tech/lc1-node-param-helper.git",
-    "serenity-partial-response-helper": "git+https://github.com/appirio-tech/lc1-node-partial-response-helper.git",
+    "serenity-partial-response-helper": "git+https://github.com/appirio-tech/lc1-node-partial-reponse-helper.git",
     "serenity-controller-helper": "git+https://github.com/appirio-tech/lc1-node-controller-helper.git",
     "serenity-auth": "git+https://github.com/appirio-tech/lc1-node-auth.git"
   },
