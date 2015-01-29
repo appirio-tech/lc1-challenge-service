@@ -31,7 +31,7 @@
     "grunt-env": "^0.4.1",
     "grunt-nodemon": "0.2.1",
     "grunt-swagger-js-codegen": ">0.2.9",
-    "appirio-grunt-swagger-tools": "^0.1.0",
+    "grunt-swagger-tools": "0.1.4",
     "inflection": "1.5.1",
     "js-yaml": "",
     "jshint": "^2.5.5",
