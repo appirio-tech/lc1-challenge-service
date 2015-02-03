@@ -45,13 +45,13 @@
     "sequelize": "^1.7.10",
     "swagger-tools": "^0.6.13",
     "time-grunt": "^0.3.1",
-    "serenity-datasource": "git+https://github.com/appirio-tech/lc1-node-datasource.git",
-    "serenity-route-helper": "git+https://github.com/appirio-tech/lc1-node-route-helper.git",
-    "serenity-storage": "git+https://github.com/appirio-tech/lc1-node-storage.git",
-    "serenity-param-helper": "git+https://github.com/appirio-tech/lc1-node-param-helper.git",
-    "serenity-partial-response-helper": "git+https://github.com/appirio-tech/lc1-node-partial-reponse-helper.git",
-    "serenity-controller-helper": "git+https://github.com/appirio-tech/lc1-node-controller-helper.git",
-    "serenity-auth": "git+https://github.com/appirio-tech/lc1-node-auth.git"
+    "serenity-datasource": "^1.0.0",
+    "serenity-route-helper": "^1.0.0",
+    "serenity-storage": "^1.0.0",
+    "serenity-param-helper": "^1.0.0",
+    "serenity-partial-response-helper": "^1.0.0",
+    "serenity-controller-helper": "^1.0.0",
+    "serenity-auth": "^1.0.0"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",

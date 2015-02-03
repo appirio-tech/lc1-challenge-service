@@ -58,10 +58,12 @@ a127.init(function (swaggerConfig) {
 
 // a127 middlewares
   app.use(a127.middleware(swaggerConfig));
-// generic error handler
-  app.use(routeHelper.errorHandler);
+
 // render response data as JSON
-  app.use(routeHelper.renderJson);
+  app.use(routeHelper.middleware.renderJson);
+
+  // generic error handler
+  app.use(routeHelper.middleware.errorHandler);
 
   app.listen(port);
 
