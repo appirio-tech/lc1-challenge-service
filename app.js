@@ -23,10 +23,10 @@ var app = express();
 a127.init(function (swaggerConfig) {
   app.use(bodyParser.json());
 
-// central point for all authentication
-  auth.auth(app, config, routeHelper.errorHandler);
+  // central point for all authentication
+  auth.auth(app, config, auth.requireAuth);
 
-// Serve the Swagger documents and Swagger UI
+  // Serve the Swagger documents and Swagger UI
   if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
     var swaggerTools = require('swagger-tools');
     var swaggerUi = swaggerTools.middleware.v2.swaggerUi;
