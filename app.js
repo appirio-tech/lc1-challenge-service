@@ -17,7 +17,6 @@ var resopnseHelper = require('serenity-partial-response-helper');
 var partialResponseHelper = null;
 var bodyParser = require('body-parser');
 var auth = require('serenity-auth');
-var errors = require('common-errors');
 var morgan = require('morgan');
 var winston = require('winston');
 

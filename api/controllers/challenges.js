@@ -18,7 +18,6 @@ var Submission = datasource.Submission;
 var serenityControllerHelper = require('serenity-controller-helper');
 var config = require('config');
 var controllerHelper = new serenityControllerHelper(config);
-var routeHelper = require('serenity-route-helper');
 var auth = require('serenity-auth');
 var errors = require('common-errors');
 
@@ -105,7 +104,7 @@ module.exports = {
         next();
       })
       .error(function(err) {
-        next(new errors.Error("Error", err));
+        next(new errors.Error('Error', err));
       });
   }
 };

@@ -24,11 +24,3 @@ auth:
       path: '*'
     - httpVerb: POST
       path: '*'
-    - httpVerb: GET
-      path: '/challenges/:challengeId/files/:fileId/download'
-    - httpVerb: GET
-      path: '/challenges/:challengeId/files/:fileId/upload'
-    - httpVerb: GET
-      path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/upload'
-    - httpVerb: GET
-      path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/download'
