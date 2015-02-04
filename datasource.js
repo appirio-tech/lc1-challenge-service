@@ -13,7 +13,7 @@ datasource.init = function(config) {
   if (!this.dbInstance) {
     // If pgURLWercker exists then use that instead of pgurl
     if (config.has('datasource.pgURLWercker')) {
-      config.set('datasource.pgURL', config.get('datasource.pgURLWercker'));
+      config.datasource.pgURL = config.get('datasource.pgURLWercker');
     }
 
     this.dbInstance = new serenityDatasource(config);
