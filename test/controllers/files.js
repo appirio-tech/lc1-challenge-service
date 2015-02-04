@@ -65,7 +65,7 @@ describe('Files Controller', function() {
         title: 'File Title',
         size: 123,
         fileUrl: '/uploads/my-submission.zip',
-        storageLocation: 'LOCAL'
+        storageLocation: 'local'
       };
       done();
     });

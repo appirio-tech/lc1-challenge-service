@@ -1,14 +1,24 @@
 app:
   port: 10010
   loadDoc: true
-  pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
-  query:
-    pageSize: 1000
   tcApi: http://qa.topcoder.com/v2
   tcUser: http://dev-lc1-user-service.herokuapp.com
+  query:
+    pageSize: 1000
+datasource:
+  pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
+  modelsDirectory: './api/models'
+  dbOptions:
+    native: true
 auth0:
   client: ''
   secret: ''
+storage:
+  aws:
+    accessKeyId: XXX
+    secretAccessKey: XXX
+    bucket: XXX
+    region: us-east-1
 auth:
   enabled: false
   perms:
@@ -20,11 +30,3 @@ auth:
       path: '*'
     - httpVerb: POST
       path: '*'
-    - httpVerb: GET
-      path: '/challenges/:challengeId/files/:fileId/download'
-    - httpVerb: GET
-      path: '/challenges/:challengeId/files/:fileId/upload'
-    - httpVerb: GET
-      path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/upload'
-    - httpVerb: GET
-      path: '/challenges/:challengeId/submissions/:submissionId/files/:fileId/download'

@@ -13,7 +13,7 @@
 /**
  * Test RequiremeNt controller APIs.
  */
-var should = require('should'); 
+var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
 var async = require('async');
@@ -94,7 +94,7 @@ describe('Requirements Controller', function() {
       });
     });
 
-    it('should fail to create a requirement with challenge id diferrent in request body and path param', function(done) {
+    it('should fail to create a requirement with challenge id different in request body and path param', function(done) {
       reqData.challengeId = challenge.id + 3434;
       // send request
       request(url)
@@ -213,10 +213,11 @@ describe('Requirements Controller', function() {
     });
 
     it('should fail to update the existing requirement with challengeId different in request body and path param', function(done) {
-      reqData.challengeId = challenge.api + 3434;
+      reqData.challengeId = challenge.id + 3434;
       // send request
       request(url)
       .put('/challenges/'+challenge.id+'/requirements/'+requirementId)
+      .send(reqData)
       .end(function(err, res) {
         // verify response
         res.status.should.equal(400);

@@ -41,7 +41,7 @@ describe('<Unit Test>', function() {
       data = {
         title: 'File Title',
         size: 123,
-        storageLocation: 'LOCAL',
+        storageLocation: 'local',
         fileUrl: '/uploads/my-submission.zip',
         createdBy: 1,
         updatedBy: 1

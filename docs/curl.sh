@@ -174,7 +174,7 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3RvcGNvZGVyLmF1dGgwLmNvbS8iLCJzdWIiOiJ0d2l0dGVyfDE4MzM0NDA3IiwiYXVkIjoiYzRQVnZDMXo1MERPbE9MakxxSGI1aXcyZkdNOHRlVFciLCJleHAiOjE0NTI1MzE1MzIsImlhdCI6MTQxNjUzMTUzMn0.Vl53WZ3XAQ3fi05x-4dcnpkcWKkDphHik42fJdNjlWY" -d '{
   "title": "Magic Tricks for the Beginning Magician",
   "size": 123,
-  "storageLocation": "LOCAL",
+  "storageLocation": "local",
   "fileUrl": "http://umclidet.com/pdf/Magic.Tricks.for.the.Beginning.Magician.pdf"
   }' $URL$RESOURCE
 
@@ -182,7 +182,7 @@ if [ $ADD_CHALLENGE_FILE = "true" ]; then
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3RvcGNvZGVyLmF1dGgwLmNvbS8iLCJzdWIiOiJ0d2l0dGVyfDE4MzM0NDA3IiwiYXVkIjoiYzRQVnZDMXo1MERPbE9MakxxSGI1aXcyZkdNOHRlVFciLCJleHAiOjE0NTI1MzE1MzIsImlhdCI6MTQxNjUzMTUzMn0.Vl53WZ3XAQ3fi05x-4dcnpkcWKkDphHik42fJdNjlWY" -d '{
   "title": "Learning to drive a manual car",
   "size": 123,
-  "storageLocation": "LOCAL",
+  "storageLocation": "local",
   "fileUrl": "http://www.driverighttraining.com.au/docs/How-to-Drive-a-Manual-Car.pdf"
   }' $URL$RESOURCE
 
@@ -208,7 +208,7 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
   curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3RvcGNvZGVyLmF1dGgwLmNvbS8iLCJzdWIiOiJ0d2l0dGVyfDE4MzM0NDA3IiwiYXVkIjoiYzRQVnZDMXo1MERPbE9MakxxSGI1aXcyZkdNOHRlVFciLCJleHAiOjE0NTI1MzE1MzIsImlhdCI6MTQxNjUzMTUzMn0.Vl53WZ3XAQ3fi05x-4dcnpkcWKkDphHik42fJdNjlWY" -d '{
     "title": "user 30 sbumission - Magic My way",
     "size": 123,
-    "storageLocation": "LOCAL",
+    "storageLocation": "local",
     "fileUrl": "/uploads/challengeId/magiclLesson1.zip"
   }'  $URL$RESOURCE
 
@@ -217,7 +217,7 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
     curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3RvcGNvZGVyLmF1dGgwLmNvbS8iLCJzdWIiOiJ0d2l0dGVyfDE4MzM0NDA3IiwiYXVkIjoiYzRQVnZDMXo1MERPbE9MakxxSGI1aXcyZkdNOHRlVFciLCJleHAiOjE0NTI1MzE1MzIsImlhdCI6MTQxNjUzMTUzMn0.Vl53WZ3XAQ3fi05x-4dcnpkcWKkDphHik42fJdNjlWY" -d '{
     "title": "user 50 sbumission -the manual transmission a beginners guide",
     "size": 123,
-    "storageLocation": "LOCAL",
+    "storageLocation": "local",
     "fileUrl": "/uploads/challengeId/src.zip"
   }'  $URL$RESOURCE
 
@@ -226,7 +226,7 @@ if [ $ADD_SUBMISSION_FILES = "true" ]; then
     curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3RvcGNvZGVyLmF1dGgwLmNvbS8iLCJzdWIiOiJ0d2l0dGVyfDE4MzM0NDA3IiwiYXVkIjoiYzRQVnZDMXo1MERPbE9MakxxSGI1aXcyZkdNOHRlVFciLCJleHAiOjE0NTI1MzE1MzIsImlhdCI6MTQxNjUzMTUzMn0.Vl53WZ3XAQ3fi05x-4dcnpkcWKkDphHik42fJdNjlWY" -d '{
     "title": "How to drive a stick - Magic My way user50",
     "size": 123,
-    "storageLocation": "LOCAL",
+    "storageLocation": "local",
     "fileUrl": "/uploads/challengeId/learnStick.zip"
   }'  $URL$RESOURCE
 fi

@@ -15,8 +15,11 @@ var Challenge = datasource.Challenge;
 var File = datasource.File;
 var Participant = datasource.Participant;
 var Submission = datasource.Submission;
-var controllerHelper = require('./../../lib/controllerHelper');
-var routeHelper = require('./../../lib/routeHelper');
+var serenityControllerHelper = require('serenity-controller-helper');
+var config = require('config');
+var controllerHelper = new serenityControllerHelper(config);
+var auth = require('serenity-auth');
+var errors = require('common-errors');
 
 var challengeControllerOptions = {
   filtering: true,
@@ -79,11 +82,11 @@ module.exports = {
 
   register: function(req, res, next) {
     Participant.findOrCreate({
-        userId: routeHelper.getSigninUser(req).id,
-        userHandle: routeHelper.getSigninUser(req).handle,
+        userId: auth.getSigninUser(req).id,
+        userHandle: auth.getSigninUser(req).handle,
         role: 'SUBMITTER',
-        createdBy: routeHelper.getSigninUser(req).id,
-        updatedBy: routeHelper.getSigninUser(req).id,
+        createdBy: auth.getSigninUser(req).id,
+        updatedBy: auth.getSigninUser(req).id,
         challengeId: req.swagger.params.challengeId.value
       })
       .success(function(participant, created) {
@@ -96,15 +99,12 @@ module.exports = {
             }
           };
         } else {
-          console.log(participant);
-          console.log(created);
-          routeHelper.addValidationError(req, 'User is already registered for the challenge.');
+          next(new errors.ValidationError('User is already registered for the challenge.'));
         }
         next();
       })
       .error(function(err) {
-        routeHelper.addError(req, err);
-        next();
+        next(new errors.Error('Error', err));
       });
   }
 };

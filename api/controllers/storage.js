@@ -9,11 +9,11 @@
 var datasource = require('./../../datasource').getDataSource();
 var Challenge = datasource.Challenge;
 var File = datasource.File;
-var routeHelper = require('./../../lib/routeHelper');
-var storageLib = require('./../../lib/storage');
 var async = require('async');
-var safeList = require('../../lib/tc-auth/safelist');
-
+var auth = require('serenity-auth');
+var config = require('config');
+var storageLib = require('serenity-storage')(config);
+var errors = require('common-errors');
 
 /**
  * Helper method to find an entity by entity id property
@@ -40,121 +40,193 @@ var findById = function(Model, filters, callback) {
  */
 var getChallengeFileURL = function(method, req, res, next) {
   // check authorization
-  var challengeId = req.swagger.params.challengeId.value,
-    fileId = req.swagger.params.fileId.value,
-    user = routeHelper.getSigninUser(req);
+  var challengeId = req.swagger.params.challengeId.value;
+  var fileId = req.swagger.params.fileId.value;
+  var user = auth.getSigninUser(req);
+  var currentUserIsAdmin = auth.currentUserPass(req);
 
-  async.waterfall([
-    function(cb) {
-      findById(Challenge, {where: {id:challengeId}}, cb);
-    },
-    function(challenge, cb) {
-      if(!challenge) {
-        return cb({message: 'Cannot find a challenge for challengeId ' + challengeId, code: routeHelper.HTTP_NOT_FOUND});
-      }
-
-      if (!safeList.currentUserIsSafe(req)) {
-        challenge.getParticipants({where: {userId: user.id}}).success(function(participants) {
-          cb(null, participants);
-        }).error(function(err) {
-          cb(err);
-        });
-      } else {
-        cb(null, null);
-      }
-
-    },
-    function(participants, cb) {
-      if (!safeList.currentUserIsSafe(req)) {
-        // participant will be an array, should not be empty array
-        if (!participants || participants.length === 0) {
-          return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
-        }
-      }
-      findById(File, {where: {id:fileId, challengeId: challengeId}}, cb);
-    },
-    function(file, cb) {
-      if(!file) {
-        return cb({message: 'Cannot find a file for fileId ' + fileId, code: routeHelper.HTTP_NOT_FOUND});
-      }
-      storageLib[method](file, cb);
-    }
-  ], function(err, result) {
-    if(err) {
-      routeHelper.addError(req, err, err.code);
-    } else {
-      req.data = {
-        success: true,
-        status: routeHelper.HTTP_OK,
-        metadata: {
-          totalCount: 1
+  if (user) {
+    if (currentUserIsAdmin) {
+      async.waterfall([
+        function(cb) {
+          findById(Challenge, {where: {id:challengeId}}, cb);
         },
-        content: {url: result}
-      };
+        function(challenge, cb) {
+          if (!challenge) {
+            return cb(new errors.NotFoundError('challenge'));
+          }
+
+          findById(File, {where: {id:fileId, challengeId: challengeId}}, cb);
+        },
+        function(file, cb) {
+          if(!file) {
+            return cb(new errors.NotFoundError('file'));
+          }
+          storageLib[method](file, cb);
+        }
+      ], function(err, result) {
+          if (err) {
+            return next(err);  // go to error handler
+          } else {
+            req.data = {
+              success: true,
+              status: 200,
+              metadata: {
+                totalCount: 1
+              },
+              content: {url: result}
+            };
+          }
+          next();
+        }
+      );
+    } else {
+      async.waterfall([
+        function(cb) {
+          findById(Challenge, {where: {id:challengeId}}, cb);
+        },
+        function(challenge, cb) {
+          if(!challenge) {
+            return cb(new errors.NotFoundError('challenge'));
+          }
+
+          challenge.getParticipants({where: {userId: user.id}}).success(function(participants) {
+            cb(null, participants);
+          }).error(function(err) {
+            cb(err);
+          });
+
+        },
+        function(participants, cb) {
+          // participant will be an array, should not be empty array
+          if (!currentUserIsAdmin && (!participants || participants.length === 0)) {
+            return cb(new errors.NotPermittedError('User is not a Participant'));
+          }
+          findById(File, {where: {id:fileId, challengeId: challengeId}}, cb);
+        },
+        function(file, cb) {
+          if(!file) {
+            return cb(new errors.NotFoundError('file'));
+          }
+          storageLib[method](file, cb);
+        }
+      ], function(err, result) {
+        if (err) {
+          return next(err);  // go to error handler
+        } else {
+          req.data = {
+            success: true,
+            status: 200,
+            metadata: {
+              totalCount: 1
+            },
+            content: {url: result}
+          };
+        }
+
+        next();
+      });
     }
-    next();
-  });
+
+  } else {
+    next(new errors.AuthenticationRequiredError('Authentication Required'));
+  }
 };
 
 var getSubmissionFileURL = function(method, req, res, next) {
-  var challengeId = req.swagger.params.challengeId.value,
-    submissionId = req.swagger.params.submissionId.value,
-    user = routeHelper.getSigninUser(req),
-    fileId = req.swagger.params.fileId.value;
+  var challengeId = req.swagger.params.challengeId.value;
+  var submissionId = req.swagger.params.submissionId.value;
+  var user = auth.getSigninUser(req);
+  var fileId = req.swagger.params.fileId.value;
+  var currentUserIsAdmin = auth.currentUserPass(req);
 
-  async.waterfall([
-    function(cb) {
-      findById(Challenge, {where: {id:challengeId}}, cb);
-    },
-    function(challenge, cb) {
-      if(!challenge) {
-        return cb({message: 'Cannot find a challenge for challengeId ' + challengeId, code: routeHelper.HTTP_NOT_FOUND});
-      }
+  if (user) {
+    if (currentUserIsAdmin) {
+      async.waterfall([
+          function(cb) {
+            findById(Challenge, {where: {id:challengeId}}, cb);
+          },
+          function(challenge, cb) {
+            if (!challenge) {
+              return cb(new errors.NotFoundError('challenge'));
+            }
 
-      if (!safeList.currentUserIsSafe(req)) {
-        challenge.getSubmissions({where: {submitterId: user.id}}).success(function (submissions) {
-          cb(null, submissions);
-        }).error(function (err) {
-          cb(err);
-        });
-      } else {
-        cb(null, null);
-      }
-    },
-    function(submissions, cb) {
-      if (!safeList.currentUserIsSafe(req)) {
-        if (!submissions || submissions.length === 0) {
-          return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
+            findById(File, {where: {id:fileId, submissionId: submissionId}}, cb);
+          },
+          function (file, cb) {
+            if (!file) {
+              return cb(new errors.NotFoundError('file'));
+            }
+            storageLib[method](file, cb);
+          }
+        ], function (err, result) {
+          if (err) {
+            return next(err);  // go to error handler
+          } else {
+            req.data = {
+              success: true,
+              status: 200,
+              metadata: {
+                totalCount: 1
+              },
+              content: {url: result}
+            };
+          }
+          next();
         }
-      }
-      findById(File, {where: {id:fileId, submissionId: submissionId}}, cb);
-    },
-    function(file, cb) {
-      if(!file) {
-        return cb({message: 'Cannot find a file for fileId ' + fileId, code: routeHelper.HTTP_NOT_FOUND});
-      }
-      storageLib[method](file, cb);
-    }
-  ], function(err, result) {
-    if(err) {
-      routeHelper.addError(req, err, err.code);
+      );
     } else {
-      req.data = {
-        success: true,
-        status: routeHelper.HTTP_OK,
-        metadata: {
-          totalCount: 1
+      async.waterfall([
+        function(cb) {
+          findById(Challenge, {where: {id:challengeId}}, cb);
         },
-        content: {url: result}
-      };
+        function(challenge, cb) {
+          if(!challenge) {
+            return cb(new errors.NotFoundError('challenge'));
+          }
+
+          challenge.getSubmissions({where: {submitterId: user.id}}).success(function (submissions) {
+            cb(null, submissions);
+          }).error(function (err) {
+            cb(err);
+          });
+        },
+        function(submissions, cb) {
+          if (!currentUserIsAdmin && (!submissions || submissions.length === 0)) {
+            return cb(new errors.NotPermittedError('User is not authorized'));
+          }
+          findById(File, {where: {id:fileId, submissionId: submissionId}}, cb);
+        },
+        function(file, cb) {
+          if(!file) {
+            return cb(new errors.NotFoundError('file'));
+          }
+          storageLib[method](file, cb);
+        }
+      ], function(err, result) {
+        if(err) {
+          return next(err);  // go to error handler
+        } else {
+          req.data = {
+            success: true,
+            status: 200,
+            metadata: {
+              totalCount: 1
+            },
+            content: {url: result}
+          };
+        }
+        next();
+      });
     }
-    next();
-  });
+  } else {
+    next(new errors.AuthenticationRequiredError('Authentication Required'));
+  }
 };
 
 /**
  * This method return the file download URL for a challenge file.
- * It uses lib/storage to get the download URL based on the storage provider configuration
+ * It uses serenity-storage module to get the download URL based on the storage provider configuration
  * Only participants can download the files
  *
  * @param  {Object}     req       Express request instance
@@ -179,7 +251,7 @@ exports.getChallengeFileUploadURL = function(req, res, next) {
 
 /**
  * This method return the file download URL for a submission file.
- * It uses lib/storage to get the download URL based on the storage provider configuration
+ * It uses serenity-storage module to get the download URL based on the storage provider configuration
  * Only the person who submitted the file can download the file
  *
  * @param  {Object}     req       Express request instance

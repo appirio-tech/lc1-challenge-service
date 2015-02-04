@@ -18,16 +18,16 @@ module.exports = function(grunt) {
   var envConfig = require('config');
 
   // @TODO setup test heroku so we don't need this
-  if (envConfig.has('app.pgURLWercker')) {
-    databaseUrl = envConfig.get('app.pgURLWercker');
-  } else if (envConfig.has('app.pgURL')) {
-    databaseUrl = envConfig.get('app.pgURL');
+  if (envConfig.has('datasource.pgURLWercker')) {
+    databaseUrl = envConfig.get('datasource.pgURLWercker');
+  } else if (envConfig.has('datasource.pgURL')) {
+    databaseUrl = envConfig.get('datasource.pgURL');
   } else {
-    databaseUrl =  'postgres://' + envConfig.get('app.pg.username') +
-    ':' + envConfig.get('app.pg.password') +
-    '@' + envConfig.get('app.pg.host') +
-    ':' + envConfig.get('app.pg.port') +
-    '/' + envConfig.get('app.pg.database');
+    databaseUrl =  'postgres://' + envConfig.get('datasource.pg.username') +
+    ':' + envConfig.get('datasource.pg.password') +
+    '@' + envConfig.get('datasource.pg.host') +
+    ':' + envConfig.get('datasource.pg.port') +
+    '/' + envConfig.get('datasource.pg.database');
   }
 
   // Project Configuration
@@ -145,7 +145,7 @@ module.exports = function(grunt) {
   // load the grunt-swagger-tools
   try {
     // https://www.npmjs.org/package/grunt-swagger-tools
-    swagger = require('appirio-grunt-swagger-tools')();
+    swagger = require('grunt-swagger-tools')();
 
     // // Setup 2.0 Swagger spec compliant using YAML format
     swagger.validator.set('fileext', '.yaml');

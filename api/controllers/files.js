@@ -14,8 +14,9 @@ var datasource = require('./../../datasource').getDataSource();
 var Challenge = datasource.Challenge;
 var Submission = datasource.Submission;
 var File = datasource.File;
-var controllerHelper = require('./../../lib/controllerHelper');
-
+var serenityControllerHelper = require('serenity-controller-helper');
+var config = require('config');
+var controllerHelper = new serenityControllerHelper(config);
 
 // build controller for the nested files resource
 var fileController = controllerHelper.buildController(File, [Challenge, Submission], {filtering: false});
