@@ -6,7 +6,7 @@ app:
   query:
     pageSize: 1000
 ui:
-  swaggerUi: '/api/ui'
+  swaggerUi: '/docs'
   apiDocs: '/api/docs'
 datasource:
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'

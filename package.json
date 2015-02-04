@@ -39,7 +39,7 @@
     "load-grunt-tasks": "^3.x.x",
     "lodash": "^2.4.x",
     "morgan": "^1.x.x",
-    "multiparty": "^3.x.x",
+    "multiparty": "^4.x.x",
     "newrelic": "^1.12.1",
     "pg": "^4.x.x",
     "request": "^2.47.0",
