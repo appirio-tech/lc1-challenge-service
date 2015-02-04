@@ -12,11 +12,19 @@ var serenityDatasource = require('serenity-datasource');
 datasource.init = function(config) {
   if (!this.dbInstance) {
     // If pgURLWercker exists then use that instead of pgurl
+    var dbConfig;
     if (config.has('datasource.pgURLWercker')) {
-      config.datasource.pgURL = config.get('datasource.pgURLWercker');
+      dbConfig = {
+        datasource: {
+          modelsDirectory: config.get('datasource.modelsDirectory'),
+          pgURL: config.get('datasource.pgURLWercker')
+        }
+      };
+    } else {
+      dbConfig = config;
     }
 
-    this.dbInstance = new serenityDatasource(config);
+    this.dbInstance = new serenityDatasource(dbConfig);
   }
 };
 
