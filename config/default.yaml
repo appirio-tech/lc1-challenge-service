@@ -5,6 +5,9 @@ app:
   tcUser: http://dev-lc1-user-service.herokuapp.com
   query:
     pageSize: 1000
+ui:
+  swaggerUi: '/api/ui'
+  apiDocs: '/api/docs'
 datasource:
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
   modelsDirectory: './api/models'

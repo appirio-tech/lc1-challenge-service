@@ -30,17 +30,6 @@ a127.init(function (swaggerConfig) {
   // central point for all authentication
   auth.auth(app, config, auth.requireAuth);
 
-  // Serve the Swagger documents and Swagger UI
-  if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
-    var swaggerTools = require('swagger-tools');
-    var swaggerUi = swaggerTools.middleware.v2.swaggerUi;
-    var yaml = require('js-yaml');
-    var fs = require('fs');
-
-    var swaggerDoc = yaml.safeLoad(fs.readFileSync('./api/swagger/swagger.yaml', 'utf8'));
-    app.use(swaggerUi(swaggerDoc));
-  }
-
   /**
    * Serenity-datasource module standard configuration
    * This configuration is defined in global application configuration
@@ -63,6 +52,16 @@ a127.init(function (swaggerConfig) {
 
   // a127 middlewares
   app.use(a127.middleware(swaggerConfig));
+
+  // Serve the Swagger documents and Swagger UI
+  if (config.has('app.loadDoc') && config.get('app.loadDoc')) {
+    // adding ui options
+    var swaggerTools = swaggerConfig['a127.magic'].swaggerTools;
+    app.use(swaggerTools.swaggerUi({
+      swaggerUi: config.ui.swaggerUi,
+      apiDocs: config.ui.apiDocs
+    }));
+  }
 
   // Add logging
   app.use(function(err, req, res, next) {
