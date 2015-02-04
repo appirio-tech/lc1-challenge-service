@@ -17,11 +17,13 @@ var resopnseHelper = require('serenity-partial-response-helper');
 var partialResponseHelper = null;
 var bodyParser = require('body-parser');
 var auth = require('serenity-auth');
+var errors = require('common-errors');
 
 var app = express();
 
 a127.init(function (swaggerConfig) {
   app.use(bodyParser.json());
+  app.use(errors.middleware.crashProtector());
 
   // central point for all authentication
   auth.auth(app, config, auth.requireAuth);
