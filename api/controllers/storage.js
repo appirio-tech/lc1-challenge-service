@@ -14,6 +14,7 @@ var async = require('async');
 var auth = require('serenity-auth');
 var config = require('config');
 var storageLib = require('serenity-storage')(config);
+var errors = require('common-errors');
 
 /**
  * Helper method to find an entity by entity id property
@@ -50,7 +51,7 @@ var getChallengeFileURL = function(method, req, res, next) {
     },
     function(challenge, cb) {
       if(!challenge) {
-        return cb({message: 'Cannot find a challenge for challengeId ' + challengeId, code: routeHelper.HTTP_NOT_FOUND});
+        cb(new errors.NotFoundError("challenge"));
       }
 
       if (!auth.currentUserIsSafe(req)) {
@@ -68,30 +69,31 @@ var getChallengeFileURL = function(method, req, res, next) {
       if (!auth.currentUserIsSafe(req)) {
         // participant will be an array, should not be empty array
         if (!participants || participants.length === 0) {
-          return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
+          cb(new errors.NotPermittedError('User is not a Participant'));
         }
       }
       findById(File, {where: {id:fileId, challengeId: challengeId}}, cb);
     },
     function(file, cb) {
       if(!file) {
-        return cb({message: 'Cannot find a file for fileId ' + fileId, code: routeHelper.HTTP_NOT_FOUND});
+        cb(new errors.NotFoundError("file"));
       }
       storageLib[method](file, cb);
     }
   ], function(err, result) {
-    if(err) {
-      routeHelper.addError(req, err, err.code);
+    if (err) {
+      return next(err);  // go to error handler
     } else {
       req.data = {
         success: true,
-        status: routeHelper.HTTP_OK,
+        status: 200,
         metadata: {
           totalCount: 1
         },
         content: {url: result}
       };
     }
+
     next();
   });
 };
@@ -108,7 +110,7 @@ var getSubmissionFileURL = function(method, req, res, next) {
     },
     function(challenge, cb) {
       if(!challenge) {
-        return cb({message: 'Cannot find a challenge for challengeId ' + challengeId, code: routeHelper.HTTP_NOT_FOUND});
+        cb(new errors.NotFoundError("challenge"));
       }
 
       if (!auth.currentUserIsSafe(req)) {
@@ -124,24 +126,24 @@ var getSubmissionFileURL = function(method, req, res, next) {
     function(submissions, cb) {
       if (!auth.currentUserIsSafe(req)) {
         if (!submissions || submissions.length === 0) {
-          return cb({message: 'User is not authorized', code: routeHelper.HTTP_UNAUTHORIZED});
+          cb(new errors.NotPermittedError('User is not authorized'));
         }
       }
       findById(File, {where: {id:fileId, submissionId: submissionId}}, cb);
     },
     function(file, cb) {
       if(!file) {
-        return cb({message: 'Cannot find a file for fileId ' + fileId, code: routeHelper.HTTP_NOT_FOUND});
+        cb(new errors.NotFoundError("file"));
       }
       storageLib[method](file, cb);
     }
   ], function(err, result) {
     if(err) {
-      routeHelper.addError(req, err, err.code);
+      return next(err);  // go to error handler
     } else {
       req.data = {
         success: true,
-        status: routeHelper.HTTP_OK,
+        status: 200,
         metadata: {
           totalCount: 1
         },

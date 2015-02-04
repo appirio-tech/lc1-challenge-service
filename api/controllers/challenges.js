@@ -20,6 +20,7 @@ var config = require('config');
 var controllerHelper = new serenityControllerHelper(config);
 var routeHelper = require('serenity-route-helper');
 var auth = require('serenity-auth');
+var errors = require('common-errors');
 
 var challengeControllerOptions = {
   filtering: true,
@@ -99,13 +100,12 @@ module.exports = {
             }
           };
         } else {
-          routeHelper.addValidationError(req, 'User is already registered for the challenge.');
+          next(new errors.ValidationError('User is already registered for the challenge.'));
         }
         next();
       })
       .error(function(err) {
-        routeHelper.addError(req, err);
-        next();
+        next(new errors.Error("Error", err));
       });
   }
 };
