@@ -26,7 +26,7 @@ var app = express();
 a127.init(function (swaggerConfig) {
   app.use(morgan('dev'));
   app.use(bodyParser.json());
-  app.use(errors.middleware.crashProtector());
+  //app.use(errors.middleware.crashProtector());
 
   // central point for all authentication
   auth.auth(app, config, auth.requireAuth);
