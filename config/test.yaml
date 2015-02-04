@@ -1,2 +1,8 @@
 app:
   pgURL: 'postgres://postgres@localhost:5432/travis_ci_test'
+storage:
+  aws:
+    accessKeyId: AKIAI2BK4XCJ5QK2HLCQ
+    secretAccessKey: 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
+    bucket: louder-crowd-neil
+    region: us-east-1

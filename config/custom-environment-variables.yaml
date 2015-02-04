@@ -11,8 +11,8 @@ auth0:
   secret: TC_AUTH0_SECRET
 storage:
   aws:
-    key: AWS_KEY
-    secret: AWS_SECRET
+    accessKeyId: AWS_KEY
+    secretAccessKey: AWS_SECRET
     bucket: AWS_BUCKET
     region: AWS_REGION
 auth:
