@@ -38,6 +38,7 @@
     "jshint": "^2.5.5",
     "load-grunt-tasks": "^0.4.0",
     "lodash": "^2.4.1",
+    "morgan": "^1.5.1",
     "multiparty": "^3.3.2",
     "newrelic": "^1.12.1",
     "pg": "^3.4.1",
@@ -52,7 +53,8 @@
     "serenity-route-helper": "^1.0.2",
     "serenity-storage": "^1.0.0",
     "swagger-tools": "^0.6.13",
-    "time-grunt": "^0.3.1"
+    "time-grunt": "^0.3.1",
+    "winston": "^0.9.0"
   },
   "devDependencies": {
     "grunt": ">=0.4.5",

@@ -18,10 +18,13 @@ var partialResponseHelper = null;
 var bodyParser = require('body-parser');
 var auth = require('serenity-auth');
 var errors = require('common-errors');
+var morgan = require('morgan');
+var winston = require('winston');
 
 var app = express();
 
 a127.init(function (swaggerConfig) {
+  app.use(morgan('dev'));
   app.use(bodyParser.json());
   app.use(errors.middleware.crashProtector());
 
@@ -38,14 +41,15 @@ a127.init(function (swaggerConfig) {
     var swaggerDoc = yaml.safeLoad(fs.readFileSync('./api/swagger/swagger.yaml', 'utf8'));
     app.use(swaggerUi(swaggerDoc));
   }
-/**
- * Serenity-datasource module standard configuration
- * This configuration is defined in global application configuration
- * which is exposed node config module
- * For more information about serenity-datasource module configuration
- * see module documentation
- */
-// @TODO add try/catch logic
+
+  /**
+   * Serenity-datasource module standard configuration
+   * This configuration is defined in global application configuration
+   * which is exposed node config module
+   * For more information about serenity-datasource module configuration
+   * see module documentation
+   */
+  // @TODO add try/catch logic
   datasource.init(config);
   partialResponseHelper = new resopnseHelper(datasource);
 
@@ -58,17 +62,24 @@ a127.init(function (swaggerConfig) {
 
   app.use(partialResponseHelper.parseFields);
 
-// a127 middlewares
+  // a127 middlewares
   app.use(a127.middleware(swaggerConfig));
 
-// render response data as JSON
-  app.use(routeHelper.middleware.renderJson);
+  // Add logging
+  app.use(function(err, req, res, next) {
+    if (err) {
+      winston.error(err.stack || JSON.stringify(err));
+      routeHelper.middleware.errorHandler(err, req, res, next);
+    } else {
+      next();
+    }
+  });
 
-  // generic error handler
-  app.use(routeHelper.middleware.errorHandler);
+  // render response data as JSON
+  app.use(routeHelper.middleware.renderJson);
 
   app.listen(port);
 
-  console.log('app started at ' + port);
+  winston.info('Express server listening on port ' + port);
 });
 
