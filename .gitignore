@@ -59,6 +59,7 @@ modules/views/
 # --------------------
 config/local.yaml
 config/local.*.yaml
+.env
 
 # --------------------
 # Other Files

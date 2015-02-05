@@ -3,6 +3,9 @@
  */
 'use strict';
 
+var dotenv = require('dotenv');
+dotenv.load();
+
 // New relic
 if (process.env.NODE_ENV === 'production') {
   require('newrelic');

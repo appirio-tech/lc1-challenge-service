@@ -100,15 +100,6 @@ module.exports = function(grunt) {
       dist: {
 
       }
-    },
-    env: {
-      test: {
-        NODE_ENV: 'test',
-        A127_APPROOT: __dirname
-      },
-      local: {
-        NODE_ENV: 'local'
-      }
     }
   });
 
@@ -117,16 +108,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   //Default task(s).
-  if (process.env.NODE_ENV === 'production') {
-    grunt.registerTask('default', ['jshint', 'concurrent']);
-  } else {
-    grunt.registerTask('default', ['env:local', 'jshint', 'concurrent']);
-  }
+  grunt.registerTask('default', ['jshint', 'concurrent']);
 
-  grunt.registerTask('validate', ['env:test', 'mochaTest', 'jshint']);
+  grunt.registerTask('validate', ['mochaTest', 'jshint']);
 
   //Test task.
-  grunt.registerTask('test', ['env:test', 'dbmigrate', 'mochaTest', 'yamlTest', 'jshint']);
+  grunt.registerTask('test', ['dbmigrate', 'mochaTest', 'yamlTest', 'jshint']);
 
   // For Heroku users only.
   grunt.registerTask('heroku:production', ['jshint']);
