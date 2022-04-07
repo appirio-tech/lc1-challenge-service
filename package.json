@@ -22,7 +22,7 @@
     "forever": "^0.14.1",
     "grunt-cli": "^0.1.x",
     "grunt-concurrent": "^1.x.x",
-    "grunt-contrib-clean": "^0.6.x",
+    "grunt-contrib-clean": "^0.7.0",
     "grunt-contrib-jshint": ">=0.10.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-db-migrate": "0.2.0",
