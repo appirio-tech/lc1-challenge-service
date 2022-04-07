@@ -11,7 +11,7 @@
     "node": "0.10.x"
   },
   "dependencies": {
-    "a127-magic": "^0.7.x",
+    "a127-magic": "^0.12.1",
     "async": "^0.9.0",
     "body-parser": "^1.9.0",
     "common-errors": "^0.4.18",
